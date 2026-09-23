@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payghom Cargo</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --primary-color: #d32f2f;
+            --bg-color: #f5f5f5;
+            --card-bg: #ffffff;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 70px;
+            color: var(--text-color);
+        }
+
+        /* Top Header / Banner */
+        .header {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+            color: white;
+            padding: 20px 15px;
+            border-radius: 0 0 20px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        /* Main Container */
+        .container {
+            padding: 15px;
+        }
+
+        /* Address Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .address-box {
+            background: #fafafa;
+            border: 1px dashed #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .btn-copy {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            text-align: center;
+            font-size: 11px;
+            color: #777;
+            text-decoration: none;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Payghom Cargo</h1>
+        <p>Интиқоли боэътимоди борҳо аз Чин ба Тоҷикистон</p>
+    </div>
+
+    <div class="container">
+        <!-- Address Card 1 -->
+        <div class="card">
+            <div class="card-title">🚛 Склади Гуанчжоу (Авто)</div>
+            <div class="address-box" id="addr-auto">
+                广东省广州市荔湾区环市西路黑山三街20号宇宙鞋城E区113-119档8号库房<br>
+                <b>Код:</b> PC-XXXX<br>
+                <b>Тел:</b> 13711652794
+            </div>
+            <button class="btn-copy" onclick="copyText('addr-auto')">Нусхабардории суроға</button>
+        </div>
+
+        <!-- Address Card 2 -->
+        <div class="card">
+            <div class="card-title">✈️ Склади Пекин (Авиа)</div>
+            <div class="address-box" id="addr-avia">
+                北京市北京市朝阳区雅宝路日坛国际贸易中心A座1V31<br>
+                <b>Код:</b> PC-XXXX<br>
+                <b>Тел:</b> 15210177171
+            </div>
+            <button class="btn-copy" onclick="copyText('addr-avia')">Нусхабардории суроға</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="navbar">
+        <a href="#" class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            Асосӣ
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">📦</span>
+            Фармоишҳо
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">🔲</span>
+            QR-код
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">💬</span>
+            Паёмҳо
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">👤</span>
+            Профил
+        </a>
+    </div>
+
+    <script>
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Кушодани барнома ба пуррагии экран
+
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text);
+            tg.showAlert("Суроға нусхабардорӣ шуд!");
+        }
+    </script>
+</body>
+</html>
