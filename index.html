@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Paighom Cargo Bot</title>
+    <title>Paighom cargo bot</title>
     <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -222,7 +222,7 @@
         <form onsubmit="handleSMSVerify(event)">
             <div class="form-group">
                 <label for="smsCode">Коди SMS (4 рақам)</label>
-                <input type="number" id="smsCode" required placeholder="1234" style="text-align: center; letter-spacing: 4px; font-size: 20px;">
+                <input type="number" id="smsCode" required placeholder="1234" oninput="autoCheckSMS(this)" style="text-align: center; letter-spacing: 4px; font-size: 20px;">
             </div>
             <button class="btn" type="submit">Ворид шудан</button>
             <button class="btn btn-secondary" type="button" onclick="backToRegister()">Иваз кардани телефон</button>
@@ -244,7 +244,7 @@
         <form onsubmit="handleSaveParcel(event)">
             <div class="form-group">
                 <label for="trackCode">Трек-коди Чин</label>
-                <input type="text" id="trackCode" required placeholder="YT123456789CN">
+                <input type="text" id="trackCode" required placeholder="Масалан: YT783456789CN">
             </div>
 
             <div class="form-group">
@@ -278,7 +278,6 @@
 
     let tempUser = { fullName: '', phone: '', generatedCode: '' };
 
-    // Ҳангоми кушодани барнома мебинад, ки корбар пештар ворид шудааст ё не
     window.onload = function() {
         try {
             const savedUser = JSON.parse(localStorage.getItem('paighom_user'));
@@ -314,11 +313,20 @@
         switchStep('step-sms');
     }
 
-    // Баъди ворид кардани SMS мустақиман ба дохили барнома мегузарад
+    // Танзими автоматикӣ: Вақте 4 рақам ворид мешавад, мустақиман дохил мешавад
+    function autoCheckSMS(input) {
+        if (input.value.length === 4) {
+            verifyCode(input.value.trim());
+        }
+    }
+
     function handleSMSVerify(e) {
         e.preventDefault();
         const enteredCode = document.getElementById('smsCode').value.trim();
+        verifyCode(enteredCode);
+    }
 
+    function verifyCode(enteredCode) {
         if (enteredCode === tempUser.generatedCode || enteredCode === '1234') {
             const userData = { fullName: tempUser.fullName, phone: tempUser.phone, isLoggedIn: true };
             localStorage.setItem('paighom_user', JSON.stringify(userData));
@@ -404,7 +412,7 @@
         const parcels = JSON.parse(localStorage.getItem('paighom_parcels')) || [];
 
         if (parcels.length === 0) {
-            parcelsList.innerHTML = `<div class="empty-state">Ҳоло ҳеҷ боре сабт نشدهаст.</div>`;
+            parcelsList.innerHTML = `<div class="empty-state">Ҳоло ҳеҷ боре сабт нашудааст.</div>`;
             return;
         }
 
