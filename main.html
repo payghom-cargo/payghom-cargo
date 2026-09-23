@@ -31,14 +31,16 @@
 
         /* Баннери таблиғотӣ */
         .banner {
-            background: #fff;
+            background: #d32f2f;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
             border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             margin-bottom: 15px;
-            border: 1px solid #ffcdd2;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 14px;
         }
-        .banner img { width: 100%; display: block; }
 
         /* Интиқоли нақлиёт (Авто, Авиа) */
         .transport-types {
@@ -53,10 +55,14 @@
             border-radius: 12px;
             text-align: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border: 1px solid #eee;
+            border: 2px solid #eee;
             cursor: pointer;
         }
-        .transport-card h4 { margin: 5px 0 0 0; font-size: 14px; color: #d32f2f; }
+        .transport-card.active {
+            border-color: #d32f2f;
+            background-color: #fff5f5;
+        }
+        .transport-card h4 { margin: 5px 0 0 0; font-size: 13px; color: #d32f2f; }
 
         /* Қуттии суроғаҳо */
         .address-box {
@@ -68,7 +74,7 @@
             border-left: 4px solid #d32f2f;
         }
         .address-box h4 { margin-top: 0; color: #d32f2f; font-size: 15px; }
-        .address-text { font-size: 13px; color: #555; background: #fff5f5; padding: 10px; border-radius: 8px; word-break: break-all; }
+        .address-text { font-size: 13px; color: #555; background: #fff5f5; padding: 10px; border-radius: 8px; word-break: break-all; line-height: 1.5; }
         
         .copy-btn {
             background-color: #d32f2f;
@@ -82,7 +88,7 @@
             cursor: pointer;
         }
 
-        /* Менюи поёнӣ (Bottom Navigation) */
+        /* Менюи поёнӣ */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -112,41 +118,35 @@
     <!-- Сарлавҳа -->
     <div class="header">
         <div class="user-info">
-            <h3 id="display-name">Миҳмон</h3>
+            <h3 id="display-name">Раҳматулло</h3>
             <span id="client-id">ID: SV003-X2574</span>
         </div>
         <div>🔔</div>
     </div>
 
     <div class="container">
-        <!-- Баннер -->
+        <!-- Баннер бо номи дурусти PAIGHOM CARGO -->
         <div class="banner">
-            <div style="background: #d32f2f; color: white; padding: 12px; text-align: center; font-weight: bold;">
-                ✈️ БОРҲОИ СУРЪАТИ БОҲТАР БА ТАМОМИ ТОҶИКИСТОН 🇹🇯
-            </div>
+            ✈️ PAIGHOM CARGO БА ТАМОМИ ТОҶИКИСТОН 🇹🇯
         </div>
 
         <!-- ТАРИФҲО (Авто / Авиа) -->
         <div class="transport-types">
-            <div class="transport-card">
-                <div style="font-size: 22px;">🚚</div>
+            <div class="transport-card active" id="card-cargo" onclick="switchAddress('cargo')">
+                <div style="font-size: 20px;">🚚</div>
                 <h4>Камаз (Авто)</h4>
             </div>
-            <div class="transport-card">
-                <div style="font-size: 22px;">✈️</div>
+            <div class="transport-card" id="card-avia" onclick="switchAddress('avia')">
+                <div style="font-size: 20px;">✈️</div>
                 <h4>Авиа</h4>
-            </div>
-            <div class="transport-card">
-                <div style="font-size: 22px;">👑</div>
-                <h4>Авиа VIP</h4>
             </div>
         </div>
 
-        <!-- СУРОҒАИ АНБОР ДАР ЧИН -->
+        <!-- СУРОҒАИ АНБОР -->
         <div class="address-box">
-            <h4>📍 Суроғаи анбор (Камаз / Авто)</h4>
+            <h4 id="address-title">📍 Суроғаи анбор (Камаз / Авто)</h4>
             <div class="address-text" id="address-content">
-                广州市荔湾区环市西路黑山三街20号宇宙鞋城E区113-119号8号库房SV003-X2574 Ғоибов Раҳматулло +992555111083
+                PAIGHOM CARGO 15024564470 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库 SV003-X2574 Раҳматулло
             </div>
             <button class="copy-btn" onclick="copyAddress()">📋 Нусхабардории суроға</button>
         </div>
@@ -172,13 +172,32 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Гирифтани номи корбар аз LocalStorage, ки пештар сабт карда будем
-        let savedName = localStorage.getItem("cargo_user_name");
-        if (savedName) {
-            document.getElementById("display-name").innerText = savedName;
-            // Дар суроға ҳам номи воридшударо иваз мекунем
-            let addr = document.getElementById("address-content");
-            addr.innerText = addr.innerText.replace("Ғоибов Раҳматулло", savedName);
+        let clientName = localStorage.getItem("cargo_user_name") || "Раҳматулло";
+        document.getElementById("display-name").innerText = clientName;
+
+        // Маълумоти суроғаҳо
+        const addresses = {
+            cargo: "PAIGHOM CARGO 15024564470 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库 SV003-X2574 " + clientName,
+            avia: "PAIGHOM AVIA +8617591674707 新疆乌鲁木齐天山区延安路边疆宾馆公寓楼5806号 SV003-X2574 " + clientName
+        };
+
+        function switchAddress(type) {
+            let title = document.getElementById("address-title");
+            let content = document.getElementById("address-content");
+            let cardCargo = document.getElementById("card-cargo");
+            let cardAvia = document.getElementById("card-avia");
+
+            if (type === 'cargo') {
+                title.innerText = "📍 Суроғаи анбор (Камаз / Авто)";
+                content.innerText = addresses.cargo;
+                cardCargo.classList.add("active");
+                cardAvia.classList.remove("active");
+            } else {
+                title.innerText = "📍 Суроғаи анбор (Авиа)";
+                content.innerText = addresses.avia;
+                cardAvia.classList.add("active");
+                cardCargo.classList.remove("active");
+            }
         }
 
         function copyAddress() {
@@ -190,4 +209,3 @@
     </script>
 </body>
 </html>
-
