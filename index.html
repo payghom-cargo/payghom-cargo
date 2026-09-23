@@ -16,6 +16,7 @@
       --subtext: #6b7280;
       --border: #e5e7eb;
       --avia: #d97706;
+      --success: #10b981;
     }
 
     * {
@@ -53,6 +54,15 @@
       margin-top: 2px;
     }
 
+    /* Блокҳои саҳифаҳо */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
     .card {
       background: var(--card-bg);
       border-radius: 14px;
@@ -81,20 +91,22 @@
       gap: 8px;
     }
 
-    .search-box input {
+    .search-box input, .calc-input, .calc-select {
       flex: 1;
+      width: 100%;
       padding: 10px 12px;
       border: 1px solid var(--border);
       border-radius: 10px;
       font-size: 14px;
       outline: none;
+      background: #fff;
     }
 
-    .search-box button {
+    .search-box button, .btn-calc {
       background: var(--primary);
       color: white;
       border: none;
-      padding: 0 16px;
+      padding: 10px 16px;
       border-radius: 10px;
       font-weight: 600;
       cursor: pointer;
@@ -146,6 +158,7 @@
       background: var(--avia);
     }
 
+    /* Навигатсияи поёнӣ */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -154,19 +167,23 @@
       background: var(--card-bg);
       display: flex;
       justify-content: space-around;
-      padding: 8px 0;
+      padding: 10px 0;
       border-top: 1px solid var(--border);
+      z-index: 100;
     }
 
     .nav-btn {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       color: var(--subtext);
       font-size: 11px;
       text-decoration: none;
       cursor: pointer;
+      background: none;
+      border: none;
+      flex: 1;
     }
 
     .nav-btn.active {
@@ -177,6 +194,48 @@
     .nav-btn i {
       font-size: 18px;
     }
+
+    /* Стилҳои Ҳисобкунак */
+    .form-group {
+      margin-bottom: 10px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: var(--subtext);
+      margin-bottom: 4px;
+    }
+    .calc-result {
+      margin-top: 12px;
+      padding: 12px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: bold;
+      color: #1e40af;
+      font-size: 16px;
+      display: none;
+    }
+
+    /* Профил */
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
   </style>
 </head>
 <body>
@@ -186,76 +245,160 @@
     <p>Бохтар / Интиқоли тиҷоратӣ ва шахсӣ аз Чин</p>
   </div>
 
-  <!-- Ҷустуҷӯ -->
-  <div class="card">
-    <div class="card-header">
-      <i class="fa-solid fa-magnifying-glass"></i> Пайгирии посылка (Трек-код)
+  <!-- 1. САҲИФАИ АСОСӢ -->
+  <div id="tab-home" class="tab-content active">
+    <!-- Ҷустуҷӯ -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-magnifying-glass"></i> Пайгирии посылка (Трек-код)
+      </div>
+      <div class="search-box">
+        <input type="text" id="trackInput" placeholder="Рақами трекро дохил кунед...">
+        <button onclick="searchTrack()">Ҷустуҷӯ</button>
+      </div>
+      <div id="searchResult" class="result-box"></div>
     </div>
-    <div class="search-box">
-      <input type="text" id="trackInput" placeholder="Рақами трекро дохил кунед...">
-      <button onclick="searchTrack()">Ҷустуҷӯ</button>
-    </div>
-    <div id="searchResult" class="result-box"></div>
-  </div>
 
-  <!-- СУРОҒАИ КамАЗ (АВТО) -->
-  <div class="card">
-    <div class="card-header">
-      <i class="fa-solid fa-truck-front"></i> Суроғаи склади КамАЗ (АВТО)
-    </div>
-    <div class="address-details" id="warehouseAddrKamaz">
+    <!-- СУРОҒАИ КамАЗ -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-truck-front"></i> Суроғаи склади КамАЗ (АВТО)
+      </div>
+      <div class="address-details" id="warehouseAddrKamaz">
 <b>收货人:</b> PAIGHOM CARGO Bokhtar-<br>
 <b>手机号码:</b> 15024564470<br>
 <b>省市区:</b> 浙江省 金华市 义乌市<br>
 <b>详细地址:</b> 后宅街道洪华小区98栋3单元 前门一楼仓库 Bokhtar-
+      </div>
+      <button class="btn-action" onclick="copyAddr('warehouseAddrKamaz')">
+        <i class="fa-regular fa-copy"></i> Нусхабардории суроғаи КамАЗ
+      </button>
     </div>
-    <button class="btn-action" onclick="copyAddr('warehouseAddrKamaz')">
-      <i class="fa-regular fa-copy"></i> Нусхабардории суроғаи КамАЗ
-    </button>
-  </div>
 
-  <!-- СУРОҒАИ АВИА -->
-  <div class="card">
-    <div class="card-header">
-      <i class="fa-solid fa-plane" style="color: var(--avia);"></i> Суроғаи склади АВИА
-    </div>
-    <div class="address-details avia" id="warehouseAddrAvia">
+    <!-- СУРОҒАИ АВИА -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-plane" style="color: var(--avia);"></i> Суроғаи склади АВИА
+      </div>
+      <div class="address-details avia" id="warehouseAddrAvia">
 <b>收货人:</b> PAIGHOM AVIA Bokhtar-<br>
 <b>手机号码:</b> 17591674707<br>
 <b>省市区:</b> 新疆维吾尔自治区 乌鲁木齐市 天山区<br>
 <b>详细地址:</b> 延安路边疆宾馆公寓楼5806号 Bokhtar-
+      </div>
+      <button class="btn-action avia-btn" onclick="copyAddr('warehouseAddrAvia')">
+        <i class="fa-regular fa-copy"></i> Нусхабардории суроғаи Авиа
+      </button>
     </div>
-    <button class="btn-action avia-btn" onclick="copyAddr('warehouseAddrAvia')">
-      <i class="fa-regular fa-copy"></i> Нусхабардории суроғаи Авиа
-    </button>
   </div>
 
-  <!-- Навигатсия -->
+  <!-- 2. САҲИФАИ БОРҲО -->
+  <div id="tab-cargo" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-boxes-packing"></i> Борҳои ман
+      </div>
+      <p style="font-size: 13px; color: var(--subtext); text-align: center; padding: 20px 0;">
+        Шумо то ҳол боре илова накардаед ё ҳамаи борҳоятон расидаанд.
+      </p>
+    </div>
+  </div>
+
+  <!-- 3. САҲИФАИ ҲИСОБКУНАК (КАЛЬКУЛЯТОР) -->
+  <div id="tab-calc" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <i class="fa-solid fa-calculator"></i> Ҳисобкунаки нархи интиқол
+      </div>
+      
+      <div class="form-group">
+        <label>Намуди интиқол:</label>
+        <select id="calcType" class="calc-select">
+          <option value="kamaz">КамАЗ (АВТО) - $2.8 / кг</option>
+          <option value="avia">АВИА - $8.5 / кг</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Вазни бор (кг):</label>
+        <input type="number" id="calcWeight" class="calc-input" placeholder="Масалан: 5.5">
+      </div>
+
+      <button class="btn-action" onclick="calculateCost()">
+        <i class="fa-solid fa-calculator"></i> Ҳисоб кардан
+      </button>
+
+      <div id="calcResult" class="calc-result"></div>
+    </div>
+  </div>
+
+  <!-- 4. САҲИФАИ ПРОФИЛ -->
+  <div id="tab-profile" class="tab-content">
+    <div class="card">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <div>
+          <h3 id="userName">Мизоҷ</h3>
+          <p id="userId" style="font-size: 12px; color: var(--subtext);">ID: ----</p>
+        </div>
+      </div>
+      <hr style="border: none; border-top: 1px solid var(--border); margin-bottom: 12px;">
+      <p style="font-size: 13px; color: var(--subtext);">
+        <b>Шаҳр:</b> Бохтар<br>
+        <b>Спец-код:</b> Активатсия шудааст
+      </p>
+    </div>
+  </div>
+
+  <!-- НАВИГАТСИЯИ ПОЁНӢ -->
   <div class="bottom-nav">
-    <div class="nav-btn active">
+    <button class="nav-btn active" onclick="switchTab('home', this)">
       <i class="fa-solid fa-house"></i>
       <span>Асосӣ</span>
-    </div>
-    <div class="nav-btn">
+    </button>
+    <button class="nav-btn" onclick="switchTab('cargo', this)">
       <i class="fa-solid fa-boxes-packing"></i>
       <span>Борҳо</span>
-    </div>
-    <div class="nav-btn">
+    </button>
+    <button class="nav-btn" onclick="switchTab('calc', this)">
       <i class="fa-solid fa-calculator"></i>
       <span>Ҳисобкунак</span>
-    </div>
-    <div class="nav-btn">
+    </button>
+    <button class="nav-btn" onclick="switchTab('profile', this)">
       <i class="fa-solid fa-user"></i>
       <span>Профил</span>
-    </div>
+    </button>
   </div>
 
   <script>
     const tg = window.Telegram ? window.Telegram.WebApp : null;
     if (tg) {
       tg.expand();
+      // Агар маълумоти корбар бошад, гузоштан
+      if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        document.getElementById('userName').innerText = tg.initDataUnsafe.user.first_name || 'Мизоҷ';
+        document.getElementById('userId').innerText = 'ID: ' + (tg.initDataUnsafe.user.id || '----');
+      }
     }
 
+    // ИВАЗ КАРДАНИ САҲИФАҲО
+    function switchTab(tabName, btnElement) {
+      // Пӯшондани ҳамаи саҳифаҳо
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      // Тоза кардани фаъолияти тугмаҳо
+      const navBtns = document.querySelectorAll('.nav-btn');
+      navBtns.forEach(btn => btn.classList.remove('active'));
+
+      // Нишон додани саҳифаи интихобшуда
+      document.getElementById('tab-' + tabName).classList.add('active');
+      btnElement.classList.add('active');
+    }
+
+    // НУСХАБАРДОРИИ СУРОҒА
     function copyAddr(elementId) {
       const text = document.getElementById(elementId).innerText;
       navigator.clipboard.writeText(text).then(() => {
@@ -267,6 +410,7 @@
       });
     }
 
+    // ҶУСТУҶӮИ ТРЕК
     function searchTrack() {
       const code = document.getElementById('trackInput').value.trim();
       const resDiv = document.getElementById('searchResult');
@@ -280,6 +424,28 @@
       }
       resDiv.style.display = 'block';
       resDiv.innerHTML = `<strong>Трек-код:</strong> ${code}<br><strong>Ҳолат:</strong> Ҷустуҷӯ дар база...`;
+    }
+
+    // ҲИСОБИ НАХРИ ИНТИҚОЛ
+    function calculateCost() {
+      const weight = parseFloat(document.getElementById('calcWeight').value);
+      const type = document.getElementById('calcType').value;
+      const resDiv = document.getElementById('calcResult');
+
+      if (isNaN(weight) || weight <= 0) {
+        if (tg && tg.showAlert) {
+          tg.showAlert("Лутфан вазни борро дуруст дохил кунед.");
+        } else {
+          alert("Лутфан вазни борро дуруст дохил кунед.");
+        }
+        return;
+      }
+
+      let rate = type === 'kamaz' ? 2.8 : 8.5; // Нархи аслии шумо
+      let total = (weight * rate).toFixed(2);
+
+      resDiv.style.display = 'block';
+      resDiv.innerHTML = `Нархи тахминӣ: <strong>$${total}</strong> (${(total * 10.9).toFixed(0)} сомонӣ)`;
     }
   </script>
 </body>
