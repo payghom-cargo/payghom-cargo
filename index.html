@@ -36,15 +36,15 @@
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 20px;
+            text-align: left;
+            margin-bottom: 14px;
         }
 
         .header h2 {
             color: #1e293b;
             font-size: 22px;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .header p {
@@ -100,20 +100,6 @@
             transform: scale(0.98);
         }
 
-        .btn-secondary {
-            background-color: #f1f5f9;
-            color: #475569;
-            margin-top: 10px;
-        }
-
-        .step {
-            display: none;
-        }
-
-        .step.active {
-            display: block;
-        }
-
         .user-bar {
             display: flex;
             justify-content: space-between;
@@ -126,11 +112,14 @@
             font-size: 14px;
         }
 
-        .user-bar .logout-btn {
+        .user-bar .badge-out {
             color: #ef4444;
-            cursor: pointer;
+            background: #fee2e2;
+            padding: 4px 10px;
+            border-radius: 6px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
+            cursor: pointer;
         }
 
         .parcels-title {
@@ -194,49 +183,14 @@
 
 <div class="container">
 
-    <!-- ҚАДАМИ 1: Регистратсия -->
-    <div id="step-register" class="step active">
-        <div class="header">
-            <h2>Регистратсия</h2>
-            <p>Барои истифодаи хизматрасонӣ маълумотро ворид кунед</p>
-        </div>
-        <form onsubmit="handleRegister(event)">
-            <div class="form-group">
-                <label for="fullName">Ном ва Насаб</label>
-                <input type="text" id="fullName" required placeholder="Масалан: Раҳматулло Ғоибов">
-            </div>
-            <div class="form-group">
-                <label for="phoneNumber">Рақами телефон</label>
-                <input type="tel" id="phoneNumber" required placeholder="+992 900 00 00 00">
-            </div>
-            <button class="btn" type="submit">Гирифтани коди SMS</button>
-        </form>
-    </div>
-
-    <!-- ҚАДАМИ 2: Тасдиқи SMS -->
-    <div id="step-sms" class="step">
-        <div class="header">
-            <h2>Тасдиқи SMS</h2>
-            <p id="smsSentText">Коди тасдиқ ба телефони шумо фиристода шуд</p>
-        </div>
-        <form onsubmit="handleSMSVerify(event)">
-            <div class="form-group">
-                <label for="smsCode">Коди SMS (4 рақам)</label>
-                <input type="number" id="smsCode" required placeholder="1234" oninput="autoCheckSMS(this)" style="text-align: center; letter-spacing: 4px; font-size: 20px;">
-            </div>
-            <button class="btn" type="submit">Ворид шудан</button>
-            <button class="btn btn-secondary" type="button" onclick="backToRegister()">Иваз кардани телефон</button>
-        </form>
-    </div>
-
-    <!-- ҚАДАМИ 3: Барномаи асосӣ (Иловаи Трек-код) -->
-    <div id="step-app" class="step">
+    <!-- Барнома бевосита аз ҳамин қисм (Иловаи трек-код) сар мешавад -->
+    <div id="step-app">
         <div class="user-bar">
-            <span>👤 <strong id="userDisplayName">Раҳматулло</strong></span>
-            <span class="logout-btn" onclick="logout()">Баромад</span>
+            <span>👤 <strong>Раҳматулло</strong></span>
+            <span class="badge-out" onclick="clearAllData()">Тоза кардан</span>
         </div>
 
-        <div class="header" style="text-align: left; margin-bottom: 14px;">
+        <div class="header">
             <h2>Иловаи Трек-код</h2>
             <p>Трек-код ва вазни борро дохил кунед</p>
         </div>
@@ -255,7 +209,7 @@
             <div class="form-group">
                 <label for="category">Намуди бор / Тариф</label>
                 <select id="category">
-                    <option value="kamaz">Бори оддӣ ($2.8 / кг)</option>
+                    <option value="kamaz">Бори оддӣ - Камаз ($2.8 / кг)</option>
                     <option value="avia">Бори тезсохт - Авиа ($9.2 / кг)</option>
                 </select>
             </div>
@@ -276,73 +230,9 @@
         tg.expand();
     }
 
-    let tempUser = { fullName: '', phone: '', generatedCode: '' };
-
     window.onload = function() {
-        switchStep('step-register');
-    };
-
-    function switchStep(stepId) {
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById(stepId).classList.add('active');
-    }
-
-    function handleRegister(e) {
-        e.preventDefault();
-        const fullName = document.getElementById('fullName').value.trim();
-        const phone = document.getElementById('phoneNumber').value.trim();
-
-        if (!fullName || phone.length < 7) {
-            showAlert('Лутфан ном, насаб ва рақами телефонро дуруст ворид кунед!');
-            return;
-        }
-
-        const randomCode = Math.floor(1000 + Math.random() * 9000).toString();
-        tempUser = { fullName, phone, generatedCode: randomCode };
-
-        showAlert(`Коди тасдиқи шумо: ${randomCode}`);
-
-        document.getElementById('smsSentText').innerText = `Код ба рақами ${phone} фиристода шуд.`;
-        switchStep('step-sms');
-    }
-
-    // ТАНЗИМИ АВТОМАТӢ: Баъди ворид кардани 4 рақам мустақиман дарояд
-    function autoCheckSMS(input) {
-        if (input.value.length === 4) {
-            verifyCode(input.value.trim());
-        }
-    }
-
-    function handleSMSVerify(e) {
-        e.preventDefault();
-        const enteredCode = document.getElementById('smsCode').value.trim();
-        verifyCode(enteredCode);
-    }
-
-    function verifyCode(enteredCode) {
-        if (enteredCode === tempUser.generatedCode || enteredCode === '1234') {
-            showAppView(tempUser.fullName);
-        } else {
-            showAlert('Коди SMS нодуруст аст!');
-        }
-    }
-
-    function backToRegister() {
-        switchStep('step-register');
-    }
-
-    function showAppView(name) {
-        document.getElementById('userDisplayName').innerText = name || 'Раҳматулло';
-        switchStep('step-app');
         renderParcels();
-    }
-
-    function logout() {
-        document.getElementById('fullName').value = '';
-        document.getElementById('phoneNumber').value = '';
-        document.getElementById('smsCode').value = '';
-        switchStep('step-register');
-    }
+    };
 
     function handleSaveParcel(e) {
         e.preventDefault();
@@ -356,10 +246,10 @@
         }
 
         let rate = 2.8;
-        let categoryName = "Камаз";
+        let categoryName = "Камаз ($2.8 / кг)";
         if (category === 'avia') {
             rate = 9.2;
-            categoryName = "Авиа";
+            categoryName = "Авиа ($9.2 / кг)";
         }
 
         const totalPrice = (weightInput * rate).toFixed(2);
@@ -379,8 +269,7 @@
 
         if (tg && tg.sendData) {
             const dataToSend = {
-                user: tempUser.fullName || 'Раҳматулло',
-                phone: tempUser.phone || '',
+                user: "Раҳматулло",
                 trackCode: trackCode,
                 weight: weightInput,
                 type: categoryName,
@@ -392,7 +281,7 @@
         document.getElementById('trackCode').value = '';
         document.getElementById('weight').value = '';
 
-        showAlert('Бори шумо сабт шуд!');
+        showAlert('Бори шумо бо муваффақият сабт шуд!');
         renderParcels();
     }
 
@@ -401,7 +290,7 @@
         const parcels = JSON.parse(localStorage.getItem('paighom_parcels')) || [];
 
         if (parcels.length === 0) {
-            parcelsList.innerHTML = `<div class="empty-state">Ҳоло ҳеҷ боре сабт نشدهаст.</div>`;
+            parcelsList.innerHTML = `<div class="empty-state">Ҳоло ҳеҷ боре сабт нашудааст.</div>`;
             return;
         }
 
@@ -409,10 +298,10 @@
         parcels.forEach(p => {
             html += `
                 <div class="parcel-item">
-                    <button class="delete-btn" onclick="deleteParcel(${p.id})">Озод кардан</button>
+                    <button class="delete-btn" onclick="deleteParcel(${p.id})">Тоза</button>
                     <div class="parcel-info">Трек: <strong>${p.trackCode}</strong></div>
-                    <div class="parcel-info">Намуди бор: <strong>${p.categoryName || 'Камаз'}</strong></div>
-                    <div class="parcel-info">Вазн: <strong>${p.weight} кг</strong> ($${p.rate}/кг)</div>
+                    <div class="parcel-info">Тариф: <strong>${p.categoryName}</strong></div>
+                    <div class="parcel-info">Вазн: <strong>${p.weight} кг</strong></div>
                     <div class="parcel-price">Сумма: $${p.totalPrice}</div>
                 </div>
             `;
@@ -426,6 +315,13 @@
         parcels = parcels.filter(p => p.id !== id);
         localStorage.setItem('paighom_parcels', JSON.stringify(parcels));
         renderParcels();
+    }
+
+    function clearAllData() {
+        if (confirm("Ҳама борҳои сабтшуда тоза карда шаванд?")) {
+            localStorage.removeItem('paighom_parcels');
+            renderParcels();
+        }
     }
 
     function showAlert(msg) {
