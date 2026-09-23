@@ -232,7 +232,7 @@
     <!-- ҚАДАМИ 3: Барномаи асосӣ (Иловаи Трек-код) -->
     <div id="step-app" class="step">
         <div class="user-bar">
-            <span>👤 <strong id="userDisplayName"></strong></span>
+            <span>👤 <strong id="userDisplayName">Раҳматулло</strong></span>
             <span class="logout-btn" onclick="logout()">Баромад</span>
         </div>
 
@@ -255,7 +255,7 @@
             <div class="form-group">
                 <label for="category">Намуди бор / Тариф</label>
                 <select id="category">
-                    <option value="kamaz">Бори оддӣ - Камаз ($2.8 / кг)</option>
+                    <option value="kamaz">Бори оддӣ ($2.8 / кг)</option>
                     <option value="avia">Бори тезсохт - Авиа ($9.2 / кг)</option>
                 </select>
             </div>
@@ -279,14 +279,7 @@
     let tempUser = { fullName: '', phone: '', generatedCode: '' };
 
     window.onload = function() {
-        try {
-            const savedUser = JSON.parse(localStorage.getItem('paighom_user'));
-            if (savedUser && savedUser.isLoggedIn) {
-                showAppView(savedUser.fullName);
-            }
-        } catch (e) {
-            console.error(e);
-        }
+        switchStep('step-register');
     };
 
     function switchStep(stepId) {
@@ -313,7 +306,7 @@
         switchStep('step-sms');
     }
 
-    // Танзими автоматикӣ: Вақте 4 рақам ворид мешавад, мустақиман дохил мешавад
+    // ТАНЗИМИ АВТОМАТӢ: Баъди ворид кардани 4 рақам мустақиман дарояд
     function autoCheckSMS(input) {
         if (input.value.length === 4) {
             verifyCode(input.value.trim());
@@ -328,9 +321,7 @@
 
     function verifyCode(enteredCode) {
         if (enteredCode === tempUser.generatedCode || enteredCode === '1234') {
-            const userData = { fullName: tempUser.fullName, phone: tempUser.phone, isLoggedIn: true };
-            localStorage.setItem('paighom_user', JSON.stringify(userData));
-            showAppView(userData.fullName);
+            showAppView(tempUser.fullName);
         } else {
             showAlert('Коди SMS нодуруст аст!');
         }
@@ -341,13 +332,12 @@
     }
 
     function showAppView(name) {
-        document.getElementById('userDisplayName').innerText = name;
+        document.getElementById('userDisplayName').innerText = name || 'Раҳматулло';
         switchStep('step-app');
         renderParcels();
     }
 
     function logout() {
-        localStorage.removeItem('paighom_user');
         document.getElementById('fullName').value = '';
         document.getElementById('phoneNumber').value = '';
         document.getElementById('smsCode').value = '';
@@ -388,10 +378,9 @@
         localStorage.setItem('paighom_parcels', JSON.stringify(parcels));
 
         if (tg && tg.sendData) {
-            const savedUser = JSON.parse(localStorage.getItem('paighom_user')) || {};
             const dataToSend = {
-                user: savedUser.fullName || '',
-                phone: savedUser.phone || '',
+                user: tempUser.fullName || 'Раҳматулло',
+                phone: tempUser.phone || '',
                 trackCode: trackCode,
                 weight: weightInput,
                 type: categoryName,
@@ -412,7 +401,7 @@
         const parcels = JSON.parse(localStorage.getItem('paighom_parcels')) || [];
 
         if (parcels.length === 0) {
-            parcelsList.innerHTML = `<div class="empty-state">Ҳоло ҳеҷ боре сабт нашудааст.</div>`;
+            parcelsList.innerHTML = `<div class="empty-state">Ҳоло ҳеҷ боре сабт نشدهаст.</div>`;
             return;
         }
 
