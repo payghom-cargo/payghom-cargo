@@ -1,436 +1,384 @@
 <!DOCTYPE html>
-<html lang="tj">
+<html lang="tg">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Payghom Cargo</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #1e88e5;
-      --primary-dark: #1565c0;
-      --bg: #f4f6f8;
-      --card-bg: #ffffff;
-      --text: #1f2937;
-      --subtext: #6b7280;
-      --border: #e5e7eb;
-      --avia: #d97706;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payghom Cargo - Системаи пайгирӣ ва ҳисобдорӣ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
 
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding: 12px;
-      padding-bottom: 80px;
-    }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            padding: 24px;
+        }
 
-    .app-header {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      padding: 16px;
-      border-radius: 16px;
-      margin-bottom: 12px;
-      box-shadow: 0 4px 12px rgba(30, 136, 229, 0.2);
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
 
-    .app-header h1 {
-      font-size: 20px;
-      font-weight: 700;
-    }
+        .header h2 {
+            color: #1e293b;
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
 
-    .app-header p {
-      font-size: 12px;
-      opacity: 0.9;
-      margin-top: 2px;
-    }
+        .header p {
+            color: #64748b;
+            font-size: 14px;
+        }
 
-    .tab-content {
-      display: none;
-    }
+        .form-group {
+            margin-bottom: 16px;
+        }
 
-    .tab-content.active {
-      display: block;
-    }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #475569;
+        }
 
-    .card {
-      background: var(--card-bg);
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 12px;
-      border: 1px solid var(--border);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-    }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: border 0.2s;
+        }
 
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: var(--text);
-    }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #2563eb;
+        }
 
-    .card-header i {
-      color: var(--primary);
-    }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-    .search-box {
-      display: flex;
-      gap: 8px;
-    }
+        .btn:hover {
+            background-color: #1d4ed8;
+        }
 
-    .search-box input, .calc-input, .calc-select {
-      flex: 1;
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      font-size: 14px;
-      outline: none;
-      background: #fff;
-    }
+        .btn-secondary {
+            background-color: #64748b;
+            margin-top: 8px;
+        }
 
-    .search-box button, .btn-calc {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-    }
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
 
-    .result-box {
-      margin-top: 10px;
-      padding: 10px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 8px;
-      font-size: 13px;
-      color: #166534;
-      display: none;
-    }
+        /* Қисмҳои барнома */
+        .step {
+            display: none;
+        }
 
-    .address-details {
-      background: #f8fafc;
-      border-left: 4px solid var(--primary);
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 13px;
-      line-height: 1.6;
-      margin-bottom: 10px;
-      color: #334155;
-    }
+        .step.active {
+            display: block;
+        }
 
-    .address-details.avia {
-      border-left-color: var(--avia);
-    }
+        /* Информатсияи корбар ва баромад */
+        .user-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f1f5f9;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
 
-    .btn-action {
-      width: 100%;
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 11px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      cursor: pointer;
-    }
+        .user-bar .logout-btn {
+            color: #ef4444;
+            cursor: pointer;
+            font-weight: 600;
+        }
 
-    .btn-action.avia-btn {
-      background: var(--avia);
-    }
+        /* Нотификатсия ва Натиҷа */
+        .result-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
 
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--card-bg);
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
-      border-top: 1px solid var(--border);
-      z-index: 100;
-    }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
 
-    .nav-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      color: var(--subtext);
-      font-size: 11px;
-      text-decoration: none;
-      cursor: pointer;
-      background: none;
-      border: none;
-      flex: 1;
-    }
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-top: 8px;
+            border-top: 1px dashed #cbd5e1;
+            font-weight: bold;
+            font-size: 16px;
+            color: #0f172a;
+        }
 
-    .nav-btn.active {
-      color: var(--primary);
-      font-weight: 600;
-    }
-
-    .nav-btn i {
-      font-size: 18px;
-    }
-
-    .form-group {
-      margin-bottom: 10px;
-    }
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      color: var(--subtext);
-      margin-bottom: 4px;
-    }
-    .calc-result {
-      margin-top: 12px;
-      padding: 12px;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: bold;
-      color: #1e40af;
-      font-size: 16px;
-      display: none;
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .user-avatar {
-      width: 50px;
-      height: 50px;
-      background: var(--primary);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-  </style>
+        .rate-info {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="app-header">
-    <h1>Payghom Cargo</h1>
-    <p>Бохтар / Интиқоли тиҷоратӣ ва шахсӣ аз Чин</p>
-  </div>
+<div class="container">
 
-  <!-- 1. САҲИФАИ АСОСӢ -->
-  <div id="tab-home" class="tab-content active">
-    <div class="card">
-      <div class="card-header">
-        <i class="fa-solid fa-magnifying-glass"></i> Пайгирии посылка (Трек-код)
-      </div>
-      <div class="search-box">
-        <input type="text" id="trackInput" placeholder="Рақами трекро дохил кунед...">
-        <button onclick="searchTrack()">Ҷустуҷӯ</button>
-      </div>
-      <div id="searchResult" class="result-box"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <i class="fa-solid fa-truck-front"></i> Суроғаи склади КамАЗ (АВТО)
-      </div>
-      <div class="address-details" id="warehouseAddrKamaz">
-<b>收货人:</b> PAIGHOM CARGO Bokhtar-<br>
-<b>手机号码:</b> 15024564470<br>
-<b>省市区:</b> 浙江省 金华市 义乌市<br>
-<b>详细地址:</b> 后宅街道洪华小区98栋3单元 前门一楼仓库 Bokhtar-
-      </div>
-      <button class="btn-action" onclick="copyAddr('warehouseAddrKamaz')">
-        <i class="fa-regular fa-copy"></i> Нусхабардории суроғаи КамАЗ
-      </button>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <i class="fa-solid fa-plane" style="color: var(--avia);"></i> Суроғаи склади АВИА
-      </div>
-      <div class="address-details avia" id="warehouseAddrAvia">
-<b>收货人:</b> PAIGHOM AVIA Bokhtar-<br>
-<b>手机号码:</b> 17591674707<br>
-<b>省市区:</b> 新疆维吾尔自治区 乌鲁木齐市 天山区<br>
-<b>详细地址:</b> 延安路边疆宾馆公寓楼5806号 Bokhtar-
-      </div>
-      <button class="btn-action avia-btn" onclick="copyAddr('warehouseAddrAvia')">
-        <i class="fa-regular fa-copy"></i> Нусхабардории суроғаи Авиа
-      </button>
-    </div>
-  </div>
-
-  <!-- 2. САҲИФАИ БОРҲО -->
-  <div id="tab-cargo" class="tab-content">
-    <div class="card">
-      <div class="card-header">
-        <i class="fa-solid fa-boxes-packing"></i> Борҳои ман
-      </div>
-      <p style="font-size: 13px; color: var(--subtext); text-align: center; padding: 20px 0;">
-        Шумо то ҳол боре илова накардаед ё ҳамаи борҳоятон расидаанд.
-      </p>
-    </div>
-  </div>
-
-  <!-- 3. САҲИФАИ ҲИСОБКУНАК -->
-  <div id="tab-calc" class="tab-content">
-    <div class="card">
-      <div class="card-header">
-        <i class="fa-solid fa-calculator"></i> Ҳисобкунаки нархи интиқол
-      </div>
-      
-      <div class="form-group">
-        <label>Намуди интиқол:</label>
-        <select id="calcType" class="calc-select">
-          <option value="kamaz">КамАЗ (АВТО) - $2.8 / кг</option>
-          <option value="avia">АВИА - $8.5 / кг</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Вазни бор (кг):</label>
-        <input type="number" id="calcWeight" class="calc-input" placeholder="Масалан: 5.5">
-      </div>
-
-      <button class="btn-action" onclick="calculateCost()">
-        <i class="fa-solid fa-calculator"></i> Ҳисоб кардан
-      </button>
-
-      <div id="calcResult" class="calc-result"></div>
-    </div>
-  </div>
-
-  <!-- 4. САҲИФАИ ПРОФИЛ -->
-  <div id="tab-profile" class="tab-content">
-    <div class="card">
-      <div class="user-info">
-        <div class="user-avatar">
-          <i class="fa-solid fa-user"></i>
+    <!-- ҚАДАМИ 1: Регистратсия (Ном, Насаб, Телефон) -->
+    <div id="step-register" class="step active">
+        <div class="header">
+            <h2>Регистратсия</h2>
+            <p>Барои истифодаи хизматрасонӣ маълумотро ворид кунед</p>
         </div>
-        <div>
-          <h3 id="userName">Мизоҷ</h3>
-          <p id="userId" style="font-size: 12px; color: var(--subtext);">ID: ----</p>
+        <div class="form-group">
+            <label for="fullName">Ном ва Насаб</label>
+            <input type="text" id="fullName" placeholder="Масалан: Раҳматулло Саидов">
         </div>
-      </div>
-      <hr style="border: none; border-top: 1px solid var(--border); margin-bottom: 12px;">
-      <p style="font-size: 13px; color: var(--subtext);">
-        <b>Шаҳр:</b> Бохтар<br>
-        <b>Спец-код:</b> Активатсия шудааст
-      </p>
+        <div class="form-group">
+            <label for="phoneNumber">Рақами телефон</label>
+            <input type="tel" id="phoneNumber" placeholder="+992 900 00 00 00">
+        </div>
+        <button class="btn" onclick="sendSMSCode()">Гирифтани коди SMS</button>
     </div>
-  </div>
 
-  <!-- НАВИГАТСИЯИ ПОЁНӢ -->
-  <div class="bottom-nav">
-    <button class="nav-btn active" onclick="switchTab('home', this)">
-      <i class="fa-solid fa-house"></i>
-      <span>Асосӣ</span>
-    </button>
-    <button class="nav-btn" onclick="switchTab('cargo', this)">
-      <i class="fa-solid fa-boxes-packing"></i>
-      <span>Борҳо</span>
-    </button>
-    <button class="nav-btn" onclick="switchTab('calc', this)">
-      <i class="fa-solid fa-calculator"></i>
-      <span>Ҳисобкунак</span>
-    </button>
-    <button class="nav-btn" onclick="switchTab('profile', this)">
-      <i class="fa-solid fa-user"></i>
-      <span>Профил</span>
-    </button>
-  </div>
+    <!-- ҚАДАМИ 2: Тасдиқи коди SMS -->
+    <div id="step-sms" class="step">
+        <div class="header">
+            <h2>Тасдиқи SMS</h2>
+            <p id="smsSentText">Коди тасдиқ ба телефони шумо фиристода шуд</p>
+        </div>
+        <div class="form-group">
+            <label for="smsCode">Коди SMS (4 рақам)</label>
+            <input type="text" id="smsCode" maxlength="4" placeholder="1234" style="text-align: center; letter-spacing: 4px; font-size: 20px;">
+        </div>
+        <button class="btn" onclick="verifySMSCode()">Ворид шудан</button>
+        <button class="btn btn-secondary" onclick="backToRegister()">Озод кардани телефон</button>
+    </div>
 
-  <script>
-    const tg = window.Telegram ? window.Telegram.WebApp : null;
-    if (tg) {
-      tg.expand();
-      if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        document.getElementById('userName').innerText = tg.initDataUnsafe.user.first_name || 'Мизоҷ';
-        document.getElementById('userId').innerText = 'ID: ' + (tg.initDataUnsafe.user.id || '----');
-      }
-    }
+    <!-- ҚАДАМИ 3: Барномаи асосӣ (Трек-код ва Ҳисобкунак) -->
+    <div id="step-app" class="step">
+        <div class="user-bar">
+            <span>👤 <strong id="userDisplayName"></strong></span>
+            <span class="logout-btn" onclick="logout()">Баромад</span>
+        </div>
 
-    function switchTab(tabName, btnElement) {
-      const tabs = document.querySelectorAll('.tab-content');
-      tabs.forEach(tab => tab.classList.remove('active'));
+        <div class="header" style="text-align: left; margin-bottom: 16px;">
+            <h2>Иловаи Трек-код ва Ҳисобкунӣ</h2>
+            <p>Маълумоти бори худро тафтиш кунед</p>
+        </div>
 
-      const navBtns = document.querySelectorAll('.nav-btn');
-      navBtns.forEach(btn => btn.classList.remove('active'));
+        <div class="form-group">
+            <label for="trackCode">Трек-коди Чин</label>
+            <input type="text" id="trackCode" placeholder="Масалан: YT123456789CN">
+        </div>
 
-      document.getElementById('tab-' + tabName).classList.add('active');
-      btnElement.classList.add('active');
-    }
+        <div class="form-group">
+            <label for="weight">Вазни бор (кг)</label>
+            <input type="number" id="weight" step="0.1" placeholder="Масалан: 2.5" oninput="calculatePrice()">
+        </div>
 
-    function copyAddr(elementId) {
-      const text = document.getElementById(elementId).innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        if (tg && tg.showAlert) {
-          tg.showAlert("Суроға муваффақона нусхабардорӣ шуд!");
-        } else {
-          alert("Суроға муваффақона нусхабардорӣ шуд!");
+        <div class="form-group">
+            <label for="category">Намуди бор / Тариф</label>
+            <select id="category" onchange="calculatePrice()">
+                <option value="standard">Бори оддӣ ($3.5 / кг)</option>
+                <option value="express">Бори тезсохт / Экспресс ($4.5 / кг)</option>
+                <option value="heavy">Бори вазнин (аз 10кг боло - $3.0 / кг)</option>
+            </select>
+        </div>
+
+        <button class="btn" onclick="saveParcel()">Ҳамроҳ кардани бор</button>
+
+        <!-- Натиҷаи ҳисобкунӣ -->
+        <div id="resultCard" class="result-card" style="display: none;">
+            <div class="result-item">
+                <span>Трек-код:</span>
+                <span id="resTrack">-</span>
+            </div>
+            <div class="result-item">
+                <span>Вазн:</span>
+                <span id="resWeight">0 кг</span>
+            </div>
+            <div class="result-item">
+                <span>Тариф:</span>
+                <span id="resRate">$0 / кг</span>
+            </div>
+            <div class="result-item">
+                <span>Суммаи умумӣ:</span>
+                <span id="resTotal">$0.00</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Маълумоти муваққати барои танзими SMS
+    let tempUser = {
+        fullName: '',
+        phone: '',
+        generatedCode: ''
+    };
+
+    // Дар аввал тафтиш мекунем, ки корбар аллакай ворид шудааст ё не
+    window.onload = function() {
+        const savedUser = JSON.parse(localStorage.getItem('payghom_user'));
+        if (savedUser && savedUser.isLoggedIn) {
+            showAppView(savedUser.fullName);
         }
-      });
-    }
+    };
 
-    function searchTrack() {
-      const code = document.getElementById('trackInput').value.trim();
-      const resDiv = document.getElementById('searchResult');
-      if (!code) {
-        if (tg && tg.showAlert) {
-          tg.showAlert("Лутфан, рақами трек-кодро ворид кунед.");
-        } else {
-          alert("Лутфан, рақами трек-кодро ворид кунед.");
+    // 1. Фиристодани SMS
+    function sendSMSCode() {
+        const fullName = document.getElementById('fullName').value.trim();
+        const phone = document.getElementById('phoneNumber').value.trim();
+
+        if (!fullName || phone.length < 8) {
+            alert('Лутфан ном, насаб ва рақами телефонро дуруст ворид кунед!');
+            return;
         }
-        return;
-      }
-      resDiv.style.display = 'block';
-      resDiv.innerHTML = `<strong>Трек-код:</strong> ${code}<br><strong>Ҳолат:</strong> Ҷустуҷӯ дар база...`;
+
+        // Сохтани коди тасодуфии 4-рақама
+        const randomCode = Math.floor(1000 + Math.random() * 9000).toString();
+        
+        tempUser.fullName = fullName;
+        tempUser.phone = phone;
+        tempUser.generatedCode = randomCode;
+
+        // Эзоҳ: Дар ин ҷо кодро ба сервери Backend мефиристодем (масалан OsonSMS API).
+        // Барои санҷиш ва намоиш кодро дар экран нишон медиҳем:
+        alert(`[SMS-Симулятсия]\nКоди тасдиқи шумо: ${randomCode}`);
+
+        document.getElementById('smsSentText').innerText = `Код ба рақами ${phone} фиристода шуд.`;
+        switchStep('step-sms');
     }
 
-    function calculateCost() {
-      const weight = parseFloat(document.getElementById('calcWeight').value);
-      const type = document.getElementById('calcType').value;
-      const resDiv = document.getElementById('calcResult');
+    // 2. Санҷиши коди SMS ва воридшавӣ
+    function verifySMSCode() {
+        const enteredCode = document.getElementById('smsCode').value.trim();
 
-      if (isNaN(weight) || weight <= 0) {
-        if (tg && tg.showAlert) {
-          tg.showAlert("Лутфан вазни борро дуруст дохил кунед.");
+        if (enteredCode === tempUser.generatedCode) {
+            const userData = {
+                fullName: tempUser.fullName,
+                phone: tempUser.phone,
+                isLoggedIn: true
+            };
+            localStorage.setItem('payghom_user', JSON.stringify(userData));
+            showAppView(userData.fullName);
         } else {
-          alert("Лутфан вазни борро дуруст дохил кунед.");
+            alert('Коди SMS нодуруст аст! Лутфан бори дигар санҷед.');
         }
-        return;
-      }
-
-      let rate = type === 'kamaz' ? 2.8 : 8.5;
-      let total = (weight * rate).toFixed(2);
-
-      resDiv.style.display = 'block';
-      resDiv.innerHTML = `Нархи тахминӣ: <strong>$${total}</strong> (${(total * 10.9).toFixed(0)} сомонӣ)`;
     }
-  </script>
+
+    function backToRegister() {
+        switchStep('step-register');
+    }
+
+    function showAppView(name) {
+        document.getElementById('userDisplayName').innerText = name;
+        switchStep('step-app');
+    }
+
+    function logout() {
+        localStorage.removeItem('payghom_user');
+        document.getElementById('fullName').value = '';
+        document.getElementById('phoneNumber').value = '';
+        document.getElementById('smsCode').value = '';
+        switchStep('step-register');
+    }
+
+    function switchStep(stepId) {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById(stepId).classList.add('active');
+    }
+
+    // 3. Ҳисоб кардани нархи бор
+    function calculatePrice() {
+        const weightInput = parseFloat(document.getElementById('weight').value) || 0;
+        const category = document.getElementById('category').value;
+        const trackCode = document.getElementById('trackCode').value.trim();
+
+        if (weightInput <= 0) {
+            document.getElementById('resultCard').style.display = 'none';
+            return;
+        }
+
+        let rate = 3.5; // Нархи стандартӣ
+
+        if (category === 'express') {
+            rate = 4.5;
+        } else if (category === 'heavy') {
+            rate = 3.0;
+        } else if (weightInput >= 10) {
+            rate = 3.0; // Тахфиф барои бори аз 10кг боло
+        }
+
+        const totalPrice = (weightInput * rate).toFixed(2);
+
+        // Намоиши натиҷа
+        document.getElementById('resTrack').innerText = trackCode || 'Ворид нашудааст';
+        document.getElementById('resWeight').innerText = weightInput + ' кг';
+        document.getElementById('resRate').innerText = '$' + rate + ' / кг';
+        document.getElementById('resTotal').innerText = '$' + totalPrice;
+
+        document.getElementById('resultCard').style.display = 'block';
+    }
+
+    // 4. Сабт кардани бор
+    function saveParcel() {
+        const trackCode = document.getElementById('trackCode').value.trim();
+        const weight = document.getElementById('weight').value;
+
+        if (!trackCode || !weight) {
+            alert('Лутфан трек-код ва вазни борро ворид кунед!');
+            return;
+        }
+
+        alert(`Бори шумо бо трек-коди ${trackCode} муваффақона ҳамроҳ карда шуд!`);
+        
+        // Пок кардани майдонҳо
+        document.getElementById('trackCode').value = '';
+        document.getElementById('weight').value = '';
+        document.getElementById('resultCard').style.display = 'none';
+    }
+</script>
+
 </body>
 </html>
