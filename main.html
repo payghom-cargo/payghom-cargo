@@ -125,6 +125,18 @@
         .result-box h4 { margin: 0 0 5px 0; color: #d32f2f; font-size: 14px; }
         .result-price { font-size: 20px; font-weight: bold; color: #b71c1c; }
 
+        /* Натиҷаи ҷустуҷӯи бор */
+        .order-result {
+            background: #f1f8e9;
+            border: 1px solid #c8e6c9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+        .order-result h4 { margin: 0 0 8px 0; color: #2e7d32; font-size: 15px; }
+        .order-info-row { font-size: 13px; color: #444; margin-bottom: 5px; }
+
         .profile-info-item {
             background: #fafafa;
             padding: 12px;
@@ -173,7 +185,7 @@
     </div>
 
     <div class="container">
-        <!-- Главная -->
+        <!-- 1. Главная -->
         <div id="section-home" class="page-section active-section">
             <div class="banner">
                 ✈️ PAIGHOM CARGO БА ТАМОМИ ТОҶИКИСТОН 🇹🇯
@@ -199,7 +211,33 @@
             </div>
         </div>
 
-        <!-- Калькулятор -->
+        <!-- 2. Заказы (Трек-код) -->
+        <div id="section-orders" class="page-section">
+            <div class="card-box">
+                <h3 style="color: #d32f2f; margin-top: 0; text-align: center;">📦 Ҷустуҷӯи бор</h3>
+                <div class="input-group">
+                    <label>Трек-коди худро ворид кунед (аз Pinduoduo, 1688 ва ғ.):</label>
+                    <input type="text" id="track-input" placeholder="Масалан: SF1234567890">
+                </div>
+
+                <button class="main-btn" onclick="trackOrder()">Ҷустуҷӯ кардани бор</button>
+
+                <div class="order-result" id="order-result-box">
+                    <h4>✅ Бор ёфт шуд:</h4>
+                    <div class="order-info-row"><b>Трек-код:</b> <span id="res-code"></span></div>
+                    <div class="order-info-row"><b>Ҳолат:</b> <span id="res-status" style="color: #2e7d32; font-weight: bold;"></span></div>
+                    <div class="order-info-row"><b>Вазн:</b> <span id="res-weight"></span> кг</div>
+                    <div class="order-info-row"><b>Ҷойгиршавӣ:</b> <span id="res-location"></span></div>
+                </div>
+
+                <div class="result-box" id="order-not-found" style="background: #fff5f5; border-color: #ffcdd2;">
+                    <h4 style="color: #d32f2f;">❌ Бор ёфт нашуд</h4>
+                    <p style="font-size: 13px; color: #555; margin: 5px 0 0 0;">Лутфан трек-кодро санҷида бори дигар ворид кунед ё каме дертар санҷед.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Калькулятор -->
         <div id="section-calc" class="page-section">
             <div class="card-box">
                 <h3 style="color: #d32f2f; margin-top: 0; text-align: center;">🧮 Ҳисобкунаки нарх</h3>
@@ -225,7 +263,7 @@
             </div>
         </div>
 
-        <!-- Профиль -->
+        <!-- 4. Профиль -->
         <div id="section-profile" class="page-section">
             <div class="card-box">
                 <h3 style="color: #d32f2f; margin-top: 0; text-align: center;">👤 Профили корбар</h3>
@@ -248,7 +286,7 @@
         <button class="nav-item active" id="nav-home" onclick="showSection('home')">
             <div>🏠</div>Главная
         </button>
-        <button class="nav-item" id="nav-orders" onclick="alert('Бахши фармоишҳо')">
+        <button class="nav-item" id="nav-orders" onclick="showSection('orders')">
             <div>📦</div>Заказы
         </button>
         <button class="nav-item" id="nav-calc" onclick="showSection('calc')">
@@ -296,22 +334,53 @@
 
         function showSection(sectionName) {
             document.getElementById('section-home').classList.remove('active-section');
+            document.getElementById('section-orders').classList.remove('active-section');
             document.getElementById('section-calc').classList.remove('active-section');
             document.getElementById('section-profile').classList.remove('active-section');
             
             document.getElementById('nav-home').classList.remove('active');
+            document.getElementById('nav-orders').classList.remove('active');
             document.getElementById('nav-calc').classList.remove('active');
             document.getElementById('nav-profile').classList.remove('active');
 
             if (sectionName === 'home') {
                 document.getElementById('section-home').classList.add('active-section');
                 document.getElementById('nav-home').classList.add('active');
+            } else if (sectionName === 'orders') {
+                document.getElementById('section-orders').classList.add('active-section');
+                document.getElementById('nav-orders').classList.add('active');
             } else if (sectionName === 'calc') {
                 document.getElementById('section-calc').classList.add('active-section');
                 document.getElementById('nav-calc').classList.add('active');
             } else if (sectionName === 'profile') {
                 document.getElementById('section-profile').classList.add('active-section');
                 document.getElementById('nav-profile').classList.add('active');
+            }
+        }
+
+        // Функсияи ҷустуҷӯи трек-код
+        function trackOrder() {
+            let code = document.getElementById("track-input").value.trim();
+            let resultBox = document.getElementById("order-result-box");
+            let notFoundBox = document.getElementById("order-not-found");
+
+            if (code === "") {
+                alert("Лутфан трек-кодро ворид кунед!");
+                return;
+            }
+
+            // Инҷо мо мисол гузоштем (баъдтар метавонед онро ба Google Sheets ё базаи худ пайваст кунед)
+            if (code.toUpperCase() === "TEST123" || code.length > 6) {
+                document.getElementById("res-code").innerText = code;
+                document.getElementById("res-status").innerText = "Дар анбори Иву (Хитой) қабул шуд";
+                document.getElementById("res-weight").innerText = "1.2";
+                document.getElementById("res-location").innerText = "Анбори асосӣ";
+                
+                resultBox.style.display = "block";
+                notFoundBox.style.display = "none";
+            } else {
+                resultBox.style.display = "none";
+                notFoundBox.style.display = "block";
             }
         }
 
