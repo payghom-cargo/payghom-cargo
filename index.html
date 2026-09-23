@@ -203,7 +203,6 @@
         <form onsubmit="handleRegister(event)">
             <div class="form-group">
                 <label for="fullName">Ном ва Насаб</label>
-                <!-- Масалан ба Раҳматулло Ғоибов иваз шуд -->
                 <input type="text" id="fullName" required placeholder="Масалан: Раҳматулло Ғоибов">
             </div>
             <div class="form-group">
@@ -230,7 +229,7 @@
         </form>
     </div>
 
-    <!-- ҚАДАМИ 3: Барномаи асосӣ -->
+    <!-- ҚАДАМИ 3: Барномаи асосӣ (Иловаи Трек-код) -->
     <div id="step-app" class="step">
         <div class="user-bar">
             <span>👤 <strong id="userDisplayName"></strong></span>
@@ -245,8 +244,7 @@
         <form onsubmit="handleSaveParcel(event)">
             <div class="form-group">
                 <label for="trackCode">Трек-коди Чин</label>
-                <!-- Placeholder ва намунаи трек-коди Чин -->
-                <input type="text" id="trackCode" required placeholder="Масалан: YT783456789CN">
+                <input type="text" id="trackCode" required placeholder="YT123456789CN">
             </div>
 
             <div class="form-group">
@@ -257,9 +255,8 @@
             <div class="form-group">
                 <label for="category">Намуди бор / Тариф</label>
                 <select id="category">
-                    <option value="standard">Бори оддӣ ($3.5 / кг)</option>
-                    <option value="express">Бори тезсохт ($4.5 / кг)</option>
-                    <option value="heavy">Бори вазнин (аз 10кг - $3.0 / кг)</option>
+                    <option value="kamaz">Бори оддӣ - Камаз ($2.8 / кг)</option>
+                    <option value="avia">Бори тезсохт - Авиа ($9.2 / кг)</option>
                 </select>
             </div>
 
@@ -281,6 +278,7 @@
 
     let tempUser = { fullName: '', phone: '', generatedCode: '' };
 
+    // Ҳангоми кушодани барнома мебинад, ки корбар пештар ворид шудааст ё не
     window.onload = function() {
         try {
             const savedUser = JSON.parse(localStorage.getItem('paighom_user'));
@@ -316,6 +314,7 @@
         switchStep('step-sms');
     }
 
+    // Баъди ворид кардани SMS мустақиман ба дохили барнома мегузарад
     function handleSMSVerify(e) {
         e.preventDefault();
         const enteredCode = document.getElementById('smsCode').value.trim();
@@ -358,9 +357,12 @@
             return;
         }
 
-        let rate = 3.5;
-        if (category === 'express') rate = 4.5;
-        else if (category === 'heavy' || weightInput >= 10) rate = 3.0;
+        let rate = 2.8;
+        let categoryName = "Камаз";
+        if (category === 'avia') {
+            rate = 9.2;
+            categoryName = "Авиа";
+        }
 
         const totalPrice = (weightInput * rate).toFixed(2);
 
@@ -369,6 +371,7 @@
             trackCode: trackCode,
             weight: weightInput,
             rate: rate,
+            categoryName: categoryName,
             totalPrice: totalPrice
         };
 
@@ -376,7 +379,6 @@
         parcels.push(newParcel);
         localStorage.setItem('paighom_parcels', JSON.stringify(parcels));
 
-        // Ирсоли маълумот ба Telegram Bot (дар сурати мавҷуд будани WebApp)
         if (tg && tg.sendData) {
             const savedUser = JSON.parse(localStorage.getItem('paighom_user')) || {};
             const dataToSend = {
@@ -384,6 +386,7 @@
                 phone: savedUser.phone || '',
                 trackCode: trackCode,
                 weight: weightInput,
+                type: categoryName,
                 totalPrice: totalPrice
             };
             tg.sendData(JSON.stringify(dataToSend));
@@ -401,7 +404,7 @@
         const parcels = JSON.parse(localStorage.getItem('paighom_parcels')) || [];
 
         if (parcels.length === 0) {
-            parcelsList.innerHTML = `<div class="empty-state">Ҳоло ҳеҷ боре сабт нашудааст.</div>`;
+            parcelsList.innerHTML = `<div class="empty-state">Ҳоло ҳеҷ боре сабт نشدهаст.</div>`;
             return;
         }
 
@@ -411,6 +414,7 @@
                 <div class="parcel-item">
                     <button class="delete-btn" onclick="deleteParcel(${p.id})">Озод кардан</button>
                     <div class="parcel-info">Трек: <strong>${p.trackCode}</strong></div>
+                    <div class="parcel-info">Намуди бор: <strong>${p.categoryName || 'Камаз'}</strong></div>
                     <div class="parcel-info">Вазн: <strong>${p.weight} кг</strong> ($${p.rate}/кг)</div>
                     <div class="parcel-price">Сумма: $${p.totalPrice}</div>
                 </div>
