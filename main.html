@@ -92,8 +92,8 @@
             cursor: pointer;
         }
 
-        /* Калкулятор */
-        .calc-card {
+        /* Калкулятор ва Профил карточкаҳо */
+        .card-box {
             background: white;
             padding: 20px;
             border-radius: 14px;
@@ -117,7 +117,7 @@
         }
         select:focus, input:focus { border-color: #d32f2f; background: #fff; }
         
-        .calc-btn {
+        .main-btn {
             width: 100%;
             padding: 14px;
             background-color: #d32f2f;
@@ -128,7 +128,7 @@
             font-weight: bold;
             cursor: pointer;
         }
-        .calc-btn:active { background-color: #b71c1c; }
+        .main-btn:active { background-color: #b71c1c; }
 
         .result-box {
             background: #fff5f5;
@@ -141,6 +141,17 @@
         }
         .result-box h4 { margin: 0 0 5px 0; color: #d32f2f; font-size: 14px; }
         .result-price { font-size: 20px; font-weight: bold; color: #b71c1c; }
+
+        /* Унсурҳои Профил */
+        .profile-info-item {
+            background: #fafafa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+        }
+        .profile-info-item span { font-size: 12px; color: #777; display: block; }
+        .profile-info-item strong { font-size: 15px; color: #333; }
 
         /* Менюи поёнӣ */
         .bottom-nav {
@@ -180,7 +191,7 @@
 
     <div class="container">
         
-        <!-- САҲИФАИ АСОСӢ (ГЛАВНАЯ) -->
+        <!-- 1. САҲИФАИ АСОСӢ (ГЛАВНАЯ) -->
         <div id="section-home" class="page-section active-section">
             <div class="banner">
                 ✈️ PAIGHOM CARGO БА ТАМОМИ ТОҶИКИСТОН 🇹🇯
@@ -206,9 +217,9 @@
             </div>
         </div>
 
-        <!-- САҲИФАИ КАЛКУЛЯТОР -->
+        <!-- 2. САҲИФАИ КАЛКУЛЯТОР -->
         <div id="section-calc" class="page-section">
-            <div class="calc-card">
+            <div class="card-box">
                 <h3 style="color: #d32f2f; margin-top: 0; text-align: center;">🧮 Ҳисобкунаки нарх</h3>
                 <div class="input-group">
                     <label>Намуди интиқол:</label>
@@ -223,12 +234,36 @@
                     <input type="number" id="weight-input" placeholder="Масалан: 5">
                 </div>
 
-                <button class="calc-btn" onclick="calculatePrice()">Ҳисоб кардан</button>
+                <button class="main-btn" onclick="calculatePrice()">Ҳисоб кардан</button>
 
                 <div class="result-box" id="result-box">
                     <h4>Нархи тахминии интиқол:</h4>
                     <div class="result-price" id="result-text">0 сомонӣ</div>
                 </div>
+            </div>
+        </div>
+
+        <!-- 3. САҲИФАИ ПРОФИЛ -->
+        <div id="section-profile" class="page-section">
+            <div class="card-box">
+                <h3 style="color: #d32f2f; margin-top: 0; text-align: center;">👤 Профили корбар</h3>
+                
+                <div class="profile-info-item">
+                    <span>Ному насаб:</span>
+                    <strong id="profile-name">Раҳматулло</strong>
+                </div>
+
+                <div class="profile-info-item">
+                    <span>Рақами телефон:</span>
+                    <strong id="profile-phone">+992 000 00 00 00</strong>
+                </div>
+
+                <div class="profile-info-item">
+                    <span>ID-и шахсии шумо:</span>
+                    <strong style="color: #d32f2f;">SV003-X2574</strong>
+                </div>
+
+                <button class="main-btn" style="margin-top: 10px; background-color: #555;" onclick="alert('Маълумот сабт шудааст')">Тағйир додани маълумот</button>
             </div>
         </div>
 
@@ -245,7 +280,7 @@
         <a class="nav-item" id="nav-calc" onclick="showSection('calc')">
             <div>🧮</div>Калькулятор
         </a>
-        <a class="nav-item" id="nav-profile" onclick="alert('Профили корбар')">
+        <a class="nav-item" id="nav-profile" onclick="showSection('profile')">
             <div>👤</div>Профиль
         </a>
     </div>
@@ -254,8 +289,13 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
+        // Гирифтани маълумоти сабтшуда аз LocalStorage
         let clientName = localStorage.getItem("cargo_user_name") || "Раҳматулло";
+        let clientPhone = localStorage.getItem("cargo_user_phone") || "+992 555 11 10 83";
+
         document.getElementById("display-name").innerText = clientName;
+        document.getElementById("profile-name").innerText = clientName;
+        document.getElementById("profile-phone").innerText = clientPhone;
 
         const addresses = {
             cargo: "PAIGHOM CARGO 15024564470 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库",
@@ -292,9 +332,11 @@
         function showSection(sectionName) {
             document.getElementById('section-home').classList.remove('active-section');
             document.getElementById('section-calc').classList.remove('active-section');
+            document.getElementById('section-profile').classList.remove('active-section');
             
             document.getElementById('nav-home').classList.remove('active');
             document.getElementById('nav-calc').classList.remove('active');
+            document.getElementById('nav-profile').classList.remove('active');
 
             if (sectionName === 'home') {
                 document.getElementById('section-home').classList.add('active-section');
@@ -302,6 +344,9 @@
             } else if (sectionName === 'calc') {
                 document.getElementById('section-calc').classList.add('active-section');
                 document.getElementById('nav-calc').classList.add('active');
+            } else if (sectionName === 'profile') {
+                document.getElementById('section-profile').classList.add('active-section');
+                document.getElementById('nav-profile').classList.add('active');
             }
         }
 
