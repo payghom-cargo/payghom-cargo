@@ -200,15 +200,17 @@
             <h2>Регистратсия</h2>
             <p>Барои истифодаи хизматрасонӣ маълумотро ворид кунед</p>
         </div>
-        <div class="form-group">
-            <label for="fullName">Ном ва Насаб</label>
-            <input type="text" id="fullName" placeholder="Масалан: Раҳматулло Саидов">
-        </div>
-        <div class="form-group">
-            <label for="phoneNumber">Рақами телефон</label>
-            <input type="tel" id="phoneNumber" placeholder="+992 900 00 00 00">
-        </div>
-        <button class="btn" type="button" onclick="sendSMSCode()">Гирифтани коди SMS</button>
+        <form onsubmit="handleRegister(event)">
+            <div class="form-group">
+                <label for="fullName">Ном ва Насаб</label>
+                <input type="text" id="fullName" required placeholder="Масалан: Раҳматулло Саидов">
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Рақами телефон</label>
+                <input type="tel" id="phoneNumber" required placeholder="+992 900 00 00 00">
+            </div>
+            <button class="btn" type="submit">Гирифтани коди SMS</button>
+        </form>
     </div>
 
     <!-- ҚАДАМИ 2: Тасдиқи SMS -->
@@ -217,12 +219,14 @@
             <h2>Тасдиқи SMS</h2>
             <p id="smsSentText">Коди тасдиқ ба телефони шумо фиристода шуд</p>
         </div>
-        <div class="form-group">
-            <label for="smsCode">Коди SMS (4 рақам)</label>
-            <input type="number" id="smsCode" placeholder="1234" style="text-align: center; letter-spacing: 4px; font-size: 20px;">
-        </div>
-        <button class="btn" type="button" onclick="verifySMSCode()">Ворид шудан</button>
-        <button class="btn btn-secondary" type="button" onclick="backToRegister()">Иваз кардани телефон</button>
+        <form onsubmit="handleSMSVerify(event)">
+            <div class="form-group">
+                <label for="smsCode">Коди SMS (4 рақам)</label>
+                <input type="number" id="smsCode" required placeholder="1234" style="text-align: center; letter-spacing: 4px; font-size: 20px;">
+            </div>
+            <button class="btn" type="submit">Ворид шудан</button>
+            <button class="btn btn-secondary" type="button" onclick="backToRegister()">Иваз кардани телефон</button>
+        </form>
     </div>
 
     <!-- ҚАДАМИ 3: Барномаи асосӣ -->
@@ -237,26 +241,28 @@
             <p>Трек-код ва вазни борро дохил кунед</p>
         </div>
 
-        <div class="form-group">
-            <label for="trackCode">Трек-коди Чин</label>
-            <input type="text" id="trackCode" placeholder="YT123456789CN">
-        </div>
+        <form onsubmit="handleSaveParcel(event)">
+            <div class="form-group">
+                <label for="trackCode">Трек-коди Чин</label>
+                <input type="text" id="trackCode" required placeholder="YT123456789CN">
+            </div>
 
-        <div class="form-group">
-            <label for="weight">Вазни бор (кг)</label>
-            <input type="number" id="weight" step="0.1" placeholder="2.5">
-        </div>
+            <div class="form-group">
+                <label for="weight">Вазни бор (кг)</label>
+                <input type="number" id="weight" step="0.1" required placeholder="2.5">
+            </div>
 
-        <div class="form-group">
-            <label for="category">Намуди бор / Тариф</label>
-            <select id="category">
-                <option value="standard">Бори оддӣ ($3.5 / кг)</option>
-                <option value="express">Бори тезсохт ($4.5 / кг)</option>
-                <option value="heavy">Бори вазнин (аз 10кг - $3.0 / кг)</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label for="category">Намуди бор / Тариф</label>
+                <select id="category">
+                    <option value="standard">Бори оддӣ ($3.5 / кг)</option>
+                    <option value="express">Бори тезсохт ($4.5 / кг)</option>
+                    <option value="heavy">Бори вазнин (аз 10кг - $3.0 / кг)</option>
+                </select>
+            </div>
 
-        <button class="btn" type="button" onclick="saveParcel()">Ҳамроҳ ва сабт кардан</button>
+            <button class="btn" type="submit">Ҳамроҳ ва сабт кардан</button>
+        </form>
 
         <div class="parcels-title">📦 Борҳои сабтшуда</div>
         <div id="parcelsList"></div>
@@ -267,6 +273,7 @@
 <script>
     const tg = window.Telegram?.WebApp;
     if (tg) {
+        tg.ready();
         tg.expand();
     }
 
@@ -279,7 +286,7 @@
                 showAppView(savedUser.fullName);
             }
         } catch (e) {
-            console.error("Storage error", e);
+            console.error(e);
         }
     };
 
@@ -288,12 +295,10 @@
         document.getElementById(stepId).classList.add('active');
     }
 
-    function sendSMSCode() {
-        const fullNameInput = document.getElementById('fullName');
-        const phoneInput = document.getElementById('phoneNumber');
-
-        const fullName = fullNameInput ? fullNameInput.value.trim() : '';
-        const phone = phoneInput ? phoneInput.value.trim() : '';
+    function handleRegister(e) {
+        e.preventDefault();
+        const fullName = document.getElementById('fullName').value.trim();
+        const phone = document.getElementById('phoneNumber').value.trim();
 
         if (!fullName || phone.length < 7) {
             showAlert('Лутфан ном, насаб ва рақами телефонро дуруст ворид кунед!');
@@ -309,7 +314,8 @@
         switchStep('step-sms');
     }
 
-    function verifySMSCode() {
+    function handleSMSVerify(e) {
+        e.preventDefault();
         const enteredCode = document.getElementById('smsCode').value.trim();
 
         if (enteredCode === tempUser.generatedCode || enteredCode === '1234') {
@@ -339,7 +345,8 @@
         switchStep('step-register');
     }
 
-    function saveParcel() {
+    function handleSaveParcel(e) {
+        e.preventDefault();
         const trackCode = document.getElementById('trackCode').value.trim();
         const weightInput = parseFloat(document.getElementById('weight').value);
         const category = document.getElementById('category').value;
