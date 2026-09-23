@@ -1,16 +1,17 @@
-## Hi there 👋
+# 📦 Payghom Cargo (Пайғом карго)
 
-<!--
-**payghom-cargo/payghom-cargo** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Хуш омадед ба саҳифаи расмии **Payghom Cargo**! Маҷмӯаи хизматрасониҳои боэътимод ва шаффофи боркашонӣ аз Чин ба Тоҷикистон (ш. Бохтар).
 
-Here are some ideas to get you started:
+---
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+### 🛠 Хизматрасониҳои мо:
+* 🚚 **Интиқоли зуд ва бехатари борҳо** аз Чин ба Бохтар.
+* 🤖 **Телеграм-бот** барои пайгирии ҳолати посылкаҳо ва гирифтани суроғаи омбор.
+* 📱 **Mini App / Веб-интерфейс** барои осонии истифодабарии мизоҷон.
+
+---
+
+### 📞 Бо мо дар тамос шавед:
+* **Телеграм-бот:** [@paighom_cargo_bot](https://t.me/paighom_cargo_bot)
+* **Макон:** шаҳри Бохтар, Тоҷикистон
+* 
