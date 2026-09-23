@@ -2,46 +2,52 @@
 <html lang="tg">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Воридшавӣ - Payghom Cargo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Payghom Cargo</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #fff5f5;
             color: #333;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
         .card {
             background: white;
-            padding: 25px;
-            border-radius: 12px;
+            padding: 20px;
+            border-radius: 14px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 350px;
+            max-width: 340px;
             text-align: center;
         }
-        h2 { color: #d32f2f; margin-top: 0; margin-bottom: 10px; }
-        p { font-size: 14px; color: #666; margin-bottom: 20px; }
+        h2 { color: #d32f2f; margin-top: 0; margin-bottom: 8px; font-size: 22px; }
+        p { font-size: 13px; color: #666; margin-bottom: 20px; }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label { font-size: 12px; color: #444; font-weight: bold; display: block; margin-bottom: 5px; }
         input {
             width: 100%;
             padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             box-sizing: border-box;
             outline: none;
+            background: #fafafa;
         }
-        input:focus { border-color: #d32f2f; }
+        input:focus { border-color: #d32f2f; background: #fff; }
         .btn {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background-color: #d32f2f;
             color: white;
             border: none;
@@ -49,74 +55,85 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 5px;
         }
-        .btn:hover { background-color: #b71c1c; }
+        .btn:active { background-color: #b71c1c; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <!-- Қадами 1: Ворид кардани Ному насаб ва Рақам -->
+        <!-- Қадами 1 -->
         <div id="step-register">
             <h2>Пайғом Карго</h2>
-            <p>Лутфан ному насаб ва рақаматонро ворид кунед</p>
-            <input type="text" id="name-input" placeholder="Ному насаб (масалан: Раҳматулло)">
-            <input type="tel" id="phone-input" placeholder="+992 000 00 00 00">
-            <button class="btn" type="button" onclick="sendCode()">Фиристодани коди тасдиқ</button>
+            <p>Маълумоти худро барои ворид шудан ворид кунед</p>
+            
+            <div class="input-group">
+                <label>Ному насаб:</label>
+                <input type="text" id="name-input" placeholder="Ғоибов Раҳматулло">
+            </div>
+            
+            <div class="input-group">
+                <label>Рақами телефон:</label>
+                <input type="tel" id="phone-input" placeholder="+992 000 00 00 00">
+            </div>
+
+            <button class="btn" type="button" id="send-btn">Фиристодани коди тасдиқ</button>
         </div>
 
-        <!-- Қадами 2: Ворид кардани Код -->
+        <!-- Қадами 2 -->
         <div id="step-code" class="hidden">
             <h2>Тасдиқи рақам</h2>
             <p>Коди фиристодашударо ворид кунед</p>
-            <input type="text" id="code-input" placeholder="Коди 4-рақама (1234)" maxlength="4">
-            <button class="btn" type="button" onclick="verifyCode()">Тасдиқ ва ворид шудан</button>
+            
+            <div class="input-group">
+                <label>Коди 4-рақама:</label>
+                <input type="text" id="code-input" placeholder="1234" maxlength="4">
+            </div>
+
+            <button class="btn" type="button" id="verify-btn">Ворид шудан</button>
         </div>
     </div>
 
     <script>
+        // Фаъолсозии Телеграм WebApp
         let tg = window.Telegram.WebApp;
         tg.expand();
+        tg.ready();
 
-        let userName = "";
-        let userPhone = "";
+        // Пайваст кардани тугмаҳо тавассути JavaScript (барои пешгирии хатогӣ дар телефонҳо)
+        document.getElementById('send-btn').addEventListener('click', function() {
+            let nameInput = document.getElementById('name-input').value.trim();
+            let phoneInput = document.getElementById('phone-input').value.trim();
 
-        function sendCode() {
-            userName = document.getElementById('name-input').value.trim();
-            userPhone = document.getElementById('phone-input').value.trim();
-
-            if (userName === "") {
-                alert("Лутфан ному насабатонро ворид кунед!");
+            if (nameInput === "") {
+                alert("Лутфан ному насабатонро нависед!");
                 return;
             }
 
-            if (userPhone.length < 9) {
+            if (phoneInput.length < 7) {
                 alert("Лутфан рақами телефонатонро дуруст ворид кунед!");
                 return;
             }
 
-            alert("Коди тасдиқ фиристода шуд! (Коди тестӣ: 1234)");
+            alert("Коди тасдиқ фиристода шуд! (Тест: 1234)");
 
-            // Гузариш ба экрани тасдиқи код
+            // Гузариш ба экрани дуюм
             document.getElementById('step-register').classList.add('hidden');
             document.getElementById('step-code').classList.remove('hidden');
-        }
+        });
 
-        function verifyCode() {
-            let code = document.getElementById('code-input').value.trim();
+        document.getElementById('verify-btn').addEventListener('click', function() {
+            let codeInput = document.getElementById('code-input').value.trim();
 
-            if (code === "1234") {
-                alert("Хуш омадед, " + userName + "!");
-                localStorage.setItem("cargo_user_name", userName);
-                localStorage.setItem("cargo_user_phone", userPhone);
-                
-                // Пас аз ин метавонед ба саҳифаи асосии борҳо гузаред
-                // window.location.href = "main.html";
+            if (codeInput === "1234") {
+                alert("Ташаккур, ворид шудан бомуваффақият гузашт!");
+                // Инҷо метавонед ба саҳифаи асосии борҳо гузаред
             } else {
-                alert("Коди воридшуда хато аст!");
+                alert("Код нодуруст аст! Лутфан 1234-ро санҷед.");
             }
-        }
+        });
     </script>
 </body>
 </html>
