@@ -13,33 +13,33 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
         }
         .card {
             background: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 350px;
             text-align: center;
         }
-        h2 { color: #d32f2f; margin-bottom: 10px; }
+        h2 { color: #d32f2f; margin-top: 0; margin-bottom: 10px; }
         p { font-size: 14px; color: #666; margin-bottom: 20px; }
         input {
-            width: 90%;
+            width: 100%;
             padding: 12px;
             margin-bottom: 15px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
+            box-sizing: border-box;
             outline: none;
         }
         input:focus { border-color: #d32f2f; }
-        button {
+        .btn {
             width: 100%;
             padding: 12px;
             background-color: #d32f2f;
@@ -50,31 +50,73 @@
             font-weight: bold;
             cursor: pointer;
         }
-        button:hover { background-color: #b71c1c; }
-        .hidden { display: none; }
+        .btn:hover { background-color: #b71c1c; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <!-- Қадами 1: Ворид кардани Ному насаб ва Рақами телефон -->
+        <!-- Қадами 1: Ворид кардани Ному насаб ва Рақам -->
         <div id="step-register">
             <h2>Пайғом Карго</h2>
-            <p>Лутфан ному насаб ва рақами телефонатонро ворид кунед</p>
-            <input type="text" id="name-input" placeholder="Намуна: Ғоибов Раҳматулло">
+            <p>Лутфан ному насаб ва рақаматонро ворид кунед</p>
+            <input type="text" id="name-input" placeholder="Ному насаб (масалан: Раҳматулло)">
             <input type="tel" id="phone-input" placeholder="+992 000 00 00 00">
-            <button onclick="sendCode()">Фиристодани коди тасдиқ</button>
+            <button class="btn" type="button" onclick="sendCode()">Фиристодани коди тасдиқ</button>
         </div>
 
-        <!-- Қадами 2: Ворид кардани коди тасдиқ (SMS) -->
+        <!-- Қадами 2: Ворид кардани Код -->
         <div id="step-code" class="hidden">
             <h2>Тасдиқи рақам</h2>
             <p>Коди фиристодашударо ворид кунед</p>
-            <input type="text" id="code-input" placeholder="Коди 4-рақама (масалан: 1234)" maxlength="4">
-            <button onclick="verifyCode()">Тасдиқ ва ворид шудан</button>
+            <input type="text" id="code-input" placeholder="Коди 4-рақама (1234)" maxlength="4">
+            <button class="btn" type="button" onclick="verifyCode()">Тасдиқ ва ворид шудан</button>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let userName = "";
+        let userPhone = "";
+
+        function sendCode() {
+            userName = document.getElementById('name-input').value.trim();
+            userPhone = document.getElementById('phone-input').value.trim();
+
+            if (userName === "") {
+                alert("Лутфан ному насабатонро ворид кунед!");
+                return;
+            }
+
+            if (userPhone.length < 9) {
+                alert("Лутфан рақами телефонатонро дуруст ворид кунед!");
+                return;
+            }
+
+            alert("Коди тасдиқ фиристода шуд! (Коди тестӣ: 1234)");
+
+            // Гузариш ба экрани тасдиқи код
+            document.getElementById('step-register').classList.add('hidden');
+            document.getElementById('step-code').classList.remove('hidden');
+        }
+
+        function verifyCode() {
+            let code = document.getElementById('code-input').value.trim();
+
+            if (code === "1234") {
+                alert("Хуш омадед, " + userName + "!");
+                localStorage.setItem("cargo_user_name", userName);
+                localStorage.setItem("cargo_user_phone", userPhone);
+                
+                // Пас аз ин метавонед ба саҳифаи асосии борҳо гузаред
+                // window.location.href = "main.html";
+            } else {
+                alert("Коди воридшуда хато аст!");
+            }
+        }
+    </script>
 </body>
 </html>
