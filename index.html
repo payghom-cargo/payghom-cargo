@@ -15,7 +15,7 @@
       --text: #1f2937;
       --subtext: #6b7280;
       --border: #e5e7eb;
-      --accent: #22c55e;
+      --avia: #d97706;
     }
 
     * {
@@ -33,7 +33,6 @@
       padding-bottom: 80px;
     }
 
-    /* Асосӣ */
     .app-header {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
@@ -54,7 +53,6 @@
       margin-top: 2px;
     }
 
-    /* Картҳо */
     .card {
       background: var(--card-bg);
       border-radius: 14px;
@@ -78,7 +76,6 @@
       color: var(--primary);
     }
 
-    /* Ҷустуҷӯи Трек */
     .search-box {
       display: flex;
       gap: 8px;
@@ -103,16 +100,30 @@
       cursor: pointer;
     }
 
-    /* Суроғаи Склад */
+    .result-box {
+      margin-top: 10px;
+      padding: 10px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #166534;
+      display: none;
+    }
+
     .address-details {
       background: #f8fafc;
-      border-left: 3px solid var(--primary);
+      border-left: 4px solid var(--primary);
       padding: 10px;
       border-radius: 6px;
       font-size: 13px;
       line-height: 1.6;
       margin-bottom: 10px;
       color: #334155;
+    }
+
+    .address-details.avia {
+      border-left-color: var(--avia);
     }
 
     .btn-action {
@@ -131,7 +142,10 @@
       cursor: pointer;
     }
 
-    /* Навигатсия дар поён */
+    .btn-action.avia-btn {
+      background: var(--avia);
+    }
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -178,24 +192,41 @@
       <i class="fa-solid fa-magnifying-glass"></i> Пайгирии посылка (Трек-код)
     </div>
     <div class="search-box">
-      <input type="text" id="trackInput" placeholder="Ракми трекро дохил кунед...">
+      <input type="text" id="trackInput" placeholder="Рақами трекро дохил кунед...">
       <button onclick="searchTrack()">Ҷустуҷӯ</button>
     </div>
+    <div id="searchResult" class="result-box"></div>
   </div>
 
-  <!-- Суроғаи Склад -->
+  <!-- СУРОҒАИ КамАЗ (АВТО) -->
   <div class="card">
     <div class="card-header">
-      <i class="fa-solid fa-warehouse"></i> Суроғаи склади Чин
+      <i class="fa-solid fa-truck-front"></i> Суроғаи склади КамАЗ (АВТО)
     </div>
-    <div class="address-details" id="warehouseAddr">
-      <b>收货人:</b> Payghom Cargo<br>
-      <b>手机号码:</b> 13800138000<br>
-      <b>广东省:</b> 广州市荔湾区<br>
-      <b>详细地址:</b> 广东省广州市荔湾区仓库123号
+    <div class="address-details" id="warehouseAddrKamaz">
+<b>收货人:</b> PAIGHOM CARGO Bokhtar-<br>
+<b>手机号码:</b> 15024564470<br>
+<b>省市区:</b> 浙江省 金华市 义乌市<br>
+<b>详细地址:</b> 后宅街道洪华小区98栋3单元 前门一楼仓库 Bokhtar-
     </div>
-    <button class="btn-action" onclick="copyAddr()">
-      <i class="fa-regular fa-copy"></i> Нусхабардории суроға
+    <button class="btn-action" onclick="copyAddr('warehouseAddrKamaz')">
+      <i class="fa-regular fa-copy"></i> Нусхабардории суроғаи КамАЗ
+    </button>
+  </div>
+
+  <!-- СУРОҒАИ АВИА -->
+  <div class="card">
+    <div class="card-header">
+      <i class="fa-solid fa-plane" style="color: var(--avia);"></i> Суроғаи склади АВИА
+    </div>
+    <div class="address-details avia" id="warehouseAddrAvia">
+<b>收货人:</b> PAIGHOM AVIA Bokhtar-<br>
+<b>手机号码:</b> 17591674707<br>
+<b>省市区:</b> 新疆维吾尔自治区 乌鲁木齐市 天山区<br>
+<b>详细地址:</b> 延安路边疆宾馆公寓楼5806号 Bokhtar-
+    </div>
+    <button class="btn-action avia-btn" onclick="copyAddr('warehouseAddrAvia')">
+      <i class="fa-regular fa-copy"></i> Нусхабардории суроғаи Авиа
     </button>
   </div>
 
@@ -225,24 +256,30 @@
       tg.expand();
     }
 
-    function copyAddr() {
-      const text = document.getElementById('warehouseAddr').innerText;
+    function copyAddr(elementId) {
+      const text = document.getElementById(elementId).innerText;
       navigator.clipboard.writeText(text).then(() => {
         if (tg && tg.showAlert) {
-          tg.showAlert("Суроға нусхабардорӣ шуд!");
+          tg.showAlert("Суроға муваффақона нусхабардорӣ шуд!");
         } else {
-          alert("Суроға нусхабардорӣ шуд!");
+          alert("Суроға муваффақона нусхабардорӣ шуд!");
         }
       });
     }
 
     function searchTrack() {
-      const code = document.getElementById('trackInput').value;
+      const code = document.getElementById('trackInput').value.trim();
+      const resDiv = document.getElementById('searchResult');
       if (!code) {
-        alert("Лутфан, рақами трек-кодро ворид кунед.");
+        if (tg && tg.showAlert) {
+          tg.showAlert("Лутфан, рақами трек-кодро ворид кунед.");
+        } else {
+          alert("Лутфан, рақами трек-кодро ворид кунед.");
+        }
         return;
       }
-      alert("Ҷустуҷӯи рақами: " + code);
+      resDiv.style.display = 'block';
+      resDiv.innerHTML = `<strong>Трек-код:</strong> ${code}<br><strong>Ҳолат:</strong> Ҷустуҷӯ дар база...`;
     }
   </script>
 </body>
