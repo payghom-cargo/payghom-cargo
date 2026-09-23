@@ -29,7 +29,6 @@
         
         .container { padding: 15px; }
 
-        /* Баннери таблиғотӣ */
         .banner {
             background: #d32f2f;
             color: white;
@@ -42,7 +41,6 @@
             font-size: 14px;
         }
 
-        /* Интиқоли нақлиёт (Авто, Авиа) */
         .transport-types {
             display: flex;
             gap: 10px;
@@ -64,7 +62,6 @@
         }
         .transport-card h4 { margin: 5px 0 0 0; font-size: 13px; color: #d32f2f; }
 
-        /* Қуттии суроғаҳо */
         .address-box {
             background: white;
             padding: 15px;
@@ -88,7 +85,6 @@
             cursor: pointer;
         }
 
-        /* Менюи поёнӣ */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -115,7 +111,6 @@
 </head>
 <body>
 
-    <!-- Сарлавҳа -->
     <div class="header">
         <div class="user-info">
             <h3 id="display-name">Раҳматулло</h3>
@@ -125,12 +120,10 @@
     </div>
 
     <div class="container">
-        <!-- Баннер -->
         <div class="banner">
             ✈️ PAIGHOM CARGO БА ТАМОМИ ТОҶИКИСТОН 🇹🇯
         </div>
 
-        <!-- ТАРИФҲО (Авто / Авиа) -->
         <div class="transport-types">
             <div class="transport-card active" id="card-cargo" onclick="switchAddress('cargo')">
                 <div style="font-size: 20px;">🚚</div>
@@ -142,7 +135,6 @@
             </div>
         </div>
 
-        <!-- СУРОҒАИ АНБОР -->
         <div class="address-box">
             <h4 id="address-title">📍 Суроғаи анбор (Камаз / Авто)</h4>
             <div class="address-text" id="address-content">
@@ -154,16 +146,16 @@
 
     <!-- МЕНЮИ ПОЁНӢ -->
     <div class="bottom-nav">
-        <a class="nav-item active">
+        <a class="nav-item active" href="main.html">
             <div>🏠</div>Главная
         </a>
-        <a class="nav-item" onclick="alert('Бахши фармоишҳо')">
+        <a class="nav-item" onclick="alert('Бахши фармоишҳо дар ҳоли таҳия аст')">
             <div>📦</div>Заказы
         </a>
-        <a class="nav-item" onclick="alert('Калкулятор')">
+        <a class="nav-item" href="calculator.html">
             <div>🧮</div>Калькулятор
         </a>
-        <a class="nav-item" onclick="alert('Профил')">
+        <a class="nav-item" onclick="alert('Профили корбар')">
             <div>👤</div>Профиль
         </a>
     </div>
@@ -175,7 +167,6 @@
         let clientName = localStorage.getItem("cargo_user_name") || "Раҳматулло";
         document.getElementById("display-name").innerText = clientName;
 
-        // Суроғаҳои аслӣ бидуни ягон ID ё ном дар охир
         const addresses = {
             cargo: "PAIGHOM CARGO 15024564470 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库",
             avia: "PAIGHOM AVIA +8617591674707 新疆乌鲁木齐天山区延安路边疆宾馆公寓楼5806号"
