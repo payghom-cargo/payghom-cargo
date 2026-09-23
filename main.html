@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Payghom Cargo - Саҳифаи асосӣ</title>
+    <title>Payghom Cargo</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -29,6 +29,11 @@
         
         .container { padding: 15px; }
 
+        /* Бахшҳо (Саҳифаҳо) */
+        .page-section { display: none; }
+        .page-section.active-section { display: block; }
+
+        /* Баннер */
         .banner {
             background: #d32f2f;
             color: white;
@@ -41,6 +46,7 @@
             font-size: 14px;
         }
 
+        /* Интиқоли нақлиёт */
         .transport-types {
             display: flex;
             gap: 10px;
@@ -62,6 +68,7 @@
         }
         .transport-card h4 { margin: 5px 0 0 0; font-size: 13px; color: #d32f2f; }
 
+        /* Суроғаҳо */
         .address-box {
             background: white;
             padding: 15px;
@@ -85,6 +92,57 @@
             cursor: pointer;
         }
 
+        /* Калкулятор */
+        .calc-card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label { font-size: 13px; color: #444; font-weight: bold; display: block; margin-bottom: 5px; }
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+            outline: none;
+            background: #fafafa;
+        }
+        select:focus, input:focus { border-color: #d32f2f; background: #fff; }
+        
+        .calc-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .calc-btn:active { background-color: #b71c1c; }
+
+        .result-box {
+            background: #fff5f5;
+            border: 1px solid #ffcdd2;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+        .result-box h4 { margin: 0 0 5px 0; color: #d32f2f; font-size: 14px; }
+        .result-price { font-size: 20px; font-weight: bold; color: #b71c1c; }
+
+        /* Менюи поёнӣ */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -111,6 +169,7 @@
 </head>
 <body>
 
+    <!-- Сарлавҳа -->
     <div class="header">
         <div class="user-info">
             <h3 id="display-name">Раҳматулло</h3>
@@ -120,42 +179,73 @@
     </div>
 
     <div class="container">
-        <div class="banner">
-            ✈️ PAIGHOM CARGO БА ТАМОМИ ТОҶИКИСТОН 🇹🇯
+        
+        <!-- САҲИФАИ АСОСӢ (ГЛАВНАЯ) -->
+        <div id="section-home" class="page-section active-section">
+            <div class="banner">
+                ✈️ PAIGHOM CARGO БА ТАМОМИ ТОҶИКИСТОН 🇹🇯
+            </div>
+
+            <div class="transport-types">
+                <div class="transport-card active" id="card-cargo" onclick="switchAddress('cargo')">
+                    <div style="font-size: 20px;">🚚</div>
+                    <h4>Камаз (Авто)</h4>
+                </div>
+                <div class="transport-card" id="card-avia" onclick="switchAddress('avia')">
+                    <div style="font-size: 20px;">✈️</div>
+                    <h4>Авиа</h4>
+                </div>
+            </div>
+
+            <div class="address-box">
+                <h4 id="address-title">📍 Суроғаи анбор (Камаз / Авто)</h4>
+                <div class="address-text" id="address-content">
+                    PAIGHOM CARGO 15024564470 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库
+                </div>
+                <button class="copy-btn" onclick="copyAddress()">📋 Нусхабардории суроға</button>
+            </div>
         </div>
 
-        <div class="transport-types">
-            <div class="transport-card active" id="card-cargo" onclick="switchAddress('cargo')">
-                <div style="font-size: 20px;">🚚</div>
-                <h4>Камаз (Авто)</h4>
-            </div>
-            <div class="transport-card" id="card-avia" onclick="switchAddress('avia')">
-                <div style="font-size: 20px;">✈️</div>
-                <h4>Авиа</h4>
+        <!-- САҲИФАИ КАЛКУЛЯТОР -->
+        <div id="section-calc" class="page-section">
+            <div class="calc-card">
+                <h3 style="color: #d32f2f; margin-top: 0; text-align: center;">🧮 Ҳисобкунаки нарх</h3>
+                <div class="input-group">
+                    <label>Намуди интиқол:</label>
+                    <select id="transport-type">
+                        <option value="cargo">Камаз (Авто) - 25 сомонӣ/кг</option>
+                        <option value="avia">Авиа - 85 сомонӣ/кг</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Вазни бор (кг):</label>
+                    <input type="number" id="weight-input" placeholder="Масалан: 5">
+                </div>
+
+                <button class="calc-btn" onclick="calculatePrice()">Ҳисоб кардан</button>
+
+                <div class="result-box" id="result-box">
+                    <h4>Нархи тахминии интиқол:</h4>
+                    <div class="result-price" id="result-text">0 сомонӣ</div>
+                </div>
             </div>
         </div>
 
-        <div class="address-box">
-            <h4 id="address-title">📍 Суроғаи анбор (Камаз / Авто)</h4>
-            <div class="address-text" id="address-content">
-                PAIGHOM CARGO 15024564470 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库
-            </div>
-            <button class="copy-btn" onclick="copyAddress()">📋 Нусхабардории суроға</button>
-        </div>
     </div>
 
     <!-- МЕНЮИ ПОЁНӢ -->
     <div class="bottom-nav">
-        <a class="nav-item active" href="main.html">
+        <a class="nav-item active" id="nav-home" onclick="showSection('home')">
             <div>🏠</div>Главная
         </a>
-        <a class="nav-item" onclick="alert('Бахши фармоишҳо дар ҳоли таҳия аст')">
+        <a class="nav-item" id="nav-orders" onclick="alert('Бахши фармоишҳо дар ҳоли таҳия аст')">
             <div>📦</div>Заказы
         </a>
-        <a class="nav-item" href="calculator.html">
+        <a class="nav-item" id="nav-calc" onclick="showSection('calc')">
             <div>🧮</div>Калькулятор
         </a>
-        <a class="nav-item" onclick="alert('Профили корбар')">
+        <a class="nav-item" id="nav-profile" onclick="alert('Профили корбар')">
             <div>👤</div>Профиль
         </a>
     </div>
@@ -196,6 +286,42 @@
             navigator.clipboard.writeText(text).then(() => {
                 alert("Суроға бомуваффақият нусхабардорӣ шуд!");
             });
+        }
+
+        // Идоракунии гузариш байни қисмҳо дар як саҳифа
+        function showSection(sectionName) {
+            document.getElementById('section-home').classList.remove('active-section');
+            document.getElementById('section-calc').classList.remove('active-section');
+            
+            document.getElementById('nav-home').classList.remove('active');
+            document.getElementById('nav-calc').classList.remove('active');
+
+            if (sectionName === 'home') {
+                document.getElementById('section-home').classList.add('active-section');
+                document.getElementById('nav-home').classList.add('active');
+            } else if (sectionName === 'calc') {
+                document.getElementById('section-calc').classList.add('active-section');
+                document.getElementById('nav-calc').classList.add('active');
+            }
+        }
+
+        function calculatePrice() {
+            let type = document.getElementById("transport-type").value;
+            let weight = parseFloat(document.getElementById("weight-input").value);
+
+            if (isNaN(weight) || weight <= 0) {
+                alert("Лутфан вазни дурусти борро ворид кунед!");
+                return;
+            }
+
+            let rate = (type === 'cargo') ? 25 : 85;
+            let total = weight * rate;
+
+            let resultBox = document.getElementById("result-box");
+            let resultText = document.getElementById("result-text");
+
+            resultText.innerText = total + " сомонӣ";
+            resultBox.style.display = "block";
         }
     </script>
 </body>
