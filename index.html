@@ -16,7 +16,6 @@
       --subtext: #6b7280;
       --border: #e5e7eb;
       --avia: #d97706;
-      --success: #10b981;
     }
 
     * {
@@ -54,7 +53,6 @@
       margin-top: 2px;
     }
 
-    /* Блокҳои саҳифаҳо */
     .tab-content {
       display: none;
     }
@@ -158,7 +156,6 @@
       background: var(--avia);
     }
 
-    /* Навигатсияи поёнӣ */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -195,7 +192,6 @@
       font-size: 18px;
     }
 
-    /* Стилҳои Ҳисобкунак */
     .form-group {
       margin-bottom: 10px;
     }
@@ -218,7 +214,6 @@
       display: none;
     }
 
-    /* Профил */
     .user-info {
       display: flex;
       align-items: center;
@@ -247,7 +242,6 @@
 
   <!-- 1. САҲИФАИ АСОСӢ -->
   <div id="tab-home" class="tab-content active">
-    <!-- Ҷустуҷӯ -->
     <div class="card">
       <div class="card-header">
         <i class="fa-solid fa-magnifying-glass"></i> Пайгирии посылка (Трек-код)
@@ -259,7 +253,6 @@
       <div id="searchResult" class="result-box"></div>
     </div>
 
-    <!-- СУРОҒАИ КамАЗ -->
     <div class="card">
       <div class="card-header">
         <i class="fa-solid fa-truck-front"></i> Суроғаи склади КамАЗ (АВТО)
@@ -275,7 +268,6 @@
       </button>
     </div>
 
-    <!-- СУРОҒАИ АВИА -->
     <div class="card">
       <div class="card-header">
         <i class="fa-solid fa-plane" style="color: var(--avia);"></i> Суроғаи склади АВИА
@@ -304,7 +296,7 @@
     </div>
   </div>
 
-  <!-- 3. САҲИФАИ ҲИСОБКУНАК (КАЛЬКУЛЯТОР) -->
+  <!-- 3. САҲИФАИ ҲИСОБКУНАК -->
   <div id="tab-calc" class="tab-content">
     <div class="card">
       <div class="card-header">
@@ -376,29 +368,23 @@
     const tg = window.Telegram ? window.Telegram.WebApp : null;
     if (tg) {
       tg.expand();
-      // Агар маълумоти корбар бошад, гузоштан
       if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         document.getElementById('userName').innerText = tg.initDataUnsafe.user.first_name || 'Мизоҷ';
         document.getElementById('userId').innerText = 'ID: ' + (tg.initDataUnsafe.user.id || '----');
       }
     }
 
-    // ИВАЗ КАРДАНИ САҲИФАҲО
     function switchTab(tabName, btnElement) {
-      // Пӯшондани ҳамаи саҳифаҳо
       const tabs = document.querySelectorAll('.tab-content');
       tabs.forEach(tab => tab.classList.remove('active'));
 
-      // Тоза кардани фаъолияти тугмаҳо
       const navBtns = document.querySelectorAll('.nav-btn');
       navBtns.forEach(btn => btn.classList.remove('active'));
 
-      // Нишон додани саҳифаи интихобшуда
       document.getElementById('tab-' + tabName).classList.add('active');
       btnElement.classList.add('active');
     }
 
-    // НУСХАБАРДОРИИ СУРОҒА
     function copyAddr(elementId) {
       const text = document.getElementById(elementId).innerText;
       navigator.clipboard.writeText(text).then(() => {
@@ -410,7 +396,6 @@
       });
     }
 
-    // ҶУСТУҶӮИ ТРЕК
     function searchTrack() {
       const code = document.getElementById('trackInput').value.trim();
       const resDiv = document.getElementById('searchResult');
@@ -426,7 +411,6 @@
       resDiv.innerHTML = `<strong>Трек-код:</strong> ${code}<br><strong>Ҳолат:</strong> Ҷустуҷӯ дар база...`;
     }
 
-    // ҲИСОБИ НАХРИ ИНТИҚОЛ
     function calculateCost() {
       const weight = parseFloat(document.getElementById('calcWeight').value);
       const type = document.getElementById('calcType').value;
@@ -441,7 +425,7 @@
         return;
       }
 
-      let rate = type === 'kamaz' ? 2.8 : 8.5; // Нархи аслии шумо
+      let rate = type === 'kamaz' ? 2.8 : 8.5;
       let total = (weight * rate).toFixed(2);
 
       resDiv.style.display = 'block';
