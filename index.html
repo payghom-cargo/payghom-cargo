@@ -92,7 +92,6 @@
             font-size: 13px;
             font-weight: bold;
             color: #555;
-            transition: all 0.2s;
         }
         .tab-btn.active {
             border-color: #d32f2f;
@@ -117,9 +116,6 @@
             font-size: 15px;
             font-weight: bold;
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
         .address-text {
             background: #fcfcfc;
@@ -143,10 +139,6 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 14px;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .copy-btn:active {
-            background: #b71c1c;
         }
 
         /* Майдонҳои Форма */
@@ -180,7 +172,6 @@
             cursor: pointer;
             margin-top: 5px;
             font-size: 14px;
-            -webkit-tap-highlight-color: transparent;
         }
         .save-btn:active {
             background: #b71c1c;
@@ -341,7 +332,8 @@
                     <input type="text" id="regPhone" placeholder="+992 000 00 00 00">
                 </div>
 
-                <button class="save-btn" id="sendCodeBtn">Фиристодани коди тасдиқ</button>
+                <!-- Тугма бо усули мустақими onclick -->
+                <button type="button" class="save-btn" onclick="triggerSendCode()">Фиристодани коди тасдиқ</button>
 
                 <!-- Қисми ворид кардани СМС код -->
                 <div id="smsSection" style="display: none; margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 15px;">
@@ -349,7 +341,7 @@
                         <label id="smsHint" style="color: #d32f2f; font-weight: bold;"></label>
                         <input type="text" id="regSmsCode" placeholder="Коди 4-рақамаро ворид кунед">
                     </div>
-                    <button class="save-btn" id="verifyCodeBtn">Тасдиқ кардан ва Вуруд</button>
+                    <button type="button" class="save-btn" onclick="triggerVerifyCode()">Тасдиқ кардан ва Вуруд</button>
                 </div>
             </div>
         </div>
@@ -361,10 +353,10 @@
             </div>
 
             <div class="warehouse-tabs">
-                <button class="tab-btn active" id="tabKamaz">
+                <button class="tab-btn active" id="tabKamaz" onclick="setActiveWarehouse('kamaz', this)">
                     <div>🚛</div> КамАЗ (Авто)
                 </button>
-                <button class="tab-btn" id="tabAvia">
+                <button class="tab-btn" id="tabAvia" onclick="setActiveWarehouse('avia', this)">
                     <div>✈️</div> Авиа
                 </button>
             </div>
@@ -372,7 +364,7 @@
             <div class="address-card">
                 <div class="address-title" id="addressTitle">📍 Суроғаи анбор (КамАЗ / Авто)</div>
                 <div class="address-text" id="addressText">Загрузка...</div>
-                <button class="copy-btn" id="copyAddressBtn">📋 Нусхабардории суроға</button>
+                <button class="copy-btn" onclick="copyAddress()">📋 Нусхабардории суроға</button>
             </div>
         </div>
 
@@ -402,7 +394,7 @@
                     <input type="number" id="calcWeight" placeholder="Масалан: 5">
                 </div>
 
-                <button class="save-btn" id="calcBtn">Ҳисоб кардан</button>
+                <button type="button" class="save-btn" onclick="calculatePrice()">Ҳисоб кардан</button>
 
                 <div id="calcResult" class="calc-result" style="display:none;"></div>
             </div>
@@ -428,9 +420,9 @@
                     <input type="text" id="userIdInput" readonly style="color: #d32f2f; font-weight: bold;">
                 </div>
 
-                <button class="save-btn" id="updateProfileBtn">Тағйир додан</button>
+                <button type="button" class="save-btn" onclick="updateProfileName()">Тағйир додан</button>
 
-                <div class="settings-item-btn" id="openSettingsBtn">
+                <div class="settings-item-btn" onclick="openSettings()">
                     <span>⚙️ Танзимот (Настройки)</span>
                     <span>➔</span>
                 </div>
@@ -458,22 +450,22 @@
                 <p style="margin-top: 4px;"><a href="https://t.me/Rom_4ik2002" target="_blank" class="support-link">@Rom_4ik2002</a></p>
             </div>
 
-            <button class="close-modal-btn" id="closeModalBtn">Пӯшидан</button>
+            <button type="button" class="close-modal-btn" onclick="closeSettings()">Пӯшидан</button>
         </div>
     </div>
 
     <!-- Менюи поёнӣ -->
     <div class="nav-bar" id="mainNav">
-        <button class="nav-item active" data-page="home">
+        <button type="button" class="nav-item active" onclick="switchPage('home', this)">
             <div>🏠</div> Главная
         </button>
-        <button class="nav-item" data-page="orders">
+        <button type="button" class="nav-item" onclick="switchPage('orders', this)">
             <div>📦</div> Заказы
         </button>
-        <button class="nav-item" data-page="calc">
+        <button type="button" class="nav-item" onclick="switchPage('calc', this)">
             <div>🧮</div> Калькулятор
         </button>
-        <button class="nav-item" data-page="profile">
+        <button type="button" class="nav-item" onclick="switchPage('profile', this)">
             <div>👤</div> Профиль
         </button>
     </div>
@@ -484,112 +476,117 @@
         let globalUser = { name: "", phone: "", id: "" };
         let currentWarehouseType = 'kamaz';
 
-        document.addEventListener('DOMContentLoaded', () => {
+        function triggerSendCode() {
+            const name = document.getElementById('regName').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+
+            if(name === "" || phone === "") {
+                alert('Лутфан ном ва рақами телефонро пур кунед!');
+                return;
+            }
+
+            generatedSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
+            globalUser.name = name;
+            globalUser.phone = phone;
+
+            document.getElementById('smsSection').style.display = 'block';
+            document.getElementById('smsHint').innerText = `💬 Коди тасодуфии СМС: ${generatedSmsCode}`;
+            event.target.style.display = 'none';
+        }
+
+        function triggerVerifyCode() {
+            const enteredCode = document.getElementById('regSmsCode').value.trim();
+
+            if(enteredCode !== generatedSmsCode) {
+                alert('Коди воридкарда хато аст!');
+                return;
+            }
+
+            const randomNum = Math.floor(1000 + Math.random() * 9000);
+            globalUser.id = `SV003-X${randomNum}`;
+
+            document.getElementById('headerName').innerText = globalUser.name;
+            document.getElementById('headerId').innerText = `ID: ${globalUser.id}`;
             
-            // Тугмаи фиристодани код (бо дастгирии клик ва ламс кардани экран)
-            const sendCodeBtn = document.getElementById('sendCodeBtn');
-            if(sendCodeBtn) {
-                sendCodeBtn.addEventListener('click', handleSendCode);
-                sendCodeBtn.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    handleSendCode();
-                });
-            }
+            document.getElementById('userNameInput').value = globalUser.name;
+            document.getElementById('userPhoneInput').value = globalUser.phone;
+            document.getElementById('userIdInput').value = globalUser.id;
 
-            function handleSendCode() {
-                const name = document.getElementById('regName').value.trim();
-                const phone = document.getElementById('regPhone').value.trim();
-
-                if(name === "" || phone === "") {
-                    alert('Лутфан ном ва рақами телефонро пур кунед!');
-                    return;
-                }
-
-                generatedSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
-                globalUser.name = name;
-                globalUser.phone = phone;
-
-                document.getElementById('smsSection').style.display = 'block';
-                document.getElementById('smsHint').innerText = `💬 Коди тасодуфии СМС: ${generatedSmsCode}`;
-                document.getElementById('sendCodeBtn').style.display = 'none';
-            }
-
-            // Тугмаи тасдиқи код
-            const verifyCodeBtn = document.getElementById('verifyCodeBtn');
-            if(verifyCodeBtn) {
-                verifyCodeBtn.addEventListener('click', handleVerifyCode);
-                verifyCodeBtn.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    handleVerifyCode();
-                });
-            }
-
-            function handleVerifyCode() {
-                const enteredCode = document.getElementById('regSmsCode').value.trim();
-
-                if(enteredCode !== generatedSmsCode) {
-                    alert('Коди воридкарда хато аст!');
-                    return;
-                }
-
-                const randomNum = Math.floor(1000 + Math.random() * 9000);
-                globalUser.id = `SV003-X${randomNum}`;
-
-                document.getElementById('headerName').innerText = globalUser.name;
-                document.getElementById('headerId').innerText = `ID: ${globalUser.id}`;
-                
-                document.getElementById('userNameInput').value = globalUser.name;
-                document.getElementById('userPhoneInput').value = globalUser.phone;
-                document.getElementById('userIdInput').value = globalUser.id;
-
-                document.getElementById('page-register').style.display = 'none';
-                document.getElementById('mainHeader').style.display = 'block';
-                document.getElementById('mainNav').style.display = 'flex';
-                
-                switchPage('home');
-                updateAddressDisplay();
-            }
-
-            // Навигатсияи менюи поёнӣ
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const pageId = item.getAttribute('data-page');
-                    switchPage(pageId);
-                    
-                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                    item.classList.add('active');
-                });
-            });
-
-            // Анборҳо (КамАЗ ва Авиа)
-            document.getElementById('tabKamaz').addEventListener('click', function() {
-                setActiveWarehouse('kamaz', this);
-            });
-            document.getElementById('tabAvia').addEventListener('click', function() {
-                setActiveWarehouse('avia', this);
-            });
-
-            // Нусхабардории суроға
-            document.getElementById('copyAddressBtn').addEventListener('click', () => {
-                const text = document.getElementById('addressText').innerText;
-                navigator.clipboard.writeText(text).then(() => {
-                    alert('Суроға нусхабардорӣ шуд!');
-                });
-            });
-
-            // Калькулятор
-            document.getElementById('calcBtn').addEventListener('click', () => {
-                const type = document.getElementById('calcType').value;
-                const weight = parseFloat(document.getElementById('calcWeight').value);
-                const resultBox = document.getElementById('calcResult');
-
-                if(isNaN(weight) || weight <= 0) {
-                    alert('Лутфан вазни дурустро ворид кунед!');
-                    return;
-                }
-
-                let rate = (type === 'avia') ? 10 : 5;
-                let total = weight * rate;
-                resultBox.style.display = 'block';
-                resultBox.innerHTML = `Нархи тахминӣ: ${total} $ (${weight} кг)`;
+            document.getElementById('page-register').style.display = 'none';
+            document.getElementById('mainHeader').style.display = 'block';
+            document.getElementById('mainNav').style.display = 'flex';
             
+            switchPage('home', document.querySelector('.nav-item'));
+            updateAddressDisplay();
+        }
+
+        function switchPage(pageId, element) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+
+            if(element) {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                element.classList.add('active');
+            }
+        }
+
+        function setActiveWarehouse(type, element) {
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+            currentWarehouseType = type;
+            updateAddressDisplay();
+        }
+
+        function copyAddress() {
+            const text = document.getElementById('addressText').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Суроға нусхабардорӣ шуд!');
+            });
+        }
+
+        function calculatePrice() {
+            const type = document.getElementById('calcType').value;
+            const weight = parseFloat(document.getElementById('calcWeight').value);
+            const resultBox = document.getElementById('calcResult');
+
+            if(isNaN(weight) || weight <= 0) {
+                alert('Лутфан вазни дурустро ворид кунед!');
+                return;
+            }
+
+            let rate = (type === 'avia') ? 10 : 5;
+            let total = weight * rate;
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = `Нархи тахминӣ: ${total} $ (${weight} кг)`;
+        }
+
+        function updateProfileName() {
+            const newName = document.getElementById('userNameInput').value.trim();
+            if(newName === "") {
+                alert('Лутфан номро ворид кунед!');
+                return;
+            }
+            globalUser.name = newName;
+            document.getElementById('headerName').innerText = newName;
+            updateAddressDisplay();
+            alert('Маълумот нав карда шуд!');
+        }
+
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+
+        function updateAddressDisplay() {
+            const titleElem = document.getElementById('addressTitle');
+            const textElem = document.getElementById('addressText');
+
+            if(currentWarehouseType === 'kamaz') {
+                titleElem.innerText = "📍 Суроғаи анбор (КамАЗ / Авто)";
+                textElem.innerText = `PAIGHOM CARGO 15024564470\n浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库\n${globalUser.id} ${globalUser.name}`;
+            } else if(currentWarehouseType === 'avia') {
+                titleElem.innerText = "📍 Суроғаи анбор (Авиа)";
+                textElem.inn
