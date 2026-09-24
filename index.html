@@ -22,7 +22,6 @@
             padding: 15px 20px;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
-            position: relative;
         }
         .header-top {
             display: flex;
@@ -41,14 +40,19 @@
             font-size: 13px;
             margin-top: 5px;
         }
-        .notification-icon {
-            font-size: 20px;
-        }
 
-        /* Контейнер */
+        /* Контейнер ва Саҳифаҳо */
         .container {
             padding: 15px;
+            padding-bottom: 80px;
         }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+
         .card {
             background: white;
             border-radius: 12px;
@@ -82,22 +86,19 @@
             margin-top: 2px;
         }
 
-        /* Тугмаи Настройка */
-        .settings-btn {
+        /* Тугмаи Танзимот дар дохили профил */
+        .settings-item-btn {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            background: white;
-            border: none;
-            width: 100%;
-            padding: 12px 15px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: bold;
-            color: #333;
+            align-items: center;
+            background: #fff5f5;
+            border: 1px solid #ffd6d6;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
+            font-weight: bold;
+            color: #d32f2f;
         }
 
         /* Менюи поёнӣ */
@@ -111,12 +112,16 @@
             justify-content: space-around;
             padding: 10px 0;
             border-top: 1px solid #eee;
+            z-index: 99;
         }
         .nav-item {
             text-align: center;
             text-decoration: none;
             color: #777;
             font-size: 11px;
+            cursor: pointer;
+            background: none;
+            border: none;
         }
         .nav-item.active {
             color: #d32f2f;
@@ -187,31 +192,57 @@
     <div class="header">
         <div class="header-top">
             <span class="user-name">Раҳматулло</span>
-            <span class="notification-icon">🔔</span>
+            <span>🔔</span>
         </div>
         <div class="user-id-badge">ID: SV003-X2574</div>
     </div>
 
-    <div class="container" style="padding-bottom: 70px;">
+    <div class="container">
         
-        <!-- Тугмаи Танзимот -->
-        <button class="settings-btn" onclick="openModal()">
-            <span>⚙️ Танзимот (Настройки)</span>
-            <span>➔</span>
-        </button>
-
-        <!-- Профили корбар -->
-        <div class="card">
-            <div class="card-title">👤 Профили корбар</div>
-            
-            <div class="info-row">
-                <div class="info-label">Ному насаб:</div>
-                <div class="info-value">Раҳматулло</div>
+        <!-- Саҳифаи 1: Главная -->
+        <div id="page-home" class="page">
+            <div class="card">
+                <div class="card-title">🏠 Хуш омадед ба Paighom Cargo!</div>
+                <p style="font-size: 14px; color: #555; line-height: 1.5;">Инҷо саҳифаи асосии хизматрасонии мо мебошад. Шумо метавонед борҳои худро пайгирӣ кунед ва фармоиш диҳед.</p>
             </div>
+        </div>
 
-            <div class="info-row">
-                <div class="info-label">ID-и шахсии шумо:</div>
-                <div class="info-value" style="color: #d32f2f;">SV003-X2574</div>
+        <!-- Саҳифаи 2: Заказы -->
+        <div id="page-orders" class="page">
+            <div class="card">
+                <div class="card-title">📦 Фармоишҳои ман</div>
+                <p style="font-size: 14px; color: #777;">Ҳоло фармоише нест.</p>
+            </div>
+        </div>
+
+        <!-- Саҳифаи 3: Калькулятор -->
+        <div id="page-calc" class="page">
+            <div class="card">
+                <div class="card-title">🧮 Ҳисобкунаки нарх</div>
+                <p style="font-size: 14px; color: #555;">Нархи интиқоли бор аз Чин.</p>
+            </div>
+        </div>
+
+        <!-- Саҳифаи 4: Профиль (Бо тугмаи Танзимот) -->
+        <div id="page-profile" class="page active">
+            <div class="card">
+                <div class="card-title">👤 Профили корбар</div>
+                
+                <div class="info-row">
+                    <div class="info-label">Ному насаб:</div>
+                    <div class="info-value">Раҳматулло</div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">ID-и шахсии шумо:</div>
+                    <div class="info-value" style="color: #d32f2f;">SV003-X2574</div>
+                </div>
+
+                <!-- Тугмаи Танзимот -->
+                <div class="settings-item-btn" onclick="openModal()">
+                    <span>⚙️ Танзимот (Настройки)</span>
+                    <span>➔</span>
+                </div>
             </div>
         </div>
 
@@ -242,21 +273,37 @@
 
     <!-- Менюи поёнӣ -->
     <div class="nav-bar">
-        <a href="#" class="nav-item">
+        <button class="nav-item" onclick="switchPage('home', this)">
             <div>🏠</div> Главная
-        </a>
-        <a href="#" class="nav-item">
+        </button>
+        <button class="nav-item" onclick="switchPage('orders', this)">
             <div>📦</div> Заказы
-        </a>
-        <a href="#" class="nav-item">
+        </button>
+        <button class="nav-item" onclick="switchPage('calc', this)">
             <div>🧮</div> Калькулятор
-        </a>
-        <a href="#" class="nav-item active">
+        </button>
+        <button class="nav-item active" onclick="switchPage('profile', this)">
             <div>👤</div> Профиль
-        </a>
+        </button>
     </div>
 
     <script>
+        // Функция барои иваз кардани саҳифаҳо
+        function switchPage(pageId, element) {
+            // Ҳама саҳифаҳоро хомӯш мекунем
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.classList.remove('active'));
+
+            // Саҳифаи лозимиро фаъол мекунем
+            document.getElementById('page-' + pageId).classList.add('active');
+
+            // Ранги тугмаҳои менюро иваз мекунем
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(n => n.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // Функсияҳои овезаи Танзимот (Modal)
         function openModal() {
             document.getElementById('settingsModal').style.display = 'flex';
         }
