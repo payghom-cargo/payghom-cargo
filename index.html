@@ -17,7 +17,6 @@
             color: #333;
             padding-bottom: 80px;
         }
-        /* Шапка */
         .header {
             background: linear-gradient(135deg, #d32f2f, #b71c1c);
             color: white;
@@ -44,8 +43,6 @@
             margin-top: 6px;
             letter-spacing: 0.5px;
         }
-
-        /* Контейнер ва Саҳифаҳо */
         .container {
             padding: 15px;
         }
@@ -55,7 +52,6 @@
         .page.active {
             display: block;
         }
-
         .card {
             background: white;
             border-radius: 14px;
@@ -63,8 +59,6 @@
             margin-bottom: 15px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
-
-        /* Баннери болоӣ */
         .top-banner {
             background: linear-gradient(135deg, #d32f2f, #e53935);
             color: white;
@@ -77,8 +71,6 @@
             box-shadow: 0 4px 10px rgba(211,47,47,0.25);
             line-height: 1.4;
         }
-
-        /* Тугмаҳои интихоби анбор */
         .warehouse-tabs {
             display: flex;
             gap: 10px;
@@ -107,8 +99,6 @@
             font-size: 22px;
             margin-bottom: 4px;
         }
-
-        /* Блоки суроға */
         .address-card {
             background: white;
             border-radius: 14px;
@@ -146,13 +136,10 @@
             cursor: pointer;
             font-size: 14px;
             box-shadow: 0 4px 10px rgba(211,47,47,0.2);
-            transition: background 0.2s;
         }
         .action-btn:active {
             background: #b71c1c;
         }
-
-        /* Майдонҳои Форма */
         .input-group {
             margin-bottom: 14px;
         }
@@ -173,27 +160,6 @@
             color: #222;
             outline: none;
         }
-        .input-group input:focus {
-            border-color: #d32f2f;
-            background: #fff;
-        }
-
-        /* Тугмаи Танзимот / Иттилоот */
-        .settings-item-btn {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #fff5f5;
-            border: 1px solid #ffd6d6;
-            padding: 14px;
-            border-radius: 10px;
-            margin-top: 15px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #d32f2f;
-        }
-
-        /* Калькулятор */
         .calc-result {
             background: #f1f8e9;
             border: 1px solid #c8e6c9;
@@ -205,8 +171,6 @@
             text-align: center;
             font-size: 15px;
         }
-
-        /* Менюи поёнӣ */
         .nav-bar {
             display: none;
             position: fixed;
@@ -222,7 +186,6 @@
         }
         .nav-item {
             text-align: center;
-            text-decoration: none;
             color: #888;
             font-size: 11px;
             cursor: pointer;
@@ -239,8 +202,6 @@
             font-size: 20px;
             margin-bottom: 3px;
         }
-
-        /* Окнаи Танзимот (Modal) */
         .modal {
             display: none;
             position: fixed;
@@ -257,18 +218,29 @@
             max-width: 340px;
             padding: 20px;
             border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
         .support-link {
             color: #d32f2f;
             text-decoration: none;
             font-weight: bold;
         }
+        .settings-item-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff5f5;
+            border: 1px solid #ffd6d6;
+            padding: 14px;
+            border-radius: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #d32f2f;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Шапка -->
     <div class="header" id="mainHeader" style="display: none;">
         <div class="header-top">
             <span class="user-name" id="headerName">Корбар</span>
@@ -278,8 +250,7 @@
     </div>
 
     <div class="container">
-        
-        <!-- САҲИФАИ 0: Регистрация -->
+        <!-- Регистрация -->
         <div id="page-register" class="page active">
             <div class="card" style="margin-top: 10px;">
                 <div style="color: #d32f2f; font-size: 20px; font-weight: bold; margin-bottom: 6px; text-align: center;">📦 Paighom Cargo</div>
@@ -297,7 +268,7 @@
 
                 <button type="button" class="action-btn" id="sendCodeBtn">Фиристодани коди тасдиқ</button>
 
-                <!-- Қисми ворид кардани СМС код -->
+                <!-- Қисми ворид кардани СМС код (пас аз пахши тугма пайдо мешавад) -->
                 <div id="smsSection" style="display: none; margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 15px;">
                     <div class="input-group">
                         <label id="smsHint" style="color: #d32f2f; font-weight: bold; font-size: 13px;"></label>
@@ -308,7 +279,7 @@
             </div>
         </div>
 
-        <!-- Саҳифаи 1: Главная (Анборҳо) -->
+        <!-- Главная -->
         <div id="page-home" class="page">
             <div class="top-banner">
                 ✈️ БОРҲОИ СУРЪАТИ БОХТАР БА ТАМОМИ ТОҶИКИСТОН 🇹🇯
@@ -330,7 +301,7 @@
             </div>
         </div>
 
-        <!-- Саҳифаи 2: Заказы -->
+        <!-- Заказы -->
         <div id="page-orders" class="page">
             <div class="card">
                 <div style="color: #d32f2f; font-size: 16px; font-weight: bold; margin-bottom: 10px;">📦 Фармоишҳои ман</div>
@@ -338,7 +309,7 @@
             </div>
         </div>
 
-        <!-- Саҳифаи 3: Калькулятор -->
+        <!-- Калькулятор -->
         <div id="page-calc" class="page">
             <div class="card">
                 <div style="color: #d32f2f; font-size: 16px; font-weight: bold; margin-bottom: 14px;">🧮 Ҳисобкунаки нарх</div>
@@ -357,12 +328,11 @@
                 </div>
 
                 <button type="button" class="action-btn" id="calcBtn">Ҳисоб кардан</button>
-
                 <div id="calcResult" class="calc-result" style="display:none;"></div>
             </div>
         </div>
 
-        <!-- Саҳифаи 4: Профиль -->
+        <!-- Профиль -->
         <div id="page-profile" class="page">
             <div class="card">
                 <div style="color: #d32f2f; font-size: 16px; font-weight: bold; margin-bottom: 14px;">👤 Профили корбар</div>
@@ -390,27 +360,16 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!-- Окнаи Танзимот (Modal) -->
+    <!-- Танзимот Modal -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <h3 style="margin-bottom: 12px; color: #d32f2f;">Танзимоти барнома</h3>
-            
-            <div class="input-group">
-                <label>Забон (Язык):</label>
-                <select id="langSelect">
-                    <option value="tj">Тоҷикӣ</option>
-                    <option value="ru">Русский</option>
-                </select>
-            </div>
-
             <div style="margin: 15px 0; font-size: 13px; color: #555;">
                 <b>Дастгирӣ (Поддержка):</b><br>
                 <a href="https://t.me/Rom_4ik2002" target="_blank" class="support-link">@Rom_4ik2002</a>
             </div>
-
             <button type="button" class="action-btn" id="closeSettingsBtn">Пӯшидан</button>
         </div>
     </div>
@@ -431,16 +390,14 @@
         </button>
     </div>
 
-    <!-- СКРИПТ -->
     <script>
         let generatedSmsCode = "";
         let globalUser = { name: "", phone: "", id: "" };
         let currentWarehouseType = 'kamaz';
 
-        // Пайваст кардани ҳамаи тугмаҳо бо роҳи боэътимод (EventListeners)
         document.addEventListener("DOMContentLoaded", function() {
             
-            // 1. Фиристодани СМС код
+            // 1. Корбар ном ва рақамро менависад, тугмаро зер мекунад -> код меояд
             document.getElementById('sendCodeBtn').addEventListener('click', function() {
                 const name = document.getElementById('regName').value.trim();
                 const phone = document.getElementById('regPhone').value.trim();
@@ -450,16 +407,21 @@
                     return;
                 }
 
-                generatedSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
                 globalUser.name = name;
                 globalUser.phone = phone;
 
+                // Сохтани коди тасодуфии 4-рақама
+                generatedSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
+
+                // Нишон додани қисми СМС код
                 document.getElementById('smsSection').style.display = 'block';
-                document.getElementById('smsHint').innerText = `💬 Коди тасодуфии СМС: ${generatedSmsCode}`;
+                document.getElementById('smsHint').innerText = `💬 Коди тасдиқи шумо: ${generatedSmsCode}`;
+                
+                // Тугмаи якумро пинҳон мекунем, то халал нарасонад
                 this.style.display = 'none';
             });
 
-            // 2. Тасдиқи СМС код ва даромадан
+            // 2. Тасдиқи код ва ворид шудан ба барнома
             document.getElementById('verifyCodeBtn').addEventListener('click', function() {
                 const enteredCode = document.getElementById('regSmsCode').value.trim();
 
@@ -486,7 +448,7 @@
                 updateAddressDisplay();
             });
 
-            // 3. Иваз кардани саҳифаҳо тавассути менюи поёнӣ
+            // Навигатсия ва меню
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.addEventListener('click', function() {
                     const pageId = this.getAttribute('data-page');
@@ -496,7 +458,6 @@
                 });
             });
 
-            // 4. Интихоби анборҳо (КамАЗ ва Авиа)
             document.getElementById('tabKamaz').addEventListener('click', function() {
                 document.getElementById('tabKamaz').classList.add('active');
                 document.getElementById('tabAvia').classList.remove('active');
@@ -511,17 +472,13 @@
                 updateAddressDisplay();
             });
 
-            // 5. Нусхабардории адрес
             document.getElementById('copyAddressBtn').addEventListener('click', function() {
                 const text = document.getElementById('addressText').innerText;
                 navigator.clipboard.writeText(text).then(() => {
                     alert('Суроға бо муваффақият нусхабардорӣ шуд!');
-                }).catch(err => {
-                    alert('Хатогӣ ҳангоми нусхабардорӣ!');
                 });
             });
 
-            // 6. Калькулятор
             document.getElementById('calcBtn').addEventListener('click', function() {
                 const type = document.getElementById('calcType').value;
                 const weight = parseFloat(document.getElementById('calcWeight').value);
@@ -538,19 +495,37 @@
                 resultBox.innerHTML = `Нархи тахминӣ: ${total} $ (${weight} кг ба ҳисоби $${rate}/кг)`;
             });
 
-            // 7. Навсозии профил
             document.getElementById('updateProfileBtn').addEventListener('click', function() {
                 const newName = document.getElementById('userNameInput').value.trim();
-                if(newName === "") {
-                    alert('Лутфан номро ворид кунед!');
-                    return;
+                if(newName !== "") {
+                    globalUser.name = newName;
+                    document.getElementById('headerName').innerText = newName;
+                    updateAddressDisplay();
+                    alert('Номи профил иваз карда шуд!');
                 }
-                globalUser.name = newName;
-                document.getElementById('headerName').innerText = newName;
-                updateAddressDisplay();
-                alert('Маълумоти профил иваз карда шуд!');
             });
 
-            // 8. Танзимот (Modal)
             document.getElementById('openSettingsBtn').addEventListener('click', function() {
-                documen
+                document.getElementById('settingsModal').style.display = 'flex';
+            });
+
+            document.getElementById('closeSettingsBtn').addEventListener('click', function() {
+                document.getElementById('settingsModal').style.display = 'none';
+            });
+        });
+
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+        }
+
+        function updateAddressDisplay() {
+            const titleElem = document.getElementById('addressTitle');
+            const textElem = document.getElementById('addressText');
+
+            if(currentWarehouseType === 'kamaz') {
+                titleElem.innerText = "📍 Суроғаи анбор (КамАЗ / Авто)";
+                textElem.innerText = `PAIGHOM CARGO 15024564470\n浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库\n${globalUser.id} ${globalUser.name}`;
+            } else if(currentWarehouseType === 'avia') {
+                titleElem.innerText = "📍 Суроғаи анбор (Авиа)";
+                textElem.innerText = `PAIGHOM AVIA +8617591674707\n新疆乌鲁木齐天山区延安路边疆宾馆公寓楼5806号\n${glob
