@@ -135,7 +135,6 @@
             cursor: pointer;
             font-size: 14px;
             box-shadow: 0 4px 10px rgba(211,47,47,0.2);
-            -webkit-appearance: none;
         }
         .input-group {
             margin-bottom: 14px;
@@ -263,15 +262,14 @@
                     <input type="tel" id="regPhone" placeholder="+992 000 00 00 00">
                 </div>
 
-                <!-- Тугма бо усули мустаҳками пахшкунӣ -->
-                <button type="button" class="action-btn" id="sendCodeBtn" onclick="handleSendCode()">Фиристодани коди тасдиқ</button>
+                <button type="button" class="action-btn" onclick="handleSendCode()">Фиристодани коди тасдиқ</button>
 
                 <div id="smsSection" style="display: none; margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 15px;">
                     <div class="input-group">
                         <label id="smsHint" style="color: #d32f2f; font-weight: bold; font-size: 13px;"></label>
                         <input type="number" id="regSmsCode" placeholder="Коди 4-рақамаро ворид кунед">
                     </div>
-                    <button type="button" class="action-btn" id="verifyCodeBtn" onclick="handleVerifyCode()">Тасдиқ кардан ва Вуруд</button>
+                    <button type="button" class="action-btn" onclick="handleVerifyCode()">Тасдиқ кардан ва Вуруд</button>
                 </div>
             </div>
         </div>
@@ -294,7 +292,7 @@
             <div class="address-card">
                 <div class="address-title" id="addressTitle">📍 Суроғаи анбор (КамАЗ / Авто)</div>
                 <div class="address-text" id="addressText">Боргузорӣ...</div>
-                <button type="button" class="action-btn" id="copyAddressBtn" onclick="copyAddress()">📋 Нусхабардории суроға</button>
+                <button type="button" class="action-btn" onclick="copyAddress()">📋 Нусхабардории суроға</button>
             </div>
         </div>
 
@@ -393,10 +391,8 @@
         let currentWarehouseType = 'kamaz';
 
         function handleSendCode() {
-            const nameInput = document.getElementById('regName');
-            const phoneInput = document.getElementById('regPhone');
-            const name = nameInput.value.trim();
-            const phone = phoneInput.value.trim();
+            const name = document.getElementById('regName').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
 
             if(name === "" || phone === "") {
                 alert('Лутфан ном ва рақами телефонро пур кунед!');
@@ -405,12 +401,10 @@
 
             globalUser.name = name;
             globalUser.phone = phone;
-
             generatedSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
 
             document.getElementById('smsSection').style.display = 'block';
             document.getElementById('smsHint').innerText = `💬 Коди тасдиқи шумо: ${generatedSmsCode}`;
-            document.getElementById('sendCodeBtn').style.display = 'none';
         }
 
         function handleVerifyCode() {
@@ -477,8 +471,6 @@
             const text = document.getElementById('addressText').innerText;
             navigator.clipboard.writeText(text).then(() => {
                 alert('Суроға бо муваффақият нусхабардорӣ шуд!');
-            }).catch(() => {
-                alert('Хатогӣ ҳангоми нусхабардорӣ!');
             });
         }
 
