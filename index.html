@@ -2,153 +2,267 @@
 <html lang="tg">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Payghom Cargo - Воридшавӣ</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paighom Cargo</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #fff5f5;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #f4f5f7;
+            color: #333;
+        }
+        /* Шапка */
+        .header {
+            background-color: #d32f2f;
+            color: white;
+            padding: 15px 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            position: relative;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .user-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .user-id-badge {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+        .notification-icon {
+            font-size: 20px;
+        }
+
+        /* Контейнер */
+        .container {
+            padding: 15px;
         }
         .card {
             background: white;
-            padding: 22px;
-            border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 340px;
-            text-align: center;
-        }
-        h2 { color: #d32f2f; margin-top: 0; margin-bottom: 8px; font-size: 22px; }
-        p { font-size: 13px; color: #666; margin-bottom: 20px; }
-        .input-group {
+            border-radius: 12px;
+            padding: 15px;
             margin-bottom: 15px;
-            text-align: left;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        label { font-size: 12px; color: #444; font-weight: bold; display: block; margin-bottom: 5px; }
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 15px;
-            box-sizing: border-box;
-            outline: none;
-            background: #fafafa;
-        }
-        input:focus { border-color: #d32f2f; background: #fff; }
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background-color: #d32f2f;
-            color: white;
-            border: none;
-            border-radius: 8px;
+        .card-title {
+            color: #d32f2f;
             font-size: 16px;
             font-weight: bold;
-            cursor: pointer;
-            margin-top: 5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .btn:active { background-color: #b71c1c; }
-        .hidden { display: none !important; }
+        .info-row {
+            background: #f9f9f9;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .info-label {
+            font-size: 12px;
+            color: #777;
+        }
+        .info-value {
+            font-size: 15px;
+            font-weight: bold;
+            color: #222;
+            margin-top: 2px;
+        }
+
+        /* Тугмаи Настройка */
+        .settings-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border: none;
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        /* Менюи поёнӣ */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #eee;
+        }
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            color: #777;
+            font-size: 11px;
+        }
+        .nav-item.active {
+            color: #d32f2f;
+        }
+        .nav-item div {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        /* Окнаи Танзимот (Modal) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 350px;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        .modal-content h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .setting-group {
+            margin-bottom: 12px;
+        }
+        .setting-group label {
+            font-size: 13px;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .setting-group select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        .support-link {
+            color: #d32f2f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .close-modal-btn {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <!-- Қадами 1: Ном ва Рақам -->
-        <div id="step-register">
-            <h2>Пайғом Карго</h2>
-            <p>Маълумоти худро ворид кунед</p>
+    <!-- Шапка -->
+    <div class="header">
+        <div class="header-top">
+            <span class="user-name">Раҳматулло</span>
+            <span class="notification-icon">🔔</span>
+        </div>
+        <div class="user-id-badge">ID: SV003-X2574</div>
+    </div>
+
+    <div class="container" style="padding-bottom: 70px;">
+        
+        <!-- Тугмаи Танзимот -->
+        <button class="settings-btn" onclick="openModal()">
+            <span>⚙️ Танзимот (Настройки)</span>
+            <span>➔</span>
+        </button>
+
+        <!-- Профили корбар -->
+        <div class="card">
+            <div class="card-title">👤 Профили корбар</div>
             
-            <div class="input-group">
-                <label>Ному насаб:</label>
-                <input type="text" id="name-input" placeholder="Ғоибов Раҳматулло">
-            </div>
-            
-            <div class="input-group">
-                <label>Рақами телефон:</label>
-                <input type="tel" id="phone-input" placeholder="+992 000 00 00 00">
+            <div class="info-row">
+                <div class="info-label">Ному насаб:</div>
+                <div class="info-value">Раҳматулло</div>
             </div>
 
-            <button class="btn" type="button" id="send-btn">Фиристодани коди тасдиқ</button>
+            <div class="info-row">
+                <div class="info-label">ID-и шахсии шумо:</div>
+                <div class="info-value" style="color: #d32f2f;">SV003-X2574</div>
+            </div>
         </div>
 
-        <!-- Қадами 2: Ворид кардани Код -->
-        <div id="step-code" class="hidden">
-            <h2>Тасдиқи рақам</h2>
-            <p id="code-info">Коди фиристодашударо ворид кунед</p>
+    </div>
+
+    <!-- Modal-и Танзимот -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <h3>Танзимоти барнома</h3>
             
-            <div class="input-group">
-                <label>Коди 4-рақама:</label>
-                <input type="text" id="code-input" placeholder="----" maxlength="4">
+            <div class="setting-group">
+                <label>Забон (Язык):</label>
+                <select id="langSelect">
+                    <option value="tj">Тоҷикӣ</option>
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                </select>
             </div>
 
-            <button class="btn" type="button" id="verify-btn">Ворид шудан</button>
+            <div class="setting-group">
+                <label>Дастгирӣ (Поддержка):</label>
+                <p style="margin-top: 4px;"><a href="https://t.me/Rom_4ik2002" target="_blank" class="support-link">@Rom_4ik2002</a></p>
+            </div>
+
+            <button class="close-modal-btn" onclick="closeModal()">Пӯшидан</button>
         </div>
     </div>
 
+    <!-- Менюи поёнӣ -->
+    <div class="nav-bar">
+        <a href="#" class="nav-item">
+            <div>🏠</div> Главная
+        </a>
+        <a href="#" class="nav-item">
+            <div>📦</div> Заказы
+        </a>
+        <a href="#" class="nav-item">
+            <div>🧮</div> Калькулятор
+        </a>
+        <a href="#" class="nav-item active">
+            <div>👤</div> Профиль
+        </a>
+    </div>
+
     <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.ready();
-
-        let generatedCode = ""; // Инҷо коди тасодуфии ҳар як мизоҷ нигоҳ дошта мешавад
-
-        document.getElementById('send-btn').addEventListener('click', function() {
-            let nameInput = document.getElementById('name-input').value.trim();
-            let phoneInput = document.getElementById('phone-input').value.trim();
-
-            if (nameInput === "") {
-                alert("Лутфан ному насабатонро нависед!");
-                return;
-            }
-
-            if (phoneInput.length < 7) {
-                alert("Лутфан рақами телефонатонро дуруст ворид кунед!");
-                return;
-            }
-
-            // Тавлиди коди тасодуфии 4-рақама барои ҳар як мизоҷ (аз 1000 то 9999)
-            generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
-
-            // Барои он ки шумо дар телефони худ коди омадаро бинед (дар оянда ин ҷо SMS API мешавад)
-            alert("Коди тасдиқ ба рақами " + phoneInput + " фиристода шуд.\n\n[Коди махфии шумо: " + generatedCode + "]");
-            
-            document.getElementById('code-info').innerText = "Код ба рақами " + phoneInput + " фиристода шуд.";
-
-            // Гузариш ба экрани коди тасдиқ
-            document.getElementById('step-register').classList.add('hidden');
-            document.getElementById('step-code').classList.remove('hidden');
-        });
-
-        document.getElementById('verify-btn').addEventListener('click', function() {
-            let codeInput = document.getElementById('code-input').value.trim();
-
-            if (codeInput === generatedCode) {
-                let nameInput = document.getElementById('name-input').value.trim();
-                let phoneInput = document.getElementById('phone-input').value.trim();
-
-                // Маълумотро дар хотираи телефон сабт мекунем
-                localStorage.setItem("cargo_user_name", nameInput);
-                localStorage.setItem("cargo_user_phone", phoneInput);
-
-                alert("Ташаккур! Ворид шудан бомуваффақият анҷом ёфт.");
-                
-                // Гузариш ба саҳифаи асосӣ (main.html)
-                window.location.href = "main.html";
-            } else {
-                alert("Коди воридшуда хато аст! Лутфан коди дурустро ворид кунед.");
-            }
-        });
+        function openModal() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
     </script>
 </body>
 </html>
