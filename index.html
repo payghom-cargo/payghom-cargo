@@ -44,7 +44,7 @@
         /* Контейнер ва Саҳифаҳо */
         .container {
             padding: 15px;
-            padding-bottom: 80px;
+            padding-bottom: 90px;
         }
         .page {
             display: none;
@@ -60,17 +60,95 @@
             margin-bottom: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .card-title {
-            color: #d32f2f;
-            font-size: 16px;
+
+        /* Баннери болоӣ */
+        .top-banner {
+            background-color: #d32f2f;
+            color: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
             font-weight: bold;
-            margin-bottom: 12px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(211,47,47,0.3);
+            line-height: 1.4;
+        }
+
+        /* Тугмаҳои интихоби анбор */
+        .warehouse-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .tab-btn {
+            flex: 1;
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            padding: 12px 5px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            color: #555;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            border-color: #d32f2f;
+            color: #d32f2f;
+            background: #fff8f8;
+        }
+        .tab-btn div {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Блоки суроға */
+        .address-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 4px solid #d32f2f;
+        }
+        .address-title {
+            color: #d32f2f;
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
-        
-        /* Майдонҳои маълумот ва адресҳо */
+        .address-text {
+            background: #fcfcfc;
+            border: 1px solid #eee;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+            word-break: break-all;
+            margin-bottom: 12px;
+            white-space: pre-line;
+        }
+        .copy-btn {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .copy-btn:active {
+            background: #b71c1c;
+        }
+
+        /* Майдонҳои Профиль */
         .input-group {
             margin-bottom: 12px;
         }
@@ -101,46 +179,6 @@
             margin-top: 5px;
         }
 
-        /* Услуби Адресҳо (Авиа / КамАЗ) */
-        .address-box {
-            background: #fff8f8;
-            border: 1px dashed #d32f2f;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-        .address-box b {
-            color: #d32f2f;
-        }
-
-        /* Калькулятор */
-        .calc-row {
-            margin-bottom: 10px;
-        }
-        .calc-row label {
-            font-size: 12px;
-            color: #555;
-            display: block;
-            margin-bottom: 3px;
-        }
-        .calc-row select, .calc-row input {
-            width: 100%;
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-        .calc-result {
-            background: #f1f8e9;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: bold;
-            color: #2e7d32;
-            margin-top: 10px;
-            text-align: center;
-        }
-
         /* Тугмаи Танзимот */
         .settings-item-btn {
             display: flex;
@@ -154,6 +192,35 @@
             cursor: pointer;
             font-weight: bold;
             color: #d32f2f;
+        }
+
+        /* Калькулятор */
+        .calc-row {
+            margin-bottom: 12px;
+        }
+        .calc-row label {
+            font-size: 12px;
+            color: #555;
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+        .calc-row select, .calc-row input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .calc-result {
+            background: #f1f8e9;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-top: 12px;
+            text-align: center;
+            font-size: 15px;
         }
 
         /* Менюи поёнӣ */
@@ -186,7 +253,7 @@
             margin-bottom: 2px;
         }
 
-        /* Окнаи Танзимот (Модалӣ) */
+        /* Окнаи Танзимот (Modal) */
         .modal {
             display: none;
             position: fixed;
@@ -251,45 +318,51 @@
 
     <div class="container">
         
-        <!-- Саҳифаи 1: Главная (Адресҳои Авиа ва КамАЗ) -->
+        <!-- Саҳифаи 1: Главная -->
         <div id="page-home" class="page active">
-            <div class="card">
-                <div class="card-title">📦 Адресҳои склад дар Чин</div>
-                
-                <div class="address-box">
-                    <b>✈️ Адреси Авиа (Fast):</b><br>
-                    收货人: Раҳматулло (SV003-X2574)<br>
-                    电话: 13800000000<br>
-                    地址: 广东省广州市白云区...
-                </div>
+            <!-- Баннери суръат -->
+            <div class="top-banner">
+                ✈️ БОРҲОИ СУРЪАТИ БОХТАР БА ТАМОМИ ТОҶИКИСТОН 🇹🇯
+            </div>
 
-                <div class="address-box">
-                    <b>🚛 Адреси КамАЗ / Авто (Standard):</b><br>
-                    收货人: Раҳматулло (SV003-X2574)<br>
-                    电话: 13800000000<br>
-                    地址: 新疆维吾尔自治区乌鲁木齐市...
-                </div>
+            <!-- Тугмаҳои интихоби анбор -->
+            <div class="warehouse-tabs">
+                <button class="tab-btn active" onclick="selectWarehouse('kamaz', this)">
+                    <div>🚛</div> Камаз (Авто)
+                </button>
+                <button class="tab-btn" onclick="selectWarehouse('avia', this)">
+                    <div>✈️</div> Авиа
+                </button>
+            </div>
+
+            <!-- Блоки суроға -->
+            <div class="address-card">
+                <div class="address-title" id="addressTitle">📍 Суроғаи анбор (Камаз / Авто)</div>
+                <div class="address-text" id="addressText">PAIGHOM CARGO 15024564470
+浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库
+SV003-X2574 Раҳматулло</div>
+                <button class="copy-btn" onclick="copyAddress()">📋 Нусхабардории суроға</button>
             </div>
         </div>
 
         <!-- Саҳифаи 2: Заказы -->
         <div id="page-orders" class="page">
             <div class="card">
-                <div class="card-title">📋 Фармоишҳои ман</div>
-                <p style="font-size: 14px; color: #777;">Ҳоло борҳое нест.</p>
+                <div style="color: #d32f2f; font-size: 16px; font-weight: bold; margin-bottom: 10px;">📦 Фармоишҳои ман</div>
+                <p style="font-size: 14px; color: #777;">Ҳоло фармоиши фаъол надоред.</p>
             </div>
         </div>
 
         <!-- Саҳифаи 3: Калькулятор -->
         <div id="page-calc" class="page">
             <div class="card">
-                <div class="card-title">🧮 Ҳисобкунаки нарх</div>
+                <div style="color: #d32f2f; font-size: 16px; font-weight: bold; margin-bottom: 12px;">🧮 Ҳисобкунаки нарх</div>
                 
                 <div class="calc-row">
                     <label>Намуди интиқол:</label>
                     <select id="calcType">
-                        <option value="avia">Авиа (Тез)</option>
-                        <option value="auto">КамАЗ / Авто (Отод)</option>
+                        <option value="kamaz">Камаз (Авто)</option>
+                        <option value="avia">Авиа</option>
                     </select>
                 </div>
 
@@ -304,10 +377,10 @@
             </div>
         </div>
 
-        <!-- Саҳифаи 4: Профиль (Номер телефон, ном ва Танзимот) -->
+        <!-- Саҳифаи 4: Профиль -->
         <div id="page-profile" class="page">
             <div class="card">
-                <div class="card-title">👤 Профили корбар</div>
+                <div style="color: #d32f2f; font-size: 16px; font-weight: bold; margin-bottom: 12px;">👤 Профили корбар</div>
                 
                 <div class="input-group">
                     <label>Рақами телефон:</label>
@@ -339,7 +412,7 @@
     <!-- Окнаи Танзимот (Modal) -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
-            <h3>Танзимоти барнома</h3>
+            <h3 style="margin-bottom: 12px; color: #d32f2f;">Танзимоти барнома</h3>
             
             <div class="setting-group">
                 <label>Забон (Язык):</label>
@@ -387,6 +460,31 @@
             element.classList.add('active');
         }
 
+        // Иваз кардани суроғаҳо ҳангоми пахши тугмаҳои Камаз ва Авиа
+        function selectWarehouse(type, element) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+
+            const titleElem = document.getElementById('addressTitle');
+            const textElem = document.getElementById('addressText');
+
+            if(type === 'kamaz') {
+                titleElem.innerText = "📍 Суроғаи анбор (Камаз / Авто)";
+                textElem.innerText = "PAIGHOM CARGO 15024564470\n浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库\nSV003-X2574 Раҳматулло";
+            } else if(type === 'avia') {
+                titleElem.innerText = "📍 Суроғаи анбор (Авиа)";
+                textElem.innerText = "PAIGHOM AVIA +8617591674707\n新疆乌鲁木齐天山区延安路边疆宾馆公寓楼5806号\nSV003-X2574 Раҳматулло";
+            }
+        }
+
+        function copyAddress() {
+            const text = document.getElementById('addressText').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Суроға нусхабардорӣ шуд!');
+            });
+        }
+
         function openModal() {
             document.getElementById('settingsModal').style.display = 'flex';
         }
@@ -396,8 +494,6 @@
 
         function saveProfile() {
             const name = document.getElementById('userNameInput').value;
-            const phone = document.getElementById('userPhoneInput').value;
-            
             if(name.trim() === "") {
                 alert('Лутфан номро ворид кунед!');
                 return;
@@ -416,10 +512,8 @@
                 return;
             }
 
-            // Нархҳои тахминӣ (метавонед тағйир диҳед)
-            let rate = (type === 'avia') ? 10 : 5; // Масалан Авиа 10$, КамАЗ 5$
+            let rate = (type === 'avia') ? 10 : 5;
             let total = weight * rate;
-
             resultBox.style.display = 'block';
             resultBox.innerHTML = `Нархи тахминӣ: ${total} $ (${weight} кг)`;
         }
