@@ -22,6 +22,7 @@
             padding: 15px 20px;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
+            position: relative;
         }
         .header-top {
             display: flex;
@@ -40,11 +41,13 @@
             font-size: 13px;
             margin-top: 5px;
         }
+        .notification-icon {
+            font-size: 20px;
+        }
 
         /* Контейнер */
         .container {
             padding: 15px;
-            padding-bottom: 70px;
         }
         .card {
             background: white;
@@ -79,19 +82,22 @@
             margin-top: 2px;
         }
 
-        /* Тугмаи Настройка дар дохили профил */
-        .settings-item-btn {
+        /* Тугмаи Настройка */
+        .settings-btn {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            background: #fff5f5;
-            border: 1px solid #ffd6d6;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 12px;
-            cursor: pointer;
+            justify-content: space-between;
+            background: white;
+            border: none;
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: bold;
-            color: #d32f2f;
+            color: #333;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
         }
 
         /* Менюи поёнӣ */
@@ -181,12 +187,19 @@
     <div class="header">
         <div class="header-top">
             <span class="user-name">Раҳматулло</span>
-            <span>🔔</span>
+            <span class="notification-icon">🔔</span>
         </div>
         <div class="user-id-badge">ID: SV003-X2574</div>
     </div>
 
-    <div class="container">
+    <div class="container" style="padding-bottom: 70px;">
+        
+        <!-- Тугмаи Танзимот -->
+        <button class="settings-btn" onclick="openModal()">
+            <span>⚙️ Танзимот (Настройки)</span>
+            <span>➔</span>
+        </button>
+
         <!-- Профили корбар -->
         <div class="card">
             <div class="card-title">👤 Профили корбар</div>
@@ -200,13 +213,8 @@
                 <div class="info-label">ID-и шахсии шумо:</div>
                 <div class="info-value" style="color: #d32f2f;">SV003-X2574</div>
             </div>
-
-            <!-- Тугмаи Танзимот инҷо илова шуд -->
-            <div class="settings-item-btn" onclick="openModal()">
-                <span>⚙️ Танзимот (Настройки)</span>
-                <span>➔</span>
-            </div>
         </div>
+
     </div>
 
     <!-- Modal-и Танзимот -->
