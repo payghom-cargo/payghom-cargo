@@ -69,24 +69,44 @@
             align-items: center;
             gap: 8px;
         }
-        .info-row {
-            background: #f9f9f9;
-            padding: 10px 12px;
-            border-radius: 8px;
-            margin-bottom: 8px;
+        
+        /* Майдонҳои ворид кардани маълумот (Иваз кардани ном ва телефон) */
+        .input-group {
+            margin-bottom: 12px;
         }
-        .info-label {
+        .input-group label {
             font-size: 12px;
             color: #777;
+            display: block;
+            margin-bottom: 4px;
         }
-        .info-value {
-            font-size: 15px;
-            font-weight: bold;
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            font-size: 14px;
             color: #222;
-            margin-top: 2px;
+        }
+        .input-group input:focus {
+            border-color: #d32f2f;
+            outline: none;
+            background: #fff;
+        }
+        .save-btn {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
         }
 
-        /* Тугмаи Танзимот дар дохили профил */
+        /* Тугмаи Танзимот */
         .settings-item-btn {
             display: flex;
             justify-content: space-between;
@@ -95,7 +115,7 @@
             border: 1px solid #ffd6d6;
             padding: 12px;
             border-radius: 8px;
-            margin-top: 12px;
+            margin-top: 15px;
             cursor: pointer;
             font-weight: bold;
             color: #d32f2f;
@@ -131,58 +151,30 @@
             margin-bottom: 2px;
         }
 
-        /* Окнаи Танзимот (Modal) */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: white;
-            width: 90%;
-            max-width: 350px;
-            padding: 20px;
-            border-radius: 15px;
-        }
-        .modal-content h3 {
-            margin-bottom: 15px;
-            color: #333;
-        }
+        /* Саҳифаи Танзимот */
         .setting-group {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
         .setting-group label {
             font-size: 13px;
             color: #555;
             display: block;
             margin-bottom: 5px;
+            font-weight: bold;
         }
         .setting-group select {
             width: 100%;
-            padding: 8px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 8px;
             border: 1px solid #ccc;
+            font-size: 14px;
+            background: #fff;
         }
         .support-link {
             color: #d32f2f;
             text-decoration: none;
             font-weight: bold;
-        }
-        .close-modal-btn {
-            background: #d32f2f;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-weight: bold;
-            cursor: pointer;
+            font-size: 15px;
         }
     </style>
 </head>
@@ -191,7 +183,7 @@
     <!-- Шапка -->
     <div class="header">
         <div class="header-top">
-            <span class="user-name">Раҳматулло</span>
+            <span class="user-name" id="headerName">Раҳматулло</span>
             <span>🔔</span>
         </div>
         <div class="user-id-badge">ID: SV003-X2574</div>
@@ -203,7 +195,7 @@
         <div id="page-home" class="page">
             <div class="card">
                 <div class="card-title">🏠 Хуш омадед ба Paighom Cargo!</div>
-                <p style="font-size: 14px; color: #555; line-height: 1.5;">Инҷо саҳифаи асосии хизматрасонии мо мебошад. Шумо метавонед борҳои худро пайгирӣ кунед ва фармоиш диҳед.</p>
+                <p style="font-size: 14px; color: #555;">Интиқоли бору молу ашё аз Чин ба Бохтар бо нархи дастрас.</p>
             </div>
         </div>
 
@@ -211,7 +203,7 @@
         <div id="page-orders" class="page">
             <div class="card">
                 <div class="card-title">📦 Фармоишҳои ман</div>
-                <p style="font-size: 14px; color: #777;">Ҳоло фармоише нест.</p>
+                <p style="font-size: 14px; color: #777;">Ҳоло фармоиши фаъол надоред.</p>
             </div>
         </div>
 
@@ -219,56 +211,65 @@
         <div id="page-calc" class="page">
             <div class="card">
                 <div class="card-title">🧮 Ҳисобкунаки нарх</div>
-                <p style="font-size: 14px; color: #555;">Нархи интиқоли бор аз Чин.</p>
+                <p style="font-size: 14px; color: #555;">Қисмати ҳисобкунии вазн ва ҳаҷми бор.</p>
             </div>
         </div>
 
-        <!-- Саҳифаи 4: Профиль (Бо тугмаи Танзимот) -->
+        <!-- Саҳифаи 4: Профиль (Бо майдонҳои ном ва телефон) -->
         <div id="page-profile" class="page active">
             <div class="card">
                 <div class="card-title">👤 Профили корбар</div>
                 
-                <div class="info-row">
-                    <div class="info-label">Ному насаб:</div>
-                    <div class="info-value">Раҳматулло</div>
+                <!-- Илова кардани ном -->
+                <div class="input-group">
+                    <label>Ному насаб:</label>
+                    <input type="text" id="userNameInput" value="Раҳматулло">
                 </div>
 
-                <div class="info-row">
-                    <div class="info-label">ID-и шахсии шумо:</div>
-                    <div class="info-value" style="color: #d32f2f;">SV003-X2574</div>
+                <!-- Илова кардани рақами телефон -->
+                <div class="input-group">
+                    <label>Рақами телефон:</label>
+                    <input type="text" id="userPhoneInput" placeholder="+992 000 00 00 00">
                 </div>
 
-                <!-- Тугмаи Танзимот -->
-                <div class="settings-item-btn" onclick="openModal()">
+                <div class="input-group">
+                    <label>ID-и шахсии шумо:</label>
+                    <input type="text" value="SV003-X2574" readonly style="color: #d32f2f; font-weight: bold;">
+                </div>
+
+                <button class="save-btn" onclick="saveProfile()">Захира кардан</button>
+
+                <!-- Тугма ба Танзимот -->
+                <div class="settings-item-btn" onclick="openSettingsPage()">
                     <span>⚙️ Танзимот (Настройки)</span>
                     <span>➔</span>
                 </div>
             </div>
         </div>
 
-    </div>
+        <!-- Саҳифаи 5: Танзимот -->
+        <div id="page-settings" class="page">
+            <div class="card">
+                <div class="card-title">⚙️ Танзимоти барнома</div>
+                
+                <div class="setting-group">
+                    <label>Забон (Язык):</label>
+                    <select id="langSelect">
+                        <option value="tj">Тоҷикӣ</option>
+                        <option value="ru">Русский</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
 
-    <!-- Modal-и Танзимот -->
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <h3>Танзимоти барнома</h3>
-            
-            <div class="setting-group">
-                <label>Забон (Язык):</label>
-                <select id="langSelect">
-                    <option value="tj">Тоҷикӣ</option>
-                    <option value="ru">Русский</option>
-                    <option value="en">English</option>
-                </select>
+                <div class="setting-group" style="margin-top: 20px;">
+                    <label>Дастгирӣ (Поддержка):</label>
+                    <p style="margin-top: 8px;">
+                        <a href="https://t.me/Rom_4ik2002" target="_blank" class="support-link">@Rom_4ik2002</a>
+                    </p>
+                </div>
             </div>
-
-            <div class="setting-group">
-                <label>Дастгирӣ (Поддержка):</label>
-                <p style="margin-top: 4px;"><a href="https://t.me/Rom_4ik2002" target="_blank" class="support-link">@Rom_4ik2002</a></p>
-            </div>
-
-            <button class="close-modal-btn" onclick="closeModal()">Пӯшидан</button>
         </div>
+
     </div>
 
     <!-- Менюи поёнӣ -->
@@ -290,25 +291,32 @@
     <script>
         // Функция барои иваз кардани саҳифаҳо
         function switchPage(pageId, element) {
-            // Ҳама саҳифаҳоро хомӯш мекунем
             const pages = document.querySelectorAll('.page');
             pages.forEach(p => p.classList.remove('active'));
 
-            // Саҳифаи лозимиро фаъол мекунем
             document.getElementById('page-' + pageId).classList.add('active');
 
-            // Ранги тугмаҳои менюро иваз мекунем
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(n => n.classList.remove('active'));
-            element.classList.add('active');
+            if (element) {
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(n => n.classList.remove('active'));
+                element.classList.add('active');
+            }
         }
 
-        // Функсияҳои овезаи Танзимот (Modal)
-        function openModal() {
-            document.getElementById('settingsModal').style.display = 'flex';
+        // Гузариш ба саҳифаи танзимот
+        function openSettingsPage() {
+            switchPage('settings', null);
         }
-        function closeModal() {
-            document.getElementById('settingsModal').style.display = 'none';
+
+        // Функция барои захира кардани ном ва телефон
+        function saveProfile() {
+            const name = document.getElementById('userNameInput').value;
+            const phone = document.getElementById('userPhoneInput').value;
+            
+            // Номи навро ба шапка мегузорем
+            document.getElementById('headerName').innerText = name;
+            
+            alert('Маълумот бо муваффақият захира шуд!');
         }
     </script>
 </body>
