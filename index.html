@@ -7,10 +7,10 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #f4f6f9;
             margin: 0;
-            padding: 16px;
+            padding: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,48 +20,47 @@
         .card {
             background: #ffffff;
             width: 100%;
-            max-width: 400px;
-            padding: 24px 20px;
+            max-width: 420px;
+            padding: 20px 16px;
             border-radius: 16px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
             box-sizing: border-box;
         }
         .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
         .icon {
-            font-size: 36px;
-            margin-bottom: 8px;
+            font-size: 32px;
+            margin-bottom: 6px;
         }
         .title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             color: #d32f2f;
-            margin: 0 0 8px 0;
+            margin: 0 0 4px 0;
         }
         .subtitle {
-            font-size: 13px;
+            font-size: 12px;
             color: #666;
-            line-height: 1.4;
             margin: 0;
         }
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         label {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #333;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         input {
             width: 100%;
-            padding: 12px 14px;
+            padding: 10px 12px;
             border: 1px solid #e0e0e0;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 13px;
             box-sizing: border-box;
             outline: none;
             background-color: #fafbfc;
@@ -75,12 +74,12 @@
             background-color: #d32f2f;
             color: white;
             border: none;
-            padding: 14px;
+            padding: 12px;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 8px;
+            margin-top: 6px;
         }
         .btn:active {
             background-color: #b71c1c;
@@ -88,14 +87,99 @@
         .hidden {
             display: none;
         }
-        .success-screen {
-            text-align: center;
-            padding: 20px 0;
+
+        /* Услубҳои экрани асосии барнома (Кабинет) */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+            color: white;
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
         }
-        .success-icon {
-            font-size: 48px;
-            color: #4CAF50;
-            margin-bottom: 12px;
+        .user-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 16px;
+        }
+        .user-info p {
+            margin: 0;
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background: #f1f3f5;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            color: #555;
+            text-align: center;
+        }
+        .tab-btn.active {
+            background: #d32f2f;
+            color: white;
+        }
+        .address-box {
+            background: #fff8f8;
+            border: 1px solid #ffd2d2;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 14px;
+        }
+        .address-title {
+            font-weight: 700;
+            color: #d32f2f;
+            font-size: 13px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .address-text {
+            font-size: 12px;
+            color: #333;
+            line-height: 1.5;
+            word-break: break-all;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            margin-bottom: 10px;
+        }
+        .copy-btn {
+            background: #fff;
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .copy-btn:active {
+            background: #ffebee;
+        }
+        .calc-section {
+            background: #fafbfc;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 14px;
+        }
+        .calc-title {
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: #333;
         }
     </style>
 </head>
@@ -112,12 +196,12 @@
             
             <div class="form-group">
                 <label for="fullname">Ному насаб:</label>
-                <input type="text" id="fullname" placeholder="Ному насабро ворид кунед" value="">
+                <input type="text" id="fullname" placeholder="Ному насабро ворид кунед">
             </div>
             
             <div class="form-group">
                 <label for="phone">Рақами телефон:</label>
-                <input type="tel" id="phone" placeholder="+992..." value="">
+                <input type="tel" id="phone" placeholder="+992...">
             </div>
             
             <button type="button" id="sendCodeBtn" class="btn">Фиристодани коди тасдиқ</button>
@@ -128,28 +212,67 @@
             <div class="header">
                 <div class="icon">🔒</div>
                 <h1 class="title">Тасдиқи рақам</h1>
-                <p class="subtitle" id="codeSentText">Коди тасдиқ ба рақами шумо фиристода шуд</p>
+                <p class="subtitle">Коди тасдиқ ба рақами шумо фиристода шуд</p>
             </div>
             
             <div class="form-group">
                 <label for="code">Коди 4-рақамаро ворид кунед:</label>
-                <input type="text" id="code" placeholder="Масалан: 1234" maxlength="4" style="text-align: center; font-size: 18px; letter-spacing: 4px;">
+                <input type="text" id="code" placeholder="----" maxlength="4" style="text-align: center; font-size: 18px; letter-spacing: 4px;">
             </div>
             
             <button type="button" id="verifyCodeBtn" class="btn">Тасдиқ кардан</button>
         </div>
 
-        <!-- Қадами 3: Дохили барнома шудан (Кабинети асосӣ) -->
+        <!-- Қадами 3: Дохили барнома (Кабинети асосӣ бо суроғаҳои Авиа ва Камаз ва Калькулятор) -->
         <div id="step3" class="hidden">
-            <div class="success-screen">
-                <div class="success-icon">✅</div>
-                <h1 class="title">Хуш омадед!</h1>
-                <p class="subtitle" id="welcomeUser" style="margin-bottom: 20px;"></p>
-                <div style="background: #fafbfc; padding: 15px; border-radius: 10px; border: 1px solid #e0e0e0; margin-bottom: 15px; text-align: left;">
-                    <strong>Суроғаи шумо дар Чин:</strong><br>
-                    <span style="font-size: 13px; color: #555;">广州市荔湾区... SV003-X2574</span>
+            <div class="app-header">
+                <div class="user-info">
+                    <h3 id="profileName">Фируз</h3>
+                    <p id="profilePhone">+992555111083</p>
                 </div>
-                <button type="button" id="enterAppBtn" class="btn">Гузариш ба фармоишҳо</button>
+                <div style="font-size: 12px; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px;">ID: SV003</div>
+            </div>
+
+            <!-- Тугмаҳои ивазкунии намуди интиқол (Авиа / Камаз) -->
+            <div class="tabs">
+                <button type="button" class="tab-btn active" onclick="switchTab('avia')">✈️ Авиа (Урумчи)</button>
+                <button type="button" class="tab-btn" onclick="switchTab('kamaz')">🚚 Камаз (Иу)</button>
+            </div>
+
+            <!-- Суроғаи Авиа -->
+            <div id="aviaAddress" class="address-box">
+                <div class="address-title">
+                    <span>PAIGHOM AVIA</span>
+                    <span>Урумчи</span>
+                </div>
+                <div class="address-text" id="textAvia">
+                    Телефон: +8617591674707<br>
+                    Суроға: 新疆乌鲁木齐天山区延安路边疆宾馆公寓楼5806号 (SV003)
+                </div>
+                <button type="button" class="copy-btn" onclick="copyText('textAvia')">📋 Нусха бардоштани суроға</button>
+            </div>
+
+            <!-- Суроғаи Камаз -->
+            <div id="kamazAddress" class="address-box hidden">
+                <div class="address-title">
+                    <span>PAIGHOM CARGO</span>
+                    <span>Иу</span>
+                </div>
+                <div class="address-text" id="textKamaz">
+                    Телефон: 15024564470<br>
+                    Суроға: 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库 (SV003)
+                </div>
+                <button type="button" class="copy-btn" onclick="copyText('textKamaz')">📋 Нусха бардоштани суроға</button>
+            </div>
+
+            <!-- Калькулятор / Ҳисобкунак -->
+            <div class="calc-section">
+                <div class="calc-title">🧮 Калькулятор доставка</div>
+                <div class="form-group" style="margin-bottom: 8px;">
+                    <input type="number" id="weightKg" placeholder="Вазнро бо кг ворид кунед (масалан: 2)">
+                </div>
+                <button type="button" class="btn" onclick="calculatePrice()" style="margin-top: 0; padding: 10px;">Ҳисоб кардани нарх</button>
+                <p id="calcResult" style="margin: 8px 0 0 0; font-size: 13px; font-weight: 600; color: #d32f2f; text-align: center;"></p>
             </div>
         </div>
     </div>
@@ -162,7 +285,7 @@
         let userName = "";
         let userPhone = "";
 
-        // Тугмаи фиристодани код
+        // Қадами 1: Фиристодани код
         document.getElementById('sendCodeBtn').onclick = function() {
             userName = document.getElementById('fullname').value.trim();
             userPhone = document.getElementById('phone').value.trim();
@@ -172,18 +295,15 @@
                 return;
             }
 
-            // Тасодуфан сохтани коди 4 рақама (барои санҷиш)
+            // Коди тасодуфӣ барои санҷиш
             generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
-            
-            // Дар ҳолати воқеӣ ин код ба SMS ё бот меравад. Барои осонӣ дар огоҳинома нишон медиҳем:
             alert("Коди тасдиқи шумо (барои санҷиш): " + generatedCode);
 
-            // Гузариш ба экрани дуюм (Қадами 2)
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
         };
 
-        // Тугмаи санҷиши код
+        // Қадами 2: Тасдиқи код
         document.getElementById('verifyCodeBtn').onclick = function() {
             let enteredCode = document.getElementById('code').value.trim();
 
@@ -193,22 +313,54 @@
             }
 
             if(enteredCode === generatedCode) {
-                // Код дуруст аст -> Гузариш ба экрани асосӣ (Қадами 3)
                 document.getElementById('step2').classList.add('hidden');
                 document.getElementById('step3').classList.remove('hidden');
-                document.getElementById('welcomeUser').innerText = userName + " (" + userPhone + ")";
+                
+                // Намоиши ном ва рақами корбар дар профил
+                document.getElementById('profileName').innerText = userName;
+                document.getElementById('profilePhone').innerText = userPhone;
             } else {
-                alert("Коди воридкардашуда хато аст! Лутфан аз нав санҷед.");
+                alert("Коди воридкардашуда хато аст!");
             }
         };
 
-        // Тугмаи дохил шудан ба барнома
-        document.getElementById('enterAppBtn').onclick = function() {
-            alert("Шумо бомуваффақият ворид шудед!");
-            // Агар хоҳед, ки веб-апп пӯшида шавад ё ба бот маълумот равад:
-            // tg.sendData(JSON.stringify({name: userName, phone: userPhone}));
-            // tg.close();
-        };
+        // Иваз кардани вкладкаҳо (Авиа ва Камаз)
+        function switchTab(type) {
+            let btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(b => b.classList.remove('active'));
+
+            if(type === 'avia') {
+                document.getElementById('aviaAddress').classList.remove('hidden');
+                document.getElementById('kamazAddress').classList.add('hidden');
+                event.target.classList.add('active');
+            } else {
+                document.getElementById('kamazAddress').classList.remove('hidden');
+                document.getElementById('aviaAddress').classList.add('hidden');
+                event.target.classList.add('active');
+            }
+        }
+
+        // Функцияи нусхабардории матн
+        function copyText(containerId) {
+            let textToCopy = document.getElementById(containerId).innerText;
+            navigator.clipboard.writeText(textToCopy).then(function() {
+                alert("Суроға ба буфер нусхабардорӣ шуд!");
+            }, function() {
+                alert("Хатогӣ ҳангоми нусхабардорӣ!");
+            });
+        }
+
+        // Ҳисобкунаки нарх (Стандарт: 85 сомонӣ барои 1 кг)
+        function calculatePrice() {
+            let weight = document.getElementById('weightKg').value;
+            if(weight === "" || weight <= 0) {
+                alert("Лутфан вазни дуруст ворид кунед!");
+                return;
+            }
+            let pricePerKg = 85; // Тарифи стандартӣ
+            let total = weight * pricePerKg;
+            document.getElementById('calcResult').innerText = "Арзиши тақрибӣ: " + total + " сомонӣ";
+        }
     </script>
 </body>
 </html>
