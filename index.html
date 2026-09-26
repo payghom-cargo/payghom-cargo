@@ -100,19 +100,20 @@
             <p class="subtitle">Барои гирифтани суроғаи шахсии худ маълумотро ворид кунед</p>
         </div>
         
-        <form id="cargoForm">
+        <!-- Ба ҷои <form> мо инҷо аз <div> истифода мебарем, то саҳифа аз нав бор нашавад -->
+        <div id="cargoForm">
             <div class="form-group">
                 <label for="fullname">Ному насаб:</label>
-                <input type="text" id="fullname" name="fullname" value="Roma" placeholder="Ному насабро ворид кунед" required>
+                <input type="text" id="fullname" name="fullname" value="Roma" placeholder="Ному насабро ворид кунед">
             </div>
             
             <div class="form-group">
                 <label for="phone">Рақами телефон:</label>
-                <input type="tel" id="phone" name="phone" value="+992555143131" placeholder="+992..." required>
+                <input type="tel" id="phone" name="phone" value="+992555143131" placeholder="+992...">
             </div>
             
-            <button type="submit" class="btn">Фиристодани коди тасдиқ</button>
-        </form>
+            <button type="button" id="submitBtn" class="btn">Фиристодани коди тасдиқ</button>
+        </div>
     </div>
 
     <script>
@@ -120,25 +121,33 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Коркарди пахши тугма
-        document.getElementById('cargoForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const fullname = document.getElementById('fullname').value;
-            const phone = document.getElementById('phone').value;
+        // Пайваст кардани амалиёт ба тугма тавассути ID
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            const fullname = document.getElementById('fullname').value.trim();
+            const phone = document.getElementById('phone').value.trim();
 
-            // Маълумот барои фиристодан ба бэкенд ё бот
+            // Санҷиш, ки майдонҳо холӣ набошанд
+            if (!fullname || !phone) {
+                alert('Лутфан ҳамаи майдонҳоро пур кунед!');
+                return;
+            }
+
+            // Маълумот барои фиристодан
             const formData = {
                 fullname: fullname,
                 phone: phone
             };
 
-            console.的数据('Маълумот фиристода шуд:', formData);
+            console.log('Маълумот фиристода шуд:', formData);
 
-            // Агар хоҳед, ки маълумотро бевосита ба боти Telegram баргардонед:
+            // Шумо метавонед инҷо маълумотро ба боти Telegram баргардонед:
             // tg.sendData(JSON.stringify(formData));
-            
+
+            // Барои санҷиш паём мебарорад
             alert('Коди тасдиқ бомуваффақият фиристода шуд!');
+            
+            // Агар хоҳед, ки баъди пахш кардан оина пӯшида шавад:
+            // tg.close();
         });
     </script>
 </body>
