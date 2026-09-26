@@ -271,9 +271,9 @@
             <!-- Саҳифаи 1: Асосӣ (Главная) -->
             <div id="pageMain" class="app-page">
                 <div class="shipping-tabs">
-                    <button type="button" class="ship-btn active" onclick="switchShipping('auto', this)">🚚 Авто</button>
-                    <button type="button" class="ship-btn" onclick="switchShipping('avia', this)">✈️ Авиа</button>
-                    <button type="button" class="ship-btn" onclick="switchShipping('vip', this)">👑 Авиа VIP</button>
+                    <button type="button" class="ship-btn active" data-type="auto">🚚 Авто</button>
+                    <button type="button" class="ship-btn" data-type="avia">✈️ Авиа</button>
+                    <button type="button" class="ship-btn" data-type="vip">👑 Авиа VIP</button>
                 </div>
 
                 <div class="section-title">Адрес доставки</div>
@@ -283,30 +283,30 @@
                         Телефон: <span id="displayPhone">15024564470</span><br>
                         Адрес: 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库 <span id="displayName">Фируз</span>
                     </div>
-                    <button type="button" class="copy-all-btn" onclick="copyAddress()">📋 Скопировать все</button>
+                    <button type="button" class="copy-all-btn" id="copyAddressBtn">📋 Скопировать все</button>
                 </div>
 
                 <div class="section-title">Скачайте маркетплейс</div>
                 <div class="market-grid">
-                    <div class="market-item" onclick="openMarket('pinduoduo')">
+                    <div class="market-item" data-market="pinduoduo">
                         <div class="market-icon">拼</div>
                         <div class="market-name">Pinduoduo</div>
                     </div>
-                    <div class="market-item" onclick="openMarket('taobao')">
+                    <div class="market-item" data-market="taobao">
                         <div class="market-icon">淘</div>
                         <div class="market-name">Taobao</div>
                     </div>
-                    <div class="market-item" onclick="openMarket('1688')">
+                    <div class="market-item" data-market="1688">
                         <div class="market-icon">1688</div>
                         <div class="market-name">1688</div>
                     </div>
-                    <div class="market-item" onclick="openMarket('poizon')">
+                    <div class="market-item" data-market="poizon">
                         <div class="market-icon">POZ</div>
                         <div class="market-name">Poizon</div>
                     </div>
                 </div>
 
-                <div class="lessons-box" onclick="switchPage('lessons')">
+                <div class="lessons-box" id="openLessonsBox">
                     <span style="font-size: 13px; font-weight: 600; color: #333;">📖 Уроки</span>
                     <span style="font-size: 12px; color: #d32f2f; font-weight: 600;">Бесплатный урок ›</span>
                 </div>
@@ -335,7 +335,7 @@
                     <div style="font-size: 80px; margin-bottom: 10px;">⬛⬜</div>
                     <div style="background: #fff5f5; color: #d32f2f; padding: 6px; border-radius: 8px; font-weight: 700; font-size: 14px;">SV003-X2574</div>
                 </div>
-                <button type="button" class="copy-all-btn" onclick="copyText('SV003-X2574')">📋 Копировать код</button>
+                <button type="button" class="copy-all-btn" id="copyQrBtn">📋 Копировать код</button>
                 <p style="font-size: 11px; color: #666; margin-top: 12px; line-height: 1.4;">Покажите этот QR-код сотруднику склада — ваши данные найдутся автоматически</p>
             </div>
 
@@ -371,30 +371,30 @@
 
             <!-- Саҳифаи Видеоуроки (Уроки) -->
             <div id="pageLessons" class="app-page hidden">
-                <div style="display: flex; align-items: center; margin-bottom: 14px; cursor: pointer;" onclick="switchPage('main', document.querySelector('.nav-item'))">
+                <div style="display: flex; align-items: center; margin-bottom: 14px; cursor: pointer;" id="backToMainFromLessons">
                     <span style="font-size: 18px; margin-right: 8px;">←</span>
                     <span style="font-size: 16px; font-weight: 700;">Уроки</span>
                 </div>
                 <div class="lessons-grid">
-                    <div class="lesson-card" onclick="openMarket('pinduoduo')">
+                    <div class="lesson-card" data-market="pinduoduo">
                         <span class="lesson-tag">ВИДЕОУРОКИ</span>
                         <div style="font-size: 24px; margin: 6px 0;">🔴</div>
                         <div style="font-weight: 700; font-size: 13px;">Pinduoduo</div>
                         <div style="font-size: 11px; color: #888; margin-top: 4px;">0 уроков</div>
                     </div>
-                    <div class="lesson-card" onclick="openMarket('taobao')">
+                    <div class="lesson-card" data-market="taobao">
                         <span class="lesson-tag">ВИДЕОУРОКИ</span>
                         <div style="font-size: 24px; margin: 6px 0;">🟠</div>
                         <div style="font-weight: 700; font-size: 13px;">Taobao</div>
                         <div style="font-size: 11px; color: #888; margin-top: 4px;">0 уроков</div>
                     </div>
-                    <div class="lesson-card" onclick="openMarket('1688')">
+                    <div class="lesson-card" data-market="1688">
                         <span class="lesson-tag">ВИДЕОУРОКИ</span>
                         <div style="font-size: 24px; margin: 6px 0;">🟡</div>
                         <div style="font-weight: 700; font-size: 13px;">1688</div>
                         <div style="font-size: 11px; color: #888; margin-top: 4px;">0 уроков</div>
                     </div>
-                    <div class="lesson-card" onclick="openMarket('poizon')">
+                    <div class="lesson-card" data-market="poizon">
                         <span class="lesson-tag">ВИДЕОУРОКИ</span>
                         <div style="font-size: 24px; margin: 6px 0;">⚫</div>
                         <div style="font-weight: 700; font-size: 13px;">Poizon</div>
@@ -405,23 +405,23 @@
 
             <!-- Менюи поёнии паймоиш -->
             <div class="bottom-nav" id="bottomNav">
-                <div class="nav-item active" onclick="switchPage('main', this)">
+                <div class="nav-item active" data-page="main">
                     <div class="nav-icon">🏠</div>
                     <div>Главная</div>
                 </div>
-                <div class="nav-item" onclick="switchPage('orders', this)">
+                <div class="nav-item" data-page="orders">
                     <div class="nav-icon">📦</div>
                     <div>Заказы</div>
                 </div>
-                <div class="nav-item" onclick="switchPage('qr', this)">
+                <div class="nav-item" data-page="qr">
                     <div class="nav-icon">📷</div>
                     <div>QR</div>
                 </div>
-                <div class="nav-item" onclick="switchPage('messages', this)">
+                <div class="nav-item" data-page="messages">
                     <div class="nav-icon">💬</div>
                     <div>Сообщ.</div>
                 </div>
-                <div class="nav-item" onclick="switchPage('profile', this)">
+                <div class="nav-item" data-page="profile">
                     <div class="nav-icon">👤</div>
                     <div>Профиль</div>
                 </div>
@@ -431,43 +431,45 @@
     </div>
 
     <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-
-        let generatedCode = "";
-        let userName = "";
-        let userPhone = "";
-
-        document.getElementById('sendCodeBtn').onclick = function() {
-            userName = document.getElementById('fullname').value.trim();
-            userPhone = document.getElementById('phone').value.trim();
-
-            if(userName === "" || userPhone === "") {
-                alert("Лутфан ному насаб ва рақами телефонро пур кунед!");
-                return;
+        document.addEventListener("DOMContentLoaded", function() {
+            let tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+            if(tg) {
+                tg.expand();
             }
 
-            generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
-            alert("Коди тасдиқи шумо (барои санҷиш): " + generatedCode);
+            let generatedCode = "";
+            let userName = "";
+            let userPhone = "";
 
-            document.getElementById('step1').classList.add('hidden');
-            document.getElementById('step2').classList.remove('hidden');
-        };
+            // Тугмаи фиристодани код
+            const sendCodeBtn = document.getElementById('sendCodeBtn');
+            if(sendCodeBtn) {
+                sendCodeBtn.addEventListener('click', function() {
+                    userName = document.getElementById('fullname').value.trim();
+                    userPhone = document.getElementById('phone').value.trim();
 
-        document.getElementById('verifyCodeBtn').onclick = function() {
-            let enteredCode = document.getElementById('code').value.trim();
-            if(enteredCode === generatedCode) {
-                document.getElementById('step2').classList.add('hidden');
-                document.getElementById('step3').classList.remove('hidden');
-                document.getElementById('displayName').innerText = userName;
-                document.getElementById('displayPhone').innerText = userPhone;
-            } else {
-                alert("Коди воридкардашуда хато аст!");
+                    if(userName === "" || userPhone === "") {
+                        alert("Лутфан ному насаб ва рақами телефонро пур кунед!");
+                        return;
+                    }
+
+                    generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
+                    alert("Коди тасдиқи шумо (барои санҷиш): " + generatedCode);
+
+                    document.getElementById('step1').classList.add('hidden');
+                    document.getElementById('step2').classList.remove('hidden');
+                });
             }
-        };
 
-        function switchPage(pageId, element) {
-            let pages = document.querySelectorAll('.app-page');
-            pages.forEach(p => p.classList.add('hidden'));
-
-            let targetPage = document.getElementById('page' + pageId.charAt(0).toUpperCase() + pageId.slice(
+            // Тугмаи тасдиқи код
+            const verifyCodeBtn = document.getElementById('verifyCodeBtn');
+            if(verifyCodeBtn) {
+                verifyCodeBtn.addEventListener('click', function() {
+                    let enteredCode = document.getElementById('code').value.trim();
+                    if(enteredCode === generatedCode) {
+                        document.getElementById('step2').classList.add('hidden');
+                        document.getElementById('step3').classList.remove('hidden');
+                        document.getElementById('displayName').innerText = userName;
+                        document.getElementById('displayPhone').innerText = userPhone;
+                    } else {
+                        alert("Коди воридкардашуда хато аст
