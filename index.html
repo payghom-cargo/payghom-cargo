@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paighom Cargo</title>
-    <!-- Китобхонаи Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -86,50 +85,129 @@
         .btn:active {
             background-color: #b71c1c;
         }
+        .hidden {
+            display: none;
+        }
+        .success-screen {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .success-icon {
+            font-size: 48px;
+            color: #4CAF50;
+            margin-bottom: 12px;
+        }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <div class="header">
-            <div class="icon">📦</div>
-            <h1 class="title">Paighom Cargo</h1>
-            <p class="subtitle">Барои гирифтани суроғаи шахсии худ маълумотро ворид кунед</p>
-        </div>
-        
-        <!-- Формае, ки бевосита дар HTML амал мекунад -->
-        <div id="cargoForm">
+        <!-- Қадами 1: Ворид кардани ном ва рақам -->
+        <div id="step1">
+            <div class="header">
+                <div class="icon">📦</div>
+                <h1 class="title">Paighom Cargo</h1>
+                <p class="subtitle">Барои гирифтани суроғаи шахсии худ маълумотро ворид кунед</p>
+            </div>
+            
             <div class="form-group">
                 <label for="fullname">Ному насаб:</label>
-                <input type="text" id="fullname" value="Roma" placeholder="Ному насабро ворид кунед">
+                <input type="text" id="fullname" placeholder="Ному насабро ворид кунед" value="">
             </div>
             
             <div class="form-group">
                 <label for="phone">Рақами телефон:</label>
-                <input type="tel" id="phone" value="+992555143131" placeholder="+992...">
+                <input type="tel" id="phone" placeholder="+992..." value="">
             </div>
             
-            <button type="button" id="submitBtn" class="btn">Фиристодани коди тасдиқ</button>
+            <button type="button" id="sendCodeBtn" class="btn">Фиристодани коди тасдиқ</button>
+        </div>
+
+        <!-- Қадами 2: Ворид кардани коди тасодуфӣ -->
+        <div id="step2" class="hidden">
+            <div class="header">
+                <div class="icon">🔒</div>
+                <h1 class="title">Тасдиқи рақам</h1>
+                <p class="subtitle" id="codeSentText">Коди тасдиқ ба рақами шумо фиристода шуд</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="code">Коди 4-рақамаро ворид кунед:</label>
+                <input type="text" id="code" placeholder="Масалан: 1234" maxlength="4" style="text-align: center; font-size: 18px; letter-spacing: 4px;">
+            </div>
+            
+            <button type="button" id="verifyCodeBtn" class="btn">Тасдиқ кардан</button>
+        </div>
+
+        <!-- Қадами 3: Дохили барнома шудан (Кабинети асосӣ) -->
+        <div id="step3" class="hidden">
+            <div class="success-screen">
+                <div class="success-icon">✅</div>
+                <h1 class="title">Хуш омадед!</h1>
+                <p class="subtitle" id="welcomeUser" style="margin-bottom: 20px;"></p>
+                <div style="background: #fafbfc; padding: 15px; border-radius: 10px; border: 1px solid #e0e0e0; margin-bottom: 15px; text-align: left;">
+                    <strong>Суроғаи шумо дар Чин:</strong><br>
+                    <span style="font-size: 13px; color: #555;">广州市荔湾区... SV003-X2574</span>
+                </div>
+                <button type="button" id="enterAppBtn" class="btn">Гузариш ба фармоишҳо</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Пайвастшавӣ ба Telegram Web App
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Кор кардани тугма бе хатогӣ
-        document.getElementById('submitBtn').onclick = function() {
-            let name = document.getElementById('fullname').value;
-            let phone = document.getElementById('phone').value;
+        let generatedCode = "";
+        let userName = "";
+        let userPhone = "";
 
-            if(name === "" || phone === "") {
-                alert("Лутфан майдонҳоро пур кунед!");
-            } else {
-                alert("Коди тасдиқ фиристода шуд!");
-                // Агар хоҳед, ки маълумот ба бот равад:
-                // tg.sendData(JSON.stringify({name: name, phone: phone}));
+        // Тугмаи фиристодани код
+        document.getElementById('sendCodeBtn').onclick = function() {
+            userName = document.getElementById('fullname').value.trim();
+            userPhone = document.getElementById('phone').value.trim();
+
+            if(userName === "" || userPhone === "") {
+                alert("Лутфан ному насаб ва рақами телефонро пур кунед!");
+                return;
             }
+
+            // Тасодуфан сохтани коди 4 рақама (барои санҷиш)
+            generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
+            
+            // Дар ҳолати воқеӣ ин код ба SMS ё бот меравад. Барои осонӣ дар огоҳинома нишон медиҳем:
+            alert("Коди тасдиқи шумо (барои санҷиш): " + generatedCode);
+
+            // Гузариш ба экрани дуюм (Қадами 2)
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        };
+
+        // Тугмаи санҷиши код
+        document.getElementById('verifyCodeBtn').onclick = function() {
+            let enteredCode = document.getElementById('code').value.trim();
+
+            if(enteredCode === "") {
+                alert("Лутфан коди тасдиқро ворид кунед!");
+                return;
+            }
+
+            if(enteredCode === generatedCode) {
+                // Код дуруст аст -> Гузариш ба экрани асосӣ (Қадами 3)
+                document.getElementById('step2').classList.add('hidden');
+                document.getElementById('step3').classList.remove('hidden');
+                document.getElementById('welcomeUser').innerText = userName + " (" + userPhone + ")";
+            } else {
+                alert("Коди воридкардашуда хато аст! Лутфан аз нав санҷед.");
+            }
+        };
+
+        // Тугмаи дохил шудан ба барнома
+        document.getElementById('enterAppBtn').onclick = function() {
+            alert("Шумо бомуваффақият ворид шудед!");
+            // Агар хоҳед, ки веб-апп пӯшида шавад ё ба бот маълумот равад:
+            // tg.sendData(JSON.stringify({name: userName, phone: userPhone}));
+            // tg.close();
         };
     </script>
 </body>
