@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paighom Cargo</title>
-    <!-- Китобхонаи расмии Telegram Web App -->
+    <!-- Китобхонаи Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #f4f6f9;
             margin: 0;
             padding: 16px;
@@ -46,7 +46,6 @@
             color: #666;
             line-height: 1.4;
             margin: 0;
-            padding: 0 10px;
         }
         .form-group {
             margin-bottom: 16px;
@@ -67,7 +66,6 @@
             box-sizing: border-box;
             outline: none;
             background-color: #fafbfc;
-            transition: border-color 0.2s, background-color 0.2s;
         }
         input:focus {
             border-color: #d32f2f;
@@ -84,7 +82,6 @@
             font-weight: 600;
             cursor: pointer;
             margin-top: 8px;
-            transition: background-color 0.2s;
         }
         .btn:active {
             background-color: #b71c1c;
@@ -100,16 +97,16 @@
             <p class="subtitle">Барои гирифтани суроғаи шахсии худ маълумотро ворид кунед</p>
         </div>
         
-        <!-- Ба ҷои <form> мо инҷо аз <div> истифода мебарем, то саҳифа аз нав бор нашавад -->
+        <!-- Формае, ки бевосита дар HTML амал мекунад -->
         <div id="cargoForm">
             <div class="form-group">
                 <label for="fullname">Ному насаб:</label>
-                <input type="text" id="fullname" name="fullname" value="Roma" placeholder="Ному насабро ворид кунед">
+                <input type="text" id="fullname" value="Roma" placeholder="Ному насабро ворид кунед">
             </div>
             
             <div class="form-group">
                 <label for="phone">Рақами телефон:</label>
-                <input type="tel" id="phone" name="phone" value="+992555143131" placeholder="+992...">
+                <input type="tel" id="phone" value="+992555143131" placeholder="+992...">
             </div>
             
             <button type="button" id="submitBtn" class="btn">Фиристодани коди тасдиқ</button>
@@ -117,38 +114,23 @@
     </div>
 
     <script>
-        // Фаъолсозии муҳити Telegram Web App
+        // Пайвастшавӣ ба Telegram Web App
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Пайваст кардани амалиёт ба тугма тавассути ID
-        document.getElementById('submitBtn').addEventListener('click', function() {
-            const fullname = document.getElementById('fullname').value.trim();
-            const phone = document.getElementById('phone').value.trim();
+        // Кор кардани тугма бе хатогӣ
+        document.getElementById('submitBtn').onclick = function() {
+            let name = document.getElementById('fullname').value;
+            let phone = document.getElementById('phone').value;
 
-            // Санҷиш, ки майдонҳо холӣ набошанд
-            if (!fullname || !phone) {
-                alert('Лутфан ҳамаи майдонҳоро пур кунед!');
-                return;
+            if(name === "" || phone === "") {
+                alert("Лутфан майдонҳоро пур кунед!");
+            } else {
+                alert("Коди тасдиқ фиристода шуд!");
+                // Агар хоҳед, ки маълумот ба бот равад:
+                // tg.sendData(JSON.stringify({name: name, phone: phone}));
             }
-
-            // Маълумот барои фиристодан
-            const formData = {
-                fullname: fullname,
-                phone: phone
-            };
-
-            console.log('Маълумот фиристода шуд:', formData);
-
-            // Шумо метавонед инҷо маълумотро ба боти Telegram баргардонед:
-            // tg.sendData(JSON.stringify(formData));
-
-            // Барои санҷиш паём мебарорад
-            alert('Коди тасдиқ бомуваффақият фиристода шуд!');
-            
-            // Агар хоҳед, ки баъди пахш кардан оина пӯшида шавад:
-            // tg.close();
-        });
+        };
     </script>
 </body>
 </html>
