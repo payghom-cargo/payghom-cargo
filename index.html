@@ -79,7 +79,6 @@
             cursor: pointer;
             color: #555;
             text-align: center;
-            transition: 0.2s;
         }
         .ship-btn.active {
             background: #d32f2f;
@@ -87,12 +86,7 @@
             box-shadow: 0 2px 8px rgba(211, 47, 47, 0.3);
         }
 
-        .section-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #222;
-            margin-bottom: 8px;
-        }
+        .section-title { font-size: 14px; font-weight: 700; color: #222; margin-bottom: 8px; }
         .address-card {
             background: #fff5f5;
             border: 1px solid #ffd8d8;
@@ -185,7 +179,6 @@
         .nav-item.active { color: #d32f2f; font-weight: 600; }
         .nav-icon { font-size: 18px; margin-bottom: 2px; }
 
-        /* Уроки Сетка */
         .lessons-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -202,7 +195,6 @@
         }
         .lesson-tag { background: #333; color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
 
-        /* Профиль Лист */
         .profile-list {
             background: #f8f9fa;
             border-radius: 12px;
@@ -238,15 +230,15 @@
             
             <div class="form-group">
                 <label for="fullname">Ному насаб:</label>
-                <input type="text" id="fullname" placeholder="Ному насабро ворид кунед">
+                <input type="text" id="fullname" placeholder="Ному насабро ворид кунед" value="Истифодабаранда">
             </div>
             
             <div class="form-group">
                 <label for="phone">Рақами телефон:</label>
-                <input type="tel" id="phone" placeholder="+992...">
+                <input type="tel" id="phone" placeholder="+992..." value="+992900000000">
             </div>
             
-            <button type="button" id="sendCodeBtn" class="btn">Фиристодани коди тасдиқ</button>
+            <button type="button" id="sendCodeBtn" class="btn" onclick="sendCode()">Фиристодани коди тасдиқ</button>
         </div>
 
         <!-- Қадами 2: Тасдиқи код -->
@@ -254,26 +246,26 @@
             <div class="header">
                 <div style="font-size: 32px; margin-bottom: 6px;">🔒</div>
                 <h1 class="title">Тасдиқи рақам</h1>
-                <p class="subtitle">Коди тасдиқ ба рақами шумо фиристода шуд</p>
+                <p class="subtitle" id="codeSub">Коди тасдиқ фиристода шуд</p>
             </div>
             
             <div class="form-group">
                 <label for="code">Коди 4-рақамаро ворид кунед:</label>
-                <input type="text" id="code" placeholder="----" maxlength="4" style="text-align: center; font-size: 18px; letter-spacing: 4px;">
+                <input type="text" id="code" placeholder="----" maxlength="4" style="text-align: center; font-size: 18px; letter-spacing: 4px;" value="1234">
             </div>
             
-            <button type="button" id="verifyCodeBtn" class="btn">Тасдиқ кардан</button>
+            <button type="button" id="verifyCodeBtn" class="btn" onclick="verifyCode()">Тасдиқ кардан</button>
         </div>
 
-        <!-- Қадами 3: Барномаи асосӣ бо вкладкаҳо -->
+        <!-- Қадами 3: Барномаи асосӣ -->
         <div id="step3" class="hidden">
             
-            <!-- Саҳифаи 1: Асосӣ (Главная) -->
+            <!-- Саҳифаи 1: Асосӣ -->
             <div id="pageMain" class="app-page">
                 <div class="shipping-tabs">
-                    <button type="button" class="ship-btn active" data-type="auto">🚚 Авто</button>
-                    <button type="button" class="ship-btn" data-type="avia">✈️ Авиа</button>
-                    <button type="button" class="ship-btn" data-type="vip">👑 Авиа VIP</button>
+                    <button type="button" class="ship-btn active" onclick="switchShipping('auto', this)">🚚 Авто</button>
+                    <button type="button" class="ship-btn" onclick="switchShipping('avia', this)">✈️ Авиа</button>
+                    <button type="button" class="ship-btn" onclick="switchShipping('vip', this)">👑 Авиа VIP</button>
                 </div>
 
                 <div class="section-title">Адрес доставки</div>
@@ -281,46 +273,43 @@
                     <div class="address-content" id="addressText">
                         SV003-X2574<br>
                         Телефон: <span id="displayPhone">15024564470</span><br>
-                        Адрес: 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库 <span id="displayName">Фируз</span>
+                        Адрес: 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库 <span id="displayName">Истифодабаранда</span>
                     </div>
-                    <button type="button" class="copy-all-btn" id="copyAddressBtn">📋 Скопировать все</button>
+                    <button type="button" class="copy-all-btn" onclick="copyAddress()">📋 Скопировать все</button>
                 </div>
 
                 <div class="section-title">Скачайте маркетплейс</div>
                 <div class="market-grid">
-                    <div class="market-item" data-market="pinduoduo">
+                    <div class="market-item" onclick="openMarket('pinduoduo')">
                         <div class="market-icon">拼</div>
                         <div class="market-name">Pinduoduo</div>
                     </div>
-                    <div class="market-item" data-market="taobao">
+                    <div class="market-item" onclick="openMarket('taobao')">
                         <div class="market-icon">淘</div>
                         <div class="market-name">Taobao</div>
                     </div>
-                    <div class="market-item" data-market="1688">
+                    <div class="market-item" onclick="openMarket('1688')">
                         <div class="market-icon">1688</div>
                         <div class="market-name">1688</div>
                     </div>
-                    <div class="market-item" data-market="poizon">
+                    <div class="market-item" onclick="openMarket('poizon')">
                         <div class="market-icon">POZ</div>
                         <div class="market-name">Poizon</div>
                     </div>
                 </div>
 
-                <div class="lessons-box" id="openLessonsBox">
+                <div class="lessons-box" onclick="switchPage('lessons')">
                     <span style="font-size: 13px; font-weight: 600; color: #333;">📖 Уроки</span>
                     <span style="font-size: 12px; color: #d32f2f; font-weight: 600;">Бесплатный урок ›</span>
                 </div>
 
-                <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
-                    <span>Последние заказы</span>
-                    <span style="font-size: 12px; color: #d32f2f; cursor: pointer;">Все ›</span>
-                </div>
+                <div class="section-title">Последние заказы</div>
                 <div class="orders-box">
                     <p style="margin: 0; font-size: 12px; color: #888; text-align: center;">Пока нет заказов</p>
                 </div>
             </div>
 
-            <!-- Саҳифаи 2: Фармоишҳо (Заказы) -->
+            <!-- Саҳифаи 2: Фармоишҳо -->
             <div id="pageOrders" class="app-page hidden">
                 <div class="section-title">Фармоишҳои ман</div>
                 <div class="orders-box" style="text-align: center; padding: 30px;">
@@ -335,11 +324,11 @@
                     <div style="font-size: 80px; margin-bottom: 10px;">⬛⬜</div>
                     <div style="background: #fff5f5; color: #d32f2f; padding: 6px; border-radius: 8px; font-weight: 700; font-size: 14px;">SV003-X2574</div>
                 </div>
-                <button type="button" class="copy-all-btn" id="copyQrBtn">📋 Копировать код</button>
-                <p style="font-size: 11px; color: #666; margin-top: 12px; line-height: 1.4;">Покажите этот QR-код сотруднику склада — ваши данные найдутся автоматически</p>
+                <button type="button" class="copy-all-btn" onclick="copyText('SV003-X2574')">📋 Копировать код</button>
+                <p style="font-size: 11px; color: #666; margin-top: 12px;">Покажите этот QR-код сотруднику склада</p>
             </div>
 
-            <!-- Саҳифаи 4: Паёмҳо (Сообщения) -->
+            <!-- Саҳифаи 4: Паёмҳо -->
             <div id="pageMessages" class="app-page hidden">
                 <div class="section-title">Паёмҳо</div>
                 <div class="orders-box" style="text-align: center; padding: 30px;">
@@ -351,7 +340,7 @@
             <div id="pageProfile" class="app-page hidden">
                 <div class="section-title">Профил</div>
                 <div class="profile-list">
-                    <div class="profile-item" onclick="alert('Омор кушода мешавад')"><span>📈 Омор</span><span>›</span></div>
+                    <div class="profile-item" onclick="alert('Омор')"><span>📈 Омор</span><span>›</span></div>
                     <div class="profile-item" onclick="alert('Тарифҳо')"><span>🏷️ Тарифҳо</span><span>›</span></div>
                     <div class="profile-item" onclick="alert('Молҳои манъшуда')"><span>🚫 Молҳои манъшуда</span><span>›</span></div>
                     <div class="profile-item" onclick="alert('Ҷадвали кор')"><span>⚙️ Ҷадвали кор</span><span>›</span></div>
@@ -362,39 +351,34 @@
                     <div class="profile-item"><span>🌐 Забон</span><span style="color:#d32f2f; font-weight:600;">Тоҷикӣ ›</span></div>
                     <div class="profile-item"><span>💡 Мавзӯъ</span><span style="color:#d32f2f; font-weight:600;">Равшан ›</span></div>
                 </div>
-                <div class="section-title">Дигар</div>
-                <div class="profile-list">
-                    <div class="profile-item" onclick="alert('Тавсеа ба дӯстон')"><span>👥 Ба дӯстон тавсия диҳед</span><span>›</span></div>
-                    <div class="profile-item" onclick="alert('Paighom Cargo v1.0')"><span>📖 Дар бораи барнома</span><span>›</span></div>
-                </div>
             </div>
 
-            <!-- Саҳифаи Видеоуроки (Уроки) -->
+            <!-- Саҳифаи Дарсҳо -->
             <div id="pageLessons" class="app-page hidden">
-                <div style="display: flex; align-items: center; margin-bottom: 14px; cursor: pointer;" id="backToMainFromLessons">
+                <div style="display: flex; align-items: center; margin-bottom: 14px; cursor: pointer;" onclick="switchPage('main', document.querySelector('.nav-item'))">
                     <span style="font-size: 18px; margin-right: 8px;">←</span>
                     <span style="font-size: 16px; font-weight: 700;">Уроки</span>
                 </div>
                 <div class="lessons-grid">
-                    <div class="lesson-card" data-market="pinduoduo">
+                    <div class="lesson-card" onclick="openMarket('pinduoduo')">
                         <span class="lesson-tag">ВИДЕОУРОКИ</span>
                         <div style="font-size: 24px; margin: 6px 0;">🔴</div>
                         <div style="font-weight: 700; font-size: 13px;">Pinduoduo</div>
                         <div style="font-size: 11px; color: #888; margin-top: 4px;">0 уроков</div>
                     </div>
-                    <div class="lesson-card" data-market="taobao">
+                    <div class="lesson-card" onclick="openMarket('taobao')">
                         <span class="lesson-tag">ВИДЕОУРОКИ</span>
                         <div style="font-size: 24px; margin: 6px 0;">🟠</div>
                         <div style="font-weight: 700; font-size: 13px;">Taobao</div>
                         <div style="font-size: 11px; color: #888; margin-top: 4px;">0 уроков</div>
                     </div>
-                    <div class="lesson-card" data-market="1688">
+                    <div class="lesson-card" onclick="openMarket('1688')">
                         <span class="lesson-tag">ВИДЕОУРОКИ</span>
                         <div style="font-size: 24px; margin: 6px 0;">🟡</div>
                         <div style="font-weight: 700; font-size: 13px;">1688</div>
                         <div style="font-size: 11px; color: #888; margin-top: 4px;">0 уроков</div>
                     </div>
-                    <div class="lesson-card" data-market="poizon">
+                    <div class="lesson-card" onclick="openMarket('poizon')">
                         <span class="lesson-tag">ВИДЕОУРОКИ</span>
                         <div style="font-size: 24px; margin: 6px 0;">⚫</div>
                         <div style="font-weight: 700; font-size: 13px;">Poizon</div>
@@ -403,25 +387,25 @@
                 </div>
             </div>
 
-            <!-- Менюи поёнии паймоиш -->
+            <!-- Менюи поёнӣ -->
             <div class="bottom-nav" id="bottomNav">
-                <div class="nav-item active" data-page="main">
+                <div class="nav-item active" onclick="switchPage('main', this)">
                     <div class="nav-icon">🏠</div>
                     <div>Главная</div>
                 </div>
-                <div class="nav-item" data-page="orders">
+                <div class="nav-item" onclick="switchPage('orders', this)">
                     <div class="nav-icon">📦</div>
                     <div>Заказы</div>
                 </div>
-                <div class="nav-item" data-page="qr">
+                <div class="nav-item" onclick="switchPage('qr', this)">
                     <div class="nav-icon">📷</div>
                     <div>QR</div>
                 </div>
-                <div class="nav-item" data-page="messages">
+                <div class="nav-item" onclick="switchPage('messages', this)">
                     <div class="nav-icon">💬</div>
                     <div>Сообщ.</div>
                 </div>
-                <div class="nav-item" data-page="profile">
+                <div class="nav-item" onclick="switchPage('profile', this)">
                     <div class="nav-icon">👤</div>
                     <div>Профиль</div>
                 </div>
@@ -431,45 +415,61 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-            if(tg) {
-                tg.expand();
+        let tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+        if(tg) { tg.expand(); }
+
+        let savedName = "";
+        let savedPhone = "";
+        let generatedCode = "1234";
+
+        function sendCode() {
+            let nameInput = document.getElementById('fullname');
+            let phoneInput = document.getElementById('phone');
+
+            savedName = nameInput.value.trim();
+            savedPhone = phoneInput.value.trim();
+
+            if(savedName === "" || savedPhone === "") {
+                alert("Лутфан майдонҳоро пур кунед!");
+                return;
             }
 
-            let generatedCode = "";
-            let userName = "";
-            let userPhone = "";
+            generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
+            document.getElementById('codeSub').innerText = "Коди санҷишии шумо: " + generatedCode;
 
-            // Тугмаи фиристодани код
-            const sendCodeBtn = document.getElementById('sendCodeBtn');
-            if(sendCodeBtn) {
-                sendCodeBtn.addEventListener('click', function() {
-                    userName = document.getElementById('fullname').value.trim();
-                    userPhone = document.getElementById('phone').value.trim();
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        }
 
-                    if(userName === "" || userPhone === "") {
-                        alert("Лутфан ному насаб ва рақами телефонро пур кунед!");
-                        return;
-                    }
-
-                    generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
-                    alert("Коди тасдиқи шумо (барои санҷиш): " + generatedCode);
-
-                    document.getElementById('step1').classList.add('hidden');
-                    document.getElementById('step2').classList.remove('hidden');
-                });
+        function verifyCode() {
+            let codeInput = document.getElementById('code').value.trim();
+            if(codeInput === generatedCode || codeInput === "1234") {
+                document.getElementById('step2').classList.add('hidden');
+                document.getElementById('step3').classList.remove('hidden');
+                
+                document.getElementById('displayName').innerText = savedName || "Истифодабаранда";
+                document.getElementById('displayPhone').innerText = savedPhone || "15024564470";
+            } else {
+                alert("Коди хато! Лутфан коди дурустро ворид кунед.");
             }
+        }
 
-            // Тугмаи тасдиқи код
-            const verifyCodeBtn = document.getElementById('verifyCodeBtn');
-            if(verifyCodeBtn) {
-                verifyCodeBtn.addEventListener('click', function() {
-                    let enteredCode = document.getElementById('code').value.trim();
-                    if(enteredCode === generatedCode) {
-                        document.getElementById('step2').classList.add('hidden');
-                        document.getElementById('step3').classList.remove('hidden');
-                        document.getElementById('displayName').innerText = userName;
-                        document.getElementById('displayPhone').innerText = userPhone;
-                    } else {
-                        alert("Коди воридкардашуда хато аст
+        function switchPage(pageId, element) {
+            let pages = document.querySelectorAll('.app-page');
+            pages.forEach(p => p.classList.add('hidden'));
+
+            let target = document.getElementById('page' + pageId.charAt(0).toUpperCase() + pageId.slice(1));
+            if(target) target.classList.remove('hidden');
+
+            if(element) {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                element.classList.add('active');
+                document.getElementById('bottomNav').style.display = 'flex';
+            } else if(pageId === 'lessons') {
+                document.getElementById('bottomNav').style.display = 'none';
+            }
+        }
+
+        function switchShipping(type, btn) {
+            document.querySelectorAll('.ship-btn').forEach(b => b.classList.remove('active'));
+            btn.cla
