@@ -62,23 +62,27 @@
             display: flex;
             gap: 8px;
             margin-bottom: 16px;
+            background: #f1f3f5;
+            padding: 4px;
+            border-radius: 14px;
         }
         .ship-btn {
             flex: 1;
             padding: 10px 6px;
             border: none;
-            border-radius: 12px;
-            background: #f1f3f5;
+            border-radius: 10px;
+            background: transparent;
             font-weight: 600;
             font-size: 11px;
             cursor: pointer;
-            color: #444;
+            color: #555;
             text-align: center;
             transition: 0.2s;
         }
         .ship-btn.active {
             background: #d32f2f;
             color: white;
+            box-shadow: 0 2px 8px rgba(211, 47, 47, 0.3);
         }
 
         /* Блоки суроға */
@@ -135,7 +139,7 @@
             border: 1px solid #eee;
         }
         .market-icon {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             margin-bottom: 4px;
             color: #d32f2f;
@@ -205,7 +209,7 @@
             <button type="button" id="verifyCodeBtn" class="btn">Тасдиқ кардан</button>
         </div>
 
-        <!-- Қадами 3: Кабинети асосӣ (Монанди расми фиристодаатон) -->
+        <!-- Қадами 3: Кабинети асосӣ -->
         <div id="step3" class="hidden">
             
             <!-- Тугмаҳои болоии интиқол -->
@@ -221,8 +225,8 @@
             <div class="address-card">
                 <div class="address-content" id="addressText">
                     SV003-X2574<br>
-                    Телефон: 15210177171<br>
-                    Адрес:北京市北京市朝阳区 雅宝路日坛国际贸易中心A座1V31SV003-X2574 <span id="displayName">Фируз</span> <span id="displayPhone">+992555111083</span>
+                    Телефон: <span id="displayPhone">15024564470</span><br>
+                    Адрес: 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库 <span id="displayName">Фируз</span>
                 </div>
                 <button type="button" class="copy-all-btn" onclick="copyAddress()">📋 Скопировать все</button>
             </div>
@@ -275,6 +279,7 @@
         let generatedCode = "";
         let userName = "";
         let userPhone = "";
+        let currentType = 'auto';
 
         // Қадами 1: Фиристодани код
         document.getElementById('sendCodeBtn').onclick = function() {
@@ -306,7 +311,7 @@
                 document.getElementById('step2').classList.add('hidden');
                 document.getElementById('step3').classList.remove('hidden');
                 
-                // Намоиши ном ва рақами корбар дар суроға
+                // Намоиши ном ва рақам
                 document.getElementById('displayName').innerText = userName;
                 document.getElementById('displayPhone').innerText = userPhone;
             } else {
@@ -316,17 +321,23 @@
 
         // Иваз кардани намуди интиқол (Авто, Авиа, VIP)
         function switchShipping(type, btnElement) {
+            currentType = type;
             let btns = document.querySelectorAll('.ship-btn');
             btns.forEach(b => b.classList.remove('active'));
             btnElement.classList.add('active');
 
-            let addrBox = document.getElementById('addressText');
+            let phoneEl = document.getElementById('displayPhone');
+            let addressEl = document.getElementById('addressText');
+
             if(type === 'auto') {
-                addrBox.innerHTML = `SV003-X2574<br>Телефон: 15024564470<br>Адрес: 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库 <span id="displayName">${userName}</span> <span id="displayPhone">${userPhone}</span>`;
+                phoneEl.innerText = "15024564470";
+                addressEl.innerHTML = `SV003-X2574<br>Телефон: <span id="displayPhone">15024564470</span><br>Адрес: 浙江省金华市义乌市 后宅街道洪华小区98栋3单元 前门一楼仓库 <span id="displayName">${userName}</span>`;
             } else if(type === 'avia') {
-                addrBox.innerHTML = `SV003-X2574<br>Телефон: +8617591674707<br>Адрес: 新疆乌鲁木齐天山区延安路边疆宾馆公寓楼5806号 <span id="displayName">${userName}</span> <span id="displayPhone">${userPhone}</span>`;
+                phoneEl.innerText = "+8617591674707";
+                addressEl.innerHTML = `SV003-X2574<br>Телефон: <span id="displayPhone">+8617591674707</span><br>Адрес: 新疆乌鲁木齐天山区延安路边疆宾馆公寓楼5806号 <span id="displayName">${userName}</span>`;
             } else {
-                addrBox.innerHTML = `SV003-X2574<br>Телефон: 15210177171<br>Адрес: 北京市北京市朝阳区 雅宝路日坛国际贸易中心A座1V31 <span id="displayName">${userName}</span> <span id="displayPhone">${userPhone}</span> | AVIA VIP`;
+                phoneEl.innerText = "15210177171";
+                addressEl.innerHTML = `SV003-X2574<br>Телефон: <span id="displayPhone">15210177171</span><br>Адрес: 北京市北京市朝阳区 雅宝路日坛国际贸易中心A座1V31 <span id="displayName">${userName}</span> | AVIA VIP`;
             }
         }
 
